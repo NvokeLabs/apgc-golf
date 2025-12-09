@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 import { GlassCard } from '@/components/golf'
 import Link from 'next/link'
-import { CheckCircle } from 'lucide-react'
+import { CheckCircle, Handshake, ArrowRight } from 'lucide-react'
 
 export const metadata: Metadata = {
   title: 'Application Submitted | APGC Golf',
@@ -10,34 +10,50 @@ export const metadata: Metadata = {
 
 export default function SponsorRegistrationSuccessPage() {
   return (
-    <div className="container flex min-h-[60vh] items-center justify-center py-16">
-      <GlassCard className="max-w-md p-8 text-center">
-        <div className="mx-auto mb-6 flex h-16 w-16 items-center justify-center rounded-full bg-emerald-500/20">
-          <CheckCircle className="h-8 w-8 text-emerald-400" />
-        </div>
+    <div className="pt-24 pb-20 min-h-screen flex items-center justify-center">
+      <div className="container mx-auto px-6 max-w-lg">
+        <GlassCard className="p-12 text-center">
+          <div className="mx-auto mb-8 flex h-20 w-20 items-center justify-center rounded-full bg-[#0b3d2e]/10 border-2 border-[#0b3d2e]/20">
+            <CheckCircle className="h-10 w-10 text-[#0b3d2e]" />
+          </div>
 
-        <h1 className="mb-2 text-2xl font-bold text-white">Application Submitted!</h1>
+          <h1 className="text-3xl font-serif italic text-[#0b3d2e] mb-4">
+            Application Submitted!
+          </h1>
 
-        <p className="mb-6 text-white/70">
-          Thank you for your interest in partnering with APGC Golf. Our sponsorship
-          team will review your application and contact you within 2-3 business days.
-        </p>
+          <p className="text-[#636364] mb-8 leading-relaxed">
+            Thank you for your interest in partnering with APGC Golf. Our sponsorship
+            team will review your application and contact you within 2-3 business days.
+          </p>
 
-        <div className="space-y-3">
-          <Link
-            href="/sponsors"
-            className="block w-full rounded-lg bg-emerald-600 py-3 font-semibold text-white transition-colors hover:bg-emerald-700"
-          >
-            View Current Sponsors
-          </Link>
-          <Link
-            href="/"
-            className="block w-full rounded-lg border border-white/10 py-3 font-semibold text-white transition-colors hover:bg-white/5"
-          >
-            Back to Home
-          </Link>
-        </div>
-      </GlassCard>
+          <div className="bg-[#0b3d2e]/5 rounded-xl p-6 mb-8 border border-[#0b3d2e]/10">
+            <div className="flex items-center justify-center gap-2 text-[#0b3d2e] mb-2">
+              <Handshake className="w-5 h-5" />
+              <span className="font-medium">What&apos;s Next?</span>
+            </div>
+            <p className="text-sm text-[#636364]">
+              Our team will reach out to discuss partnership details, benefits,
+              and customize a sponsorship package that fits your needs.
+            </p>
+          </div>
+
+          <div className="space-y-3">
+            <Link
+              href="/sponsors"
+              className="flex items-center justify-center gap-2 w-full rounded-xl bg-[#0b3d2e] py-4 font-bold text-white transition-colors hover:bg-[#091f18] shadow-lg"
+            >
+              View Current Sponsors
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link
+              href="/"
+              className="block w-full rounded-xl border border-[#0b3d2e]/20 py-4 font-medium text-[#0b3d2e] transition-colors hover:bg-[#0b3d2e]/5"
+            >
+              Back to Home
+            </Link>
+          </div>
+        </GlassCard>
+      </div>
     </div>
   )
 }

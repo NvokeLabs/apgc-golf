@@ -1,6 +1,8 @@
 export { EventCard } from './EventCard'
 export { GlassCard } from './GlassCard'
+export { ImageWithFallback } from './ImageWithFallback'
 export { NewsCard } from './NewsCard'
 export { PlayerCard } from './PlayerCard'
+export { SectionHeader } from './SectionHeader'
 export { SponsorCard } from './SponsorCard'
 export { SponsorMarquee } from './SponsorMarquee'

@@ -1,14 +1,25 @@
 import type { Metadata } from 'next'
-import type { Player } from '@/payload-types'
 
 import { GlassCard } from '@/components/golf'
 import RichText from '@/components/RichText'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import Image from 'next/image'
+import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
-import { Award, Calendar, Mail, MapPin, Trophy, User } from 'lucide-react'
+import {
+  Award,
+  ChevronLeft,
+  Flag,
+  Hash,
+  Mail,
+  Trophy,
+  TrendingUp,
+  User,
+  CheckCircle2,
+  XCircle,
+} from 'lucide-react'
 
 type Args = {
   params: Promise<{ slug: string }>
@@ -62,7 +73,31 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
   }
 }
 
-export const revalidate = 3600 // Revalidate every hour
+export const revalidate = 3600
+
+function DetailRow({
+  label,
+  value,
+  icon,
+  isLast = false,
+}: {
+  label: string
+  value: React.ReactNode
+  icon?: React.ReactNode
+  isLast?: boolean
+}) {
+  return (
+    <div
+      className={`flex flex-col sm:flex-row sm:items-center justify-between py-4 ${!isLast ? 'border-b border-[#0b3d2e]/10' : ''}`}
+    >
+      <div className="flex items-center gap-2 text-[#636364] text-sm mb-1 sm:mb-0">
+        {icon}
+        <span className="font-medium">{label}</span>
+      </div>
+      <div className="text-[#0b3d2e] font-medium text-right">{value}</div>
+    </div>
+  )
+}
 
 export default async function PlayerPage({ params }: Args) {
   const { slug } = await params
@@ -75,172 +110,223 @@ export default async function PlayerPage({ params }: Args) {
   const imageUrl =
     typeof player.image === 'object' && player.image?.url
       ? player.image.url
-      : '/placeholder-player.jpg'
+      : 'https://images.unsplash.com/photo-1633597470203-77c0986ecc4d?w=600&q=80'
 
   return (
-    <div className="container py-16">
-      <div className="grid gap-8 lg:grid-cols-3">
-        {/* Left Column - Photo & Quick Stats */}
-        <div className="lg:col-span-1">
-          <GlassCard className="overflow-hidden">
-            <div className="relative aspect-[3/4]">
+    <div className="pt-24 pb-20 min-h-screen">
+      <div className="container mx-auto px-6 max-w-6xl">
+        <Link
+          href="/players"
+          className="inline-flex items-center mb-8 text-[#636364] hover:text-[#0b3d2e] pl-0 -ml-4 group transition-colors"
+        >
+          <ChevronLeft className="mr-2 w-5 h-5 group-hover:-translate-x-1 transition-transform" />
+          Back to Players
+        </Link>
+
+        <div className="grid lg:grid-cols-12 gap-12">
+          {/* Left Column: Image */}
+          <div className="lg:col-span-4">
+            <div className="relative rounded-2xl overflow-hidden border border-[#0b3d2e]/10 h-[400px] lg:h-[600px] shadow-2xl lg:sticky lg:top-32">
               <Image
                 src={imageUrl}
                 alt={player.name}
                 fill
-                className="object-cover"
+                className="object-cover grayscale hover:grayscale-0 transition-all duration-700"
                 priority
                 sizes="(max-width: 1024px) 100vw, 33vw"
               />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-transparent to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-t from-[#0b3d2e] via-transparent to-transparent" />
 
-              {player.rank && (
-                <div className="absolute left-4 top-4 flex h-12 w-12 items-center justify-center rounded-full bg-emerald-600 text-lg font-bold text-white">
-                  #{player.rank}
-                </div>
-              )}
-
-              <div className="absolute bottom-0 left-0 right-0 p-6">
-                <h1 className="text-3xl font-bold text-white">{player.name}</h1>
+              <div className="absolute bottom-0 left-0 p-8 w-full">
+                <h1 className="text-4xl lg:text-5xl font-serif italic text-white mb-2 leading-tight">
+                  {player.name}
+                </h1>
                 {player.country && (
-                  <div className="mt-2 flex items-center gap-2 text-white/70">
-                    <MapPin className="h-4 w-4" />
-                    <span>{player.country}</span>
+                  <div className="flex items-center gap-2 text-white/80 font-bold uppercase tracking-widest text-sm">
+                    <Flag className="w-4 h-4" /> {player.country}
                   </div>
                 )}
               </div>
             </div>
+          </div>
 
-            {/* Quick Stats */}
-            <div className="grid grid-cols-2 gap-4 p-6">
-              {player.wins != null && (
-                <StatItem icon={Trophy} label="Wins" value={player.wins.toString()} />
+          {/* Right Column: Stats & Details */}
+          <div className="lg:col-span-8 space-y-8">
+            {/* Top Stats Cards */}
+            <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+              {player.rank && (
+                <GlassCard className="px-6 py-4">
+                  <p className="text-[#636364] text-xs uppercase tracking-wider mb-1">World Rank</p>
+                  <p className="text-3xl text-[#0b3d2e] font-light">#{player.rank}</p>
+                </GlassCard>
               )}
-              {player.points != null && (
-                <StatItem icon={Award} label="Points" value={player.points.toString()} />
-              )}
-              {player.handicap != null && (
-                <StatItem icon={User} label="Handicap" value={player.handicap.toString()} />
-              )}
-              {player.age != null && (
-                <StatItem icon={Calendar} label="Age" value={player.age.toString()} />
-              )}
+              <GlassCard className="px-6 py-4">
+                <p className="text-[#636364] text-xs uppercase tracking-wider mb-1">Tour Wins</p>
+                <div className="flex items-center gap-2">
+                  <Trophy className="w-5 h-5 text-[#0b3d2e]" />
+                  <p className="text-3xl text-[#0b3d2e] font-light">{player.wins ?? 0}</p>
+                </div>
+              </GlassCard>
+              <GlassCard className="px-6 py-4">
+                <p className="text-[#636364] text-xs uppercase tracking-wider mb-1">Points</p>
+                <div className="flex items-center gap-2">
+                  <TrendingUp className="w-5 h-5 text-[#0b3d2e]" />
+                  <p className="text-3xl text-[#0b3d2e] font-light">{player.points ?? 0}</p>
+                </div>
+              </GlassCard>
             </div>
-          </GlassCard>
 
-          {/* Contact */}
-          {player.email && (
-            <GlassCard className="mt-6 p-6">
-              <h3 className="mb-4 font-semibold text-white">Contact</h3>
-              <a
-                href={`mailto:${player.email}`}
-                className="flex items-center gap-2 text-emerald-400 hover:text-emerald-300"
-              >
-                <Mail className="h-4 w-4" />
-                <span>{player.email}</span>
-              </a>
-              {player.matchPlayAvailable && (
-                <p className="mt-3 text-sm text-white/60">Available for match play</p>
-              )}
-            </GlassCard>
-          )}
-        </div>
+            <div className="grid md:grid-cols-2 gap-8">
+              {/* Detailed Profile Section */}
+              <GlassCard className="p-8">
+                <h3 className="text-lg text-[#0b3d2e] font-bold uppercase tracking-widest mb-6 pb-2 border-b border-[#0b3d2e]/10">
+                  Member Profile
+                </h3>
 
-        {/* Right Column - Details */}
-        <div className="space-y-6 lg:col-span-2">
-          {/* Bio */}
-          {player.bio && (
-            <GlassCard className="p-6">
-              <h2 className="mb-4 text-xl font-bold text-white">About</h2>
-              <div className="prose prose-invert max-w-none">
-                <RichText data={player.bio} />
-              </div>
-            </GlassCard>
-          )}
-
-          {player.memberDescription && !player.bio && (
-            <GlassCard className="p-6">
-              <h2 className="mb-4 text-xl font-bold text-white">About</h2>
-              <p className="text-white/80">{player.memberDescription}</p>
-            </GlassCard>
-          )}
-
-          {/* Career Info */}
-          <GlassCard className="p-6">
-            <h2 className="mb-4 text-xl font-bold text-white">Career</h2>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
-              {player.turnedPro && (
-                <div>
-                  <p className="text-sm text-white/50">Turned Pro</p>
-                  <p className="text-lg font-semibold text-white">{player.turnedPro}</p>
+                <div className="flex flex-col gap-1">
+                  {player.memberId && (
+                    <DetailRow
+                      label="Member ID"
+                      value={player.memberId}
+                      icon={<Hash className="w-4 h-4" />}
+                    />
+                  )}
+                  <DetailRow
+                    label="Full Name"
+                    value={player.name}
+                    icon={<User className="w-4 h-4" />}
+                  />
+                  {player.gender && <DetailRow label="Gender" value={player.gender} />}
+                  {player.handicap != null && (
+                    <DetailRow label="Handicap" value={player.handicap} />
+                  )}
+                  {player.latestGrossScore != null && (
+                    <DetailRow label="Latest Gross Score" value={player.latestGrossScore} />
+                  )}
+                  {player.email && (
+                    <DetailRow
+                      label="Email"
+                      value={player.email}
+                      icon={<Mail className="w-4 h-4" />}
+                    />
+                  )}
+                  {player.status && <DetailRow label="Status" value={player.status} />}
+                  <DetailRow
+                    label="Match Play"
+                    value={
+                      player.matchPlayAvailable ? (
+                        <span className="flex items-center justify-end gap-2 text-[#0b3d2e]">
+                          Available <CheckCircle2 className="w-4 h-4" />
+                        </span>
+                      ) : (
+                        <span className="flex items-center justify-end gap-2 text-[#636364]">
+                          Unavailable <XCircle className="w-4 h-4" />
+                        </span>
+                      )
+                    }
+                    isLast
+                  />
                 </div>
-              )}
-              {player.majorChampionships !== undefined && (
-                <div>
-                  <p className="text-sm text-white/50">Major Championships</p>
-                  <p className="text-lg font-semibold text-emerald-400">
-                    {player.majorChampionships}
-                  </p>
-                </div>
-              )}
-              {player.memberId && (
-                <div>
-                  <p className="text-sm text-white/50">Member ID</p>
-                  <p className="text-lg font-semibold text-white">{player.memberId}</p>
-                </div>
-              )}
-            </div>
-          </GlassCard>
+              </GlassCard>
 
-          {/* Recent Results */}
-          {player.recentResults && player.recentResults.length > 0 && (
-            <GlassCard className="p-6">
-              <h2 className="mb-4 text-xl font-bold text-white">Recent Results</h2>
-              <div className="space-y-3">
-                {player.recentResults.map((result, index) => (
-                  <div
-                    key={index}
-                    className="flex items-center justify-between rounded-lg border border-white/10 bg-white/5 p-4"
-                  >
-                    <div>
-                      <p className="font-medium text-white">{result.tournament}</p>
-                      {result.date && (
-                        <p className="text-sm text-white/50">
-                          {new Date(result.date).toLocaleDateString('en-US', {
-                            month: 'short',
-                            year: 'numeric',
-                          })}
+              {/* Bio & Results Column */}
+              <div className="space-y-8">
+                {/* Bio */}
+                <div>
+                  <h3 className="text-xl text-[#0b3d2e] font-light mb-4">
+                    About the <span className="font-serif italic font-medium">Player</span>
+                  </h3>
+                  <GlassCard className="p-6">
+                    {player.bio ? (
+                      <div className="prose prose-sm max-w-none text-[#636364]">
+                        <RichText data={player.bio} />
+                      </div>
+                    ) : (
+                      <p className="text-[#636364] leading-relaxed">
+                        No biography available for this player.
+                      </p>
+                    )}
+                    {player.memberDescription && (
+                      <div className="mt-4 pt-4 border-t border-[#0b3d2e]/10">
+                        <p className="text-sm text-[#0b3d2e]/60 uppercase tracking-wider mb-2">
+                          Member Data
                         </p>
-                      )}
-                    </div>
-                    <div className="rounded-full bg-emerald-600/20 px-4 py-2">
-                      <span className="font-bold text-emerald-400">{result.position}</span>
+                        <p className="text-[#0b3d2e] text-sm">{player.memberDescription}</p>
+                      </div>
+                    )}
+                  </GlassCard>
+                </div>
+
+                {/* Career Stats */}
+                <div>
+                  <h3 className="text-xl text-[#0b3d2e] font-light mb-4">
+                    Career <span className="font-serif italic font-medium">Stats</span>
+                  </h3>
+                  <div className="grid grid-cols-2 gap-3">
+                    {player.age && (
+                      <GlassCard className="p-4 text-center">
+                        <p className="text-2xl font-light text-[#0b3d2e]">{player.age}</p>
+                        <p className="text-xs text-[#636364] uppercase tracking-wider">Age</p>
+                      </GlassCard>
+                    )}
+                    {player.turnedPro && (
+                      <GlassCard className="p-4 text-center">
+                        <p className="text-2xl font-light text-[#0b3d2e]">{player.turnedPro}</p>
+                        <p className="text-xs text-[#636364] uppercase tracking-wider">
+                          Turned Pro
+                        </p>
+                      </GlassCard>
+                    )}
+                    {player.majorChampionships != null && (
+                      <GlassCard className="p-4 text-center col-span-2">
+                        <div className="flex items-center justify-center gap-2">
+                          <Award className="w-5 h-5 text-[#0b3d2e]" />
+                          <p className="text-2xl font-light text-[#0b3d2e]">
+                            {player.majorChampionships}
+                          </p>
+                        </div>
+                        <p className="text-xs text-[#636364] uppercase tracking-wider">
+                          Major Championships
+                        </p>
+                      </GlassCard>
+                    )}
+                  </div>
+                </div>
+
+                {/* Recent Results */}
+                {player.recentResults && player.recentResults.length > 0 && (
+                  <div>
+                    <h3 className="text-xl text-[#0b3d2e] font-light mb-4">
+                      Recent <span className="font-serif italic font-medium">Results</span>
+                    </h3>
+                    <div className="space-y-3">
+                      {player.recentResults.map((result, index) => (
+                        <GlassCard
+                          key={index}
+                          className="flex items-center justify-between p-4 hover:bg-white/60 transition-colors"
+                        >
+                          <span className="text-[#0b3d2e] font-medium text-sm">
+                            {result.tournament}
+                          </span>
+                          <span
+                            className={`text-xs font-bold px-2 py-1 rounded-full ${
+                              result.position?.includes('1')
+                                ? 'bg-[#0b3d2e]/20 text-[#0b3d2e]'
+                                : 'bg-[#0b3d2e]/10 text-[#0b3d2e]'
+                            }`}
+                          >
+                            {result.position}
+                          </span>
+                        </GlassCard>
+                      ))}
                     </div>
                   </div>
-                ))}
+                )}
               </div>
-            </GlassCard>
-          )}
+            </div>
+          </div>
         </div>
       </div>
-    </div>
-  )
-}
-
-function StatItem({
-  icon: Icon,
-  label,
-  value,
-}: {
-  icon: React.ElementType
-  label: string
-  value: string
-}) {
-  return (
-    <div className="text-center">
-      <Icon className="mx-auto h-5 w-5 text-emerald-400" />
-      <p className="mt-1 text-2xl font-bold text-white">{value}</p>
-      <p className="text-xs text-white/50">{label}</p>
     </div>
   )
 }
