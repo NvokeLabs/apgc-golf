@@ -9,6 +9,10 @@ import { imageHero1 } from './image-hero-1'
 import { post1 } from './post-1'
 import { post2 } from './post-2'
 import { post3 } from './post-3'
+import { golfPlayers } from './golf-players'
+import { golfEvents } from './golf-events'
+import { golfNews } from './golf-news'
+import { golfSponsors } from './golf-sponsors'
 
 const collections: CollectionSlug[] = [
   'categories',
@@ -18,6 +22,13 @@ const collections: CollectionSlug[] = [
   'forms',
   'form-submissions',
   'search',
+  // Golf collections
+  'players',
+  'events',
+  'news',
+  'sponsors',
+  'event-registrations',
+  'sponsor-registrations',
 ]
 
 const globals: GlobalSlug[] = ['header', 'footer']
@@ -215,6 +226,90 @@ export const seed = async ({
     }),
   ])
 
+  // ========== GOLF CONTENT SEEDING ==========
+  payload.logger.info(`— Seeding golf sponsors...`)
+
+  const sponsorDocs = await Promise.all(
+    golfSponsors.map((sponsor) =>
+      payload.create({
+        collection: 'sponsors',
+        depth: 0,
+        context: { skipRevalidate: true },
+        data: sponsor as any, // Seed data without logo - logo is optional for seeding
+      }),
+    ),
+  )
+
+  payload.logger.info(`— Seeding golf players...`)
+
+  const playerDocs = await Promise.all(
+    golfPlayers.map((player) =>
+      payload.create({
+        collection: 'players',
+        depth: 0,
+        context: { skipRevalidate: true },
+        data: player,
+      }),
+    ),
+  )
+
+  payload.logger.info(`— Seeding golf events...`)
+
+  // Link sponsors to events
+  const eventDocs = await Promise.all(
+    golfEvents.map((event, index) =>
+      payload.create({
+        collection: 'events',
+        depth: 0,
+        context: { skipRevalidate: true },
+        data: {
+          ...event,
+          sponsors: index === 0 ? sponsorDocs.slice(0, 5).map((s) => s.id) : sponsorDocs.slice(0, 3).map((s) => s.id),
+        },
+      }),
+    ),
+  )
+
+  payload.logger.info(`— Seeding golf news...`)
+
+  // For news, we need to create proper Lexical content
+  const newsDocs = await Promise.all(
+    golfNews.map((article) =>
+      payload.create({
+        collection: 'news',
+        depth: 0,
+        context: { skipRevalidate: true },
+        data: {
+          title: article.title,
+          slug: article.slug,
+          subtitle: article.subtitle,
+          category: article.category,
+          publishedDate: article.publishedDate,
+          readTime: article.readTime,
+          _status: article._status,
+          author: demoAuthor.id,
+          content: {
+            root: {
+              type: 'root',
+              children: article.contentText.split('\n\n').map((paragraph) => ({
+                type: 'paragraph',
+                children: [{ type: 'text', text: paragraph, version: 1 }],
+                direction: 'ltr',
+                format: '',
+                indent: 0,
+                version: 1,
+              })),
+              direction: 'ltr',
+              format: '',
+              indent: 0,
+              version: 1,
+            },
+          },
+        },
+      }),
+    ),
+  )
+
   payload.logger.info(`— Seeding globals...`)
 
   await Promise.all([
@@ -225,8 +320,29 @@ export const seed = async ({
           {
             link: {
               type: 'custom',
-              label: 'Posts',
-              url: '/posts',
+              label: 'Events',
+              url: '/events',
+            },
+          },
+          {
+            link: {
+              type: 'custom',
+              label: 'Players',
+              url: '/players',
+            },
+          },
+          {
+            link: {
+              type: 'custom',
+              label: 'News',
+              url: '/news',
+            },
+          },
+          {
+            link: {
+              type: 'custom',
+              label: 'Sponsors',
+              url: '/sponsors',
             },
           },
           {
@@ -249,24 +365,29 @@ export const seed = async ({
           {
             link: {
               type: 'custom',
+              label: 'Events',
+              url: '/events',
+            },
+          },
+          {
+            link: {
+              type: 'custom',
+              label: 'Players',
+              url: '/players',
+            },
+          },
+          {
+            link: {
+              type: 'custom',
+              label: 'News',
+              url: '/news',
+            },
+          },
+          {
+            link: {
+              type: 'custom',
               label: 'Admin',
               url: '/admin',
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Source Code',
-              newTab: true,
-              url: 'https://github.com/payloadcms/payload/tree/main/templates/website',
-            },
-          },
-          {
-            link: {
-              type: 'custom',
-              label: 'Payload',
-              newTab: true,
-              url: 'https://payloadcms.com/',
             },
           },
         ],

@@ -7,9 +7,15 @@ import { buildConfig, PayloadRequest } from 'payload'
 import { fileURLToPath } from 'url'
 
 import { Categories } from './collections/Categories'
+import { Events } from './collections/Events'
+import { EventRegistrations } from './collections/EventRegistrations'
 import { Media } from './collections/Media'
+import { News } from './collections/News'
 import { Pages } from './collections/Pages'
+import { Players } from './collections/Players'
 import { Posts } from './collections/Posts'
+import { Sponsors } from './collections/Sponsors'
+import { SponsorRegistrations } from './collections/SponsorRegistrations'
 import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
@@ -64,7 +70,23 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
-  collections: [Pages, Posts, Media, Categories, Users],
+  collections: [
+    // Content
+    Pages,
+    Posts,
+    // Golf Content
+    Players,
+    Events,
+    News,
+    Sponsors,
+    // Registrations
+    EventRegistrations,
+    SponsorRegistrations,
+    // System
+    Media,
+    Categories,
+    Users,
+  ],
   cors: [getServerSideURL()].filter(Boolean),
   globals: [Header, Footer],
   plugins: [
