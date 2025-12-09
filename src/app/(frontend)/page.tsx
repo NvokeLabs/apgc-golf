@@ -486,7 +486,6 @@ export default async function HomePage() {
                   key={player.id}
                   className="group p-0 cursor-pointer"
                   hoverEffect
-                  onClick={() => {}}
                 >
                   <Link href={`/players/${player.slug}`}>
                     <div className="relative h-64 overflow-hidden">
