@@ -1,23 +1,33 @@
+'use client'
+
 import { cn } from '@/utilities/ui'
 import React from 'react'
 
-interface GlassCardProps {
+interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
   children: React.ReactNode
   className?: string
-  hover?: boolean
+  hoverEffect?: boolean
 }
 
-export function GlassCard({ children, className, hover = true }: GlassCardProps) {
+export function GlassCard({
+  children,
+  className,
+  hoverEffect = false,
+  ...props
+}: GlassCardProps) {
   return (
     <div
       className={cn(
-        'rounded-2xl border border-white/10 bg-white/5 backdrop-blur-md',
-        'shadow-lg shadow-black/5',
-        hover && 'transition-all duration-300 hover:bg-white/10 hover:shadow-xl hover:shadow-black/10',
+        'relative overflow-hidden rounded-2xl border border-[#0b3d2e]/10 bg-white/60 backdrop-blur-xl shadow-sm',
+        hoverEffect &&
+          'transition-all duration-300 hover:bg-white/80 hover:scale-[1.02] hover:shadow-md cursor-pointer',
         className,
       )}
+      {...props}
     >
-      {children}
+      {/* Frosted glass overlay */}
+      <div className="absolute inset-0 bg-gradient-to-br from-white/40 to-transparent pointer-events-none" />
+      <div className="relative z-10">{children}</div>
     </div>
   )
 }

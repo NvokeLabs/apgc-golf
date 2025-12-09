@@ -1,23 +1,27 @@
 'use client'
+
 import { useHeaderTheme } from '@/providers/HeaderTheme'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
 import React, { useEffect, useState } from 'react'
+import { Menu, X } from 'lucide-react'
 
 import type { Header } from '@/payload-types'
 
 import { Logo } from '@/components/Logo/Logo'
-import { HeaderNav } from './Nav'
+import { CMSLink } from '@/components/Link'
 
 interface HeaderClientProps {
   data: Header
 }
 
 export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
-  /* Storing the value in a useState to avoid hydration errors */
   const [theme, setTheme] = useState<string | null>(null)
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const { headerTheme, setHeaderTheme } = useHeaderTheme()
   const pathname = usePathname()
+
+  const navItems = data?.navItems || []
 
   useEffect(() => {
     setHeaderTheme(null)
@@ -29,13 +33,146 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [headerTheme])
 
+  // Close mobile menu on route change
+  useEffect(() => {
+    setIsMobileMenuOpen(false)
+  }, [pathname])
+
   return (
-    <header className="container relative z-20   " {...(theme ? { 'data-theme': theme } : {})}>
-      <div className="py-8 flex justify-between">
-        <Link href="/">
-          <Logo loading="eager" priority="high" className="invert dark:invert-0" />
-        </Link>
-        <HeaderNav data={data} />
+    <header
+      className="fixed top-0 left-0 right-0 z-50 transition-all duration-500"
+      {...(theme ? { 'data-theme': theme } : {})}
+    >
+      <div className="w-[95%] max-w-7xl mx-auto mt-6">
+        <div className="rounded-2xl bg-white/90 backdrop-blur-xl border border-white/40 shadow-lg">
+          <div className="md:px-6 lg:px-8 py-[6px] px-[32px] bg-white/40 backdrop-blur-lg border border-white/60 shadow-lg rounded-2xl">
+            <div className="flex items-center justify-between">
+              {/* Logo */}
+              <Link href="/" className="flex items-center gap-2">
+                <Logo loading="eager" priority="high" className="h-12 w-auto object-contain" />
+              </Link>
+
+              {/* Desktop Navigation */}
+              <nav className="hidden md:flex items-center gap-8">
+                <Link
+                  href="/"
+                  className={`text-sm font-medium transition-colors ${
+                    pathname === '/'
+                      ? 'text-[#0b3d2e] font-bold'
+                      : 'text-[#0b3d2e]/70 hover:text-[#0b3d2e]'
+                  }`}
+                >
+                  Home
+                </Link>
+                <Link
+                  href="/events"
+                  className={`text-sm font-medium transition-colors ${
+                    pathname.startsWith('/events')
+                      ? 'text-[#0b3d2e] font-bold'
+                      : 'text-[#0b3d2e]/70 hover:text-[#0b3d2e]'
+                  }`}
+                >
+                  Events
+                </Link>
+                <Link
+                  href="/players"
+                  className={`text-sm font-medium transition-colors ${
+                    pathname.startsWith('/players')
+                      ? 'text-[#0b3d2e] font-bold'
+                      : 'text-[#0b3d2e]/70 hover:text-[#0b3d2e]'
+                  }`}
+                >
+                  Players
+                </Link>
+                <Link
+                  href="/sponsors"
+                  className={`text-sm font-medium transition-colors ${
+                    pathname.startsWith('/sponsors')
+                      ? 'text-[#0b3d2e] font-bold'
+                      : 'text-[#0b3d2e]/70 hover:text-[#0b3d2e]'
+                  }`}
+                >
+                  Sponsors
+                </Link>
+                <Link
+                  href="/news"
+                  className={`text-sm font-medium transition-colors ${
+                    pathname.startsWith('/news')
+                      ? 'text-[#0b3d2e] font-bold'
+                      : 'text-[#0b3d2e]/70 hover:text-[#0b3d2e]'
+                  }`}
+                >
+                  News
+                </Link>
+                {/* CMS-managed nav items */}
+                {navItems.map(({ link }, i) => (
+                  <CMSLink
+                    key={i}
+                    {...link}
+                    className="text-sm font-medium text-[#0b3d2e]/70 hover:text-[#0b3d2e] transition-colors"
+                  />
+                ))}
+              </nav>
+
+              {/* Mobile Menu Toggle */}
+              <button
+                className="md:hidden text-[#0b3d2e] p-2"
+                onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
+                aria-label="Toggle menu"
+              >
+                {isMobileMenuOpen ? <X className="w-6 h-6" /> : <Menu className="w-6 h-6" />}
+              </button>
+            </div>
+          </div>
+        </div>
+
+        {/* Mobile Menu */}
+        {isMobileMenuOpen && (
+          <div className="absolute top-full left-0 right-0 mt-4 mx-6 bg-white/95 backdrop-blur-2xl border border-white/20 rounded-2xl p-6 flex flex-col gap-4 md:hidden shadow-xl">
+            <Link
+              href="/"
+              className="text-lg font-medium text-[#0b3d2e] py-2 border-b border-[#0b3d2e]/5"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Home
+            </Link>
+            <Link
+              href="/events"
+              className="text-lg font-medium text-[#0b3d2e] py-2 border-b border-[#0b3d2e]/5"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Events
+            </Link>
+            <Link
+              href="/players"
+              className="text-lg font-medium text-[#0b3d2e] py-2 border-b border-[#0b3d2e]/5"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Players
+            </Link>
+            <Link
+              href="/sponsors"
+              className="text-lg font-medium text-[#0b3d2e] py-2 border-b border-[#0b3d2e]/5"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              Sponsors
+            </Link>
+            <Link
+              href="/news"
+              className="text-lg font-medium text-[#0b3d2e] py-2 border-b border-[#0b3d2e]/5"
+              onClick={() => setIsMobileMenuOpen(false)}
+            >
+              News
+            </Link>
+            {navItems.map(({ link }, i) => (
+              <CMSLink
+                key={i}
+                {...link}
+                className="text-lg font-medium text-[#0b3d2e] py-2 border-b border-[#0b3d2e]/5"
+              />
+            ))}
+          </div>
+        )}
       </div>
     </header>
   )

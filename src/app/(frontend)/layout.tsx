@@ -28,15 +28,23 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       </head>
       <body>
         <Providers>
-          <AdminBar
-            adminBarProps={{
-              preview: isEnabled,
-            }}
-          />
+          {/* Global Background Mesh */}
+          <div className="apgc-background-mesh">
+            <div className="apgc-background-mesh-center" />
+            <div className="apgc-noise-texture" />
+          </div>
 
-          <Header />
-          {children}
-          <Footer />
+          <div className="relative z-10">
+            <AdminBar
+              adminBarProps={{
+                preview: isEnabled,
+              }}
+            />
+
+            <Header />
+            {children}
+            <Footer />
+          </div>
         </Providers>
       </body>
     </html>
