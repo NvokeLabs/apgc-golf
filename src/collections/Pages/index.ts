@@ -7,6 +7,14 @@ import { CallToAction } from '../../blocks/CallToAction/config'
 import { Content } from '../../blocks/Content/config'
 import { FormBlock } from '../../blocks/Form/config'
 import { MediaBlock } from '../../blocks/MediaBlock/config'
+import { HeroBlock } from '../../blocks/HeroBlock/config'
+import { FeaturedPlayersBlock } from '../../blocks/FeaturedPlayersBlock/config'
+import { EventScheduleBlock } from '../../blocks/EventScheduleBlock/config'
+import { SponsorsMarqueeBlock } from '../../blocks/SponsorsMarqueeBlock/config'
+import { LatestNewsBlock } from '../../blocks/LatestNewsBlock/config'
+import { PlayerGridBlock } from '../../blocks/PlayerGridBlock/config'
+import { EventGridBlock } from '../../blocks/EventGridBlock/config'
+import { SponsorTiersBlock } from '../../blocks/SponsorTiersBlock/config'
 import { hero } from '@/heros/config'
 import { slugField } from 'payload'
 import { populatePublishedAt } from '../../hooks/populatePublishedAt'
@@ -72,7 +80,21 @@ export const Pages: CollectionConfig<'pages'> = {
             {
               name: 'layout',
               type: 'blocks',
-              blocks: [CallToAction, Content, MediaBlock, Archive, FormBlock],
+              blocks: [
+                CallToAction,
+                Content,
+                MediaBlock,
+                Archive,
+                FormBlock,
+                HeroBlock,
+                FeaturedPlayersBlock,
+                EventScheduleBlock,
+                SponsorsMarqueeBlock,
+                LatestNewsBlock,
+                PlayerGridBlock,
+                EventGridBlock,
+                SponsorTiersBlock,
+              ],
               required: true,
               admin: {
                 initCollapsed: true,

@@ -211,7 +211,21 @@ export interface Page {
       | null;
     media?: (number | null) | Media;
   };
-  layout: (CallToActionBlock | ContentBlock | MediaBlock | ArchiveBlock | FormBlock)[];
+  layout: (
+    | CallToActionBlock
+    | ContentBlock
+    | MediaBlock
+    | ArchiveBlock
+    | FormBlock
+    | HeroBlock
+    | FeaturedPlayersBlock
+    | EventScheduleBlock
+    | SponsorsMarqueeBlock
+    | LatestNewsBlock
+    | PlayerGridBlock
+    | EventGridBlock
+    | SponsorTiersBlock
+  )[];
   meta?: {
     title?: string | null;
     /**
@@ -364,6 +378,30 @@ export interface Media {
       filename?: string | null;
     };
     og?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    card?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    playerCard?: {
+      url?: string | null;
+      width?: number | null;
+      height?: number | null;
+      mimeType?: string | null;
+      filesize?: number | null;
+      filename?: string | null;
+    };
+    hero?: {
       url?: string | null;
       width?: number | null;
       height?: number | null;
@@ -789,6 +827,167 @@ export interface Form {
     | null;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroBlock".
+ */
+export interface HeroBlock {
+  title: string;
+  /**
+   * Italic highlighted portion of the title
+   */
+  titleHighlight?: string | null;
+  subtitle?: string | null;
+  backgroundImage?: (number | null) | Media;
+  ctaButton?: {
+    label?: string | null;
+    link?: string | null;
+  };
+  secondaryButton?: {
+    label?: string | null;
+    link?: string | null;
+  };
+  overlayOpacity?: ('light' | 'medium' | 'dark') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'heroBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeaturedPlayersBlock".
+ */
+export interface FeaturedPlayersBlock {
+  label?: string | null;
+  title?: string | null;
+  titleHighlight?: string | null;
+  description?: string | null;
+  showViewAll?: boolean | null;
+  /**
+   * Number of featured players to display
+   */
+  limit?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'featuredPlayersBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EventScheduleBlock".
+ */
+export interface EventScheduleBlock {
+  label?: string | null;
+  title?: string | null;
+  titleHighlight?: string | null;
+  description?: string | null;
+  showViewAll?: boolean | null;
+  /**
+   * Number of events to display
+   */
+  limit?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'eventScheduleBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SponsorsMarqueeBlock".
+ */
+export interface SponsorsMarqueeBlock {
+  label?: string | null;
+  title?: string | null;
+  titleHighlight?: string | null;
+  showViewAll?: boolean | null;
+  speed?: ('slow' | 'normal' | 'fast') | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'sponsorsMarqueeBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LatestNewsBlock".
+ */
+export interface LatestNewsBlock {
+  label?: string | null;
+  title?: string | null;
+  titleHighlight?: string | null;
+  description?: string | null;
+  showViewAll?: boolean | null;
+  /**
+   * Number of news articles to display
+   */
+  limit?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'latestNewsBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PlayerGridBlock".
+ */
+export interface PlayerGridBlock {
+  label?: string | null;
+  title?: string | null;
+  titleHighlight?: string | null;
+  description?: string | null;
+  showSearch?: boolean | null;
+  showFilters?: boolean | null;
+  /**
+   * Number of players to display per page
+   */
+  limit?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'playerGridBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EventGridBlock".
+ */
+export interface EventGridBlock {
+  label?: string | null;
+  title?: string | null;
+  titleHighlight?: string | null;
+  description?: string | null;
+  showFilters?: boolean | null;
+  /**
+   * Number of events to display per page
+   */
+  limit?: number | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'eventGridBlock';
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SponsorTiersBlock".
+ */
+export interface SponsorTiersBlock {
+  label?: string | null;
+  title?: string | null;
+  titleHighlight?: string | null;
+  description?: string | null;
+  tiers?:
+    | {
+        name: string;
+        /**
+         * e.g., "Rp 100.000.000"
+         */
+        price?: string | null;
+        description?: string | null;
+        benefits?:
+          | {
+              benefit: string;
+              id?: string | null;
+            }[]
+          | null;
+        isHighlighted?: boolean | null;
+        id?: string | null;
+      }[]
+    | null;
+  id?: string | null;
+  blockName?: string | null;
+  blockType: 'sponsorTiersBlock';
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1462,6 +1661,14 @@ export interface PagesSelect<T extends boolean = true> {
         mediaBlock?: T | MediaBlockSelect<T>;
         archive?: T | ArchiveBlockSelect<T>;
         formBlock?: T | FormBlockSelect<T>;
+        heroBlock?: T | HeroBlockSelect<T>;
+        featuredPlayersBlock?: T | FeaturedPlayersBlockSelect<T>;
+        eventScheduleBlock?: T | EventScheduleBlockSelect<T>;
+        sponsorsMarqueeBlock?: T | SponsorsMarqueeBlockSelect<T>;
+        latestNewsBlock?: T | LatestNewsBlockSelect<T>;
+        playerGridBlock?: T | PlayerGridBlockSelect<T>;
+        eventGridBlock?: T | EventGridBlockSelect<T>;
+        sponsorTiersBlock?: T | SponsorTiersBlockSelect<T>;
       };
   meta?:
     | T
@@ -1558,6 +1765,142 @@ export interface FormBlockSelect<T extends boolean = true> {
   form?: T;
   enableIntro?: T;
   introContent?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "HeroBlock_select".
+ */
+export interface HeroBlockSelect<T extends boolean = true> {
+  title?: T;
+  titleHighlight?: T;
+  subtitle?: T;
+  backgroundImage?: T;
+  ctaButton?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+      };
+  secondaryButton?:
+    | T
+    | {
+        label?: T;
+        link?: T;
+      };
+  overlayOpacity?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "FeaturedPlayersBlock_select".
+ */
+export interface FeaturedPlayersBlockSelect<T extends boolean = true> {
+  label?: T;
+  title?: T;
+  titleHighlight?: T;
+  description?: T;
+  showViewAll?: T;
+  limit?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EventScheduleBlock_select".
+ */
+export interface EventScheduleBlockSelect<T extends boolean = true> {
+  label?: T;
+  title?: T;
+  titleHighlight?: T;
+  description?: T;
+  showViewAll?: T;
+  limit?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SponsorsMarqueeBlock_select".
+ */
+export interface SponsorsMarqueeBlockSelect<T extends boolean = true> {
+  label?: T;
+  title?: T;
+  titleHighlight?: T;
+  showViewAll?: T;
+  speed?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "LatestNewsBlock_select".
+ */
+export interface LatestNewsBlockSelect<T extends boolean = true> {
+  label?: T;
+  title?: T;
+  titleHighlight?: T;
+  description?: T;
+  showViewAll?: T;
+  limit?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "PlayerGridBlock_select".
+ */
+export interface PlayerGridBlockSelect<T extends boolean = true> {
+  label?: T;
+  title?: T;
+  titleHighlight?: T;
+  description?: T;
+  showSearch?: T;
+  showFilters?: T;
+  limit?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "EventGridBlock_select".
+ */
+export interface EventGridBlockSelect<T extends boolean = true> {
+  label?: T;
+  title?: T;
+  titleHighlight?: T;
+  description?: T;
+  showFilters?: T;
+  limit?: T;
+  id?: T;
+  blockName?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "SponsorTiersBlock_select".
+ */
+export interface SponsorTiersBlockSelect<T extends boolean = true> {
+  label?: T;
+  title?: T;
+  titleHighlight?: T;
+  description?: T;
+  tiers?:
+    | T
+    | {
+        name?: T;
+        price?: T;
+        description?: T;
+        benefits?:
+          | T
+          | {
+              benefit?: T;
+              id?: T;
+            };
+        isHighlighted?: T;
+        id?: T;
+      };
   id?: T;
   blockName?: T;
 }
@@ -1847,6 +2190,36 @@ export interface MediaSelect<T extends boolean = true> {
               filename?: T;
             };
         og?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        card?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        playerCard?:
+          | T
+          | {
+              url?: T;
+              width?: T;
+              height?: T;
+              mimeType?: T;
+              filesize?: T;
+              filename?: T;
+            };
+        hero?:
           | T
           | {
               url?: T;

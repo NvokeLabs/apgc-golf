@@ -76,6 +76,25 @@ export const Media: CollectionConfig = {
         height: 630,
         crop: 'center',
       },
+      // Golf-specific sizes
+      {
+        name: 'card',
+        width: 400,
+        height: 300,
+        crop: 'center',
+      },
+      {
+        name: 'playerCard',
+        width: 400,
+        height: 533, // 3:4 aspect ratio
+        crop: 'center',
+      },
+      {
+        name: 'hero',
+        width: 1920,
+        height: 1080,
+        crop: 'center',
+      },
     ],
   },
 }

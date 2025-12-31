@@ -7,6 +7,14 @@ import { CallToActionBlock } from '@/blocks/CallToAction/Component'
 import { ContentBlock } from '@/blocks/Content/Component'
 import { FormBlock } from '@/blocks/Form/Component'
 import { MediaBlock } from '@/blocks/MediaBlock/Component'
+import { HeroBlockComponent } from '@/blocks/HeroBlock/Component'
+import { FeaturedPlayersBlockComponent } from '@/blocks/FeaturedPlayersBlock/Component'
+import { EventScheduleBlockComponent } from '@/blocks/EventScheduleBlock/Component'
+import { SponsorsMarqueeBlockComponent } from '@/blocks/SponsorsMarqueeBlock/Component'
+import { LatestNewsBlockComponent } from '@/blocks/LatestNewsBlock/Component'
+import { PlayerGridBlockComponent } from '@/blocks/PlayerGridBlock/Component'
+import { EventGridBlockComponent } from '@/blocks/EventGridBlock/Component'
+import { SponsorTiersBlockComponent } from '@/blocks/SponsorTiersBlock/Component'
 
 const blockComponents = {
   archive: ArchiveBlock,
@@ -14,6 +22,14 @@ const blockComponents = {
   cta: CallToActionBlock,
   formBlock: FormBlock,
   mediaBlock: MediaBlock,
+  heroBlock: HeroBlockComponent,
+  featuredPlayersBlock: FeaturedPlayersBlockComponent,
+  eventScheduleBlock: EventScheduleBlockComponent,
+  sponsorsMarqueeBlock: SponsorsMarqueeBlockComponent,
+  latestNewsBlock: LatestNewsBlockComponent,
+  playerGridBlock: PlayerGridBlockComponent,
+  eventGridBlock: EventGridBlockComponent,
+  sponsorTiersBlock: SponsorTiersBlockComponent,
 }
 
 export const RenderBlocks: React.FC<{
