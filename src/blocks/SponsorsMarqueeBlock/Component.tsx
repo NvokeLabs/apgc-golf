@@ -10,7 +10,6 @@ import dynamic from 'next/dynamic'
 const SponsorMarquee = dynamic(
   () => import('@/components/golf/SponsorMarquee').then((mod) => ({ default: mod.SponsorMarquee })),
   {
-    ssr: false,
     loading: () => <div className="h-32 animate-pulse bg-[#0b3d2e]/5 rounded-xl" />,
   },
 )
