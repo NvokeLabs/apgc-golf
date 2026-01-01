@@ -64,46 +64,6 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
                 >
                   Home
                 </Link>
-                <Link
-                  href="/events"
-                  className={`text-sm font-medium transition-colors ${
-                    pathname.startsWith('/events')
-                      ? 'text-[#0b3d2e] font-bold'
-                      : 'text-[#0b3d2e]/70 hover:text-[#0b3d2e]'
-                  }`}
-                >
-                  Events
-                </Link>
-                <Link
-                  href="/players"
-                  className={`text-sm font-medium transition-colors ${
-                    pathname.startsWith('/players')
-                      ? 'text-[#0b3d2e] font-bold'
-                      : 'text-[#0b3d2e]/70 hover:text-[#0b3d2e]'
-                  }`}
-                >
-                  Players
-                </Link>
-                <Link
-                  href="/sponsors"
-                  className={`text-sm font-medium transition-colors ${
-                    pathname.startsWith('/sponsors')
-                      ? 'text-[#0b3d2e] font-bold'
-                      : 'text-[#0b3d2e]/70 hover:text-[#0b3d2e]'
-                  }`}
-                >
-                  Sponsors
-                </Link>
-                <Link
-                  href="/news"
-                  className={`text-sm font-medium transition-colors ${
-                    pathname.startsWith('/news')
-                      ? 'text-[#0b3d2e] font-bold'
-                      : 'text-[#0b3d2e]/70 hover:text-[#0b3d2e]'
-                  }`}
-                >
-                  News
-                </Link>
                 {/* CMS-managed nav items */}
                 {navItems.map(({ link }, i) => (
                   <CMSLink
@@ -135,34 +95,6 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
               onClick={() => setIsMobileMenuOpen(false)}
             >
               Home
-            </Link>
-            <Link
-              href="/events"
-              className="text-lg font-medium text-[#0b3d2e] py-2 border-b border-[#0b3d2e]/5"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Events
-            </Link>
-            <Link
-              href="/players"
-              className="text-lg font-medium text-[#0b3d2e] py-2 border-b border-[#0b3d2e]/5"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Players
-            </Link>
-            <Link
-              href="/sponsors"
-              className="text-lg font-medium text-[#0b3d2e] py-2 border-b border-[#0b3d2e]/5"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              Sponsors
-            </Link>
-            <Link
-              href="/news"
-              className="text-lg font-medium text-[#0b3d2e] py-2 border-b border-[#0b3d2e]/5"
-              onClick={() => setIsMobileMenuOpen(false)}
-            >
-              News
             </Link>
             {navItems.map(({ link }, i) => (
               <CMSLink
