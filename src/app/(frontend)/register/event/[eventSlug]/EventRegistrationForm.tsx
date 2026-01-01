@@ -63,10 +63,10 @@ export function EventRegistrationForm({ eventId, eventSlug }: EventRegistrationF
 
       {/* Personal Information */}
       <div>
-        <h3 className="mb-4 font-semibold text-white">Personal Information</h3>
+        <h3 className="mb-4 font-semibold text-gray-900">Personal Information</h3>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label htmlFor="playerName" className="mb-2 block text-sm text-white/70">
+            <label htmlFor="playerName" className="mb-2 block text-sm text-gray-600">
               Full Name *
             </label>
             <input
@@ -74,12 +74,12 @@ export function EventRegistrationForm({ eventId, eventSlug }: EventRegistrationF
               id="playerName"
               name="playerName"
               required
-              className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
               placeholder="Enter your full name"
             />
           </div>
           <div>
-            <label htmlFor="email" className="mb-2 block text-sm text-white/70">
+            <label htmlFor="email" className="mb-2 block text-sm text-gray-600">
               Email Address *
             </label>
             <input
@@ -87,24 +87,24 @@ export function EventRegistrationForm({ eventId, eventSlug }: EventRegistrationF
               id="email"
               name="email"
               required
-              className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
               placeholder="your@email.com"
             />
           </div>
           <div>
-            <label htmlFor="phone" className="mb-2 block text-sm text-white/70">
+            <label htmlFor="phone" className="mb-2 block text-sm text-gray-600">
               Phone Number
             </label>
             <input
               type="tel"
               id="phone"
               name="phone"
-              className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
               placeholder="+62 xxx xxxx xxxx"
             />
           </div>
           <div>
-            <label htmlFor="handicap" className="mb-2 block text-sm text-white/70">
+            <label htmlFor="handicap" className="mb-2 block text-sm text-gray-600">
               Handicap
             </label>
             <input
@@ -114,7 +114,7 @@ export function EventRegistrationForm({ eventId, eventSlug }: EventRegistrationF
               min="0"
               max="54"
               step="0.1"
-              className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
               placeholder="e.g., 12.5"
             />
           </div>
@@ -123,17 +123,17 @@ export function EventRegistrationForm({ eventId, eventSlug }: EventRegistrationF
 
       {/* Registration Details */}
       <div>
-        <h3 className="mb-4 font-semibold text-white">Registration Details</h3>
+        <h3 className="mb-4 font-semibold text-gray-900">Registration Details</h3>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label htmlFor="category" className="mb-2 block text-sm text-white/70">
+            <label htmlFor="category" className="mb-2 block text-sm text-gray-600">
               Category *
             </label>
             <select
               id="category"
               name="category"
               required
-              className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
             >
               <option value="">Select category</option>
               <option value="professional">Professional</option>
@@ -143,14 +143,14 @@ export function EventRegistrationForm({ eventId, eventSlug }: EventRegistrationF
             </select>
           </div>
           <div>
-            <label htmlFor="paymentMethod" className="mb-2 block text-sm text-white/70">
+            <label htmlFor="paymentMethod" className="mb-2 block text-sm text-gray-600">
               Payment Method *
             </label>
             <select
               id="paymentMethod"
               name="paymentMethod"
               required
-              className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
             >
               <option value="">Select payment method</option>
               <option value="bank-transfer">Bank Transfer</option>
@@ -165,9 +165,9 @@ export function EventRegistrationForm({ eventId, eventSlug }: EventRegistrationF
             <input
               type="checkbox"
               name="isAlumni"
-              className="h-5 w-5 rounded border-white/10 bg-white/5 text-emerald-500 focus:ring-emerald-500"
+              className="h-5 w-5 rounded border-gray-300 bg-white text-emerald-500 focus:ring-emerald-500"
             />
-            <span className="text-sm text-white/70">
+            <span className="text-sm text-gray-600">
               I am an APGC Alumni (eligible for discounted rate)
             </span>
           </label>
@@ -176,14 +176,14 @@ export function EventRegistrationForm({ eventId, eventSlug }: EventRegistrationF
 
       {/* Additional Notes */}
       <div>
-        <label htmlFor="notes" className="mb-2 block text-sm text-white/70">
+        <label htmlFor="notes" className="mb-2 block text-sm text-gray-600">
           Additional Notes
         </label>
         <textarea
           id="notes"
           name="notes"
           rows={3}
-          className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+          className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
           placeholder="Any special requirements or notes..."
         />
       </div>
@@ -197,9 +197,9 @@ export function EventRegistrationForm({ eventId, eventSlug }: EventRegistrationF
         {isSubmitting ? 'Submitting...' : 'Submit Registration'}
       </button>
 
-      <p className="text-center text-xs text-white/50">
-        By registering, you agree to our terms and conditions. Payment instructions
-        will be sent to your email after registration.
+      <p className="text-center text-xs text-gray-500">
+        By registering, you agree to our terms and conditions. Payment instructions will be sent to
+        your email after registration.
       </p>
     </form>
   )

@@ -17,13 +17,13 @@ export const Logo = (props: Props) => {
     /* eslint-disable @next/next/no-img-element */
     <img
       alt="APGC Golf Logo"
-      width={193}
-      height={60}
+      width={150}
+      height={50}
       loading={loading}
       fetchPriority={priority}
       decoding="async"
-      className={clsx('max-w-[9.375rem] w-full h-auto', className)}
-      src="/apgc-logo.png"
+      className={clsx('max-w-[11.5rem] w-full h-auto', className)}
+      src="/apgc-logo-horizontal.png"
     />
   )
 }

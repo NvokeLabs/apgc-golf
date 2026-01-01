@@ -56,10 +56,10 @@ export function SponsorRegistrationForm() {
 
       {/* Company Information */}
       <div>
-        <h3 className="mb-4 font-semibold text-white">Company Information</h3>
+        <h3 className="mb-4 font-semibold text-[#0b3d2e]">Company Information</h3>
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="sm:col-span-2">
-            <label htmlFor="companyName" className="mb-2 block text-sm text-white/70">
+            <label htmlFor="companyName" className="mb-2 block text-sm text-[#636364]">
               Company Name *
             </label>
             <input
@@ -67,19 +67,19 @@ export function SponsorRegistrationForm() {
               id="companyName"
               name="companyName"
               required
-              className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-lg border border-[#0b3d2e]/20 bg-white px-4 py-3 text-[#0b3d2e] placeholder:text-[#636364]/50 focus:border-[#0b3d2e] focus:outline-none focus:ring-1 focus:ring-[#0b3d2e]"
               placeholder="Enter company name"
             />
           </div>
           <div className="sm:col-span-2">
-            <label htmlFor="website" className="mb-2 block text-sm text-white/70">
+            <label htmlFor="website" className="mb-2 block text-sm text-[#636364]">
               Company Website
             </label>
             <input
               type="url"
               id="website"
               name="website"
-              className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-lg border border-[#0b3d2e]/20 bg-white px-4 py-3 text-[#0b3d2e] placeholder:text-[#636364]/50 focus:border-[#0b3d2e] focus:outline-none focus:ring-1 focus:ring-[#0b3d2e]"
               placeholder="https://www.example.com"
             />
           </div>
@@ -88,10 +88,10 @@ export function SponsorRegistrationForm() {
 
       {/* Contact Information */}
       <div>
-        <h3 className="mb-4 font-semibold text-white">Contact Information</h3>
+        <h3 className="mb-4 font-semibold text-[#0b3d2e]">Contact Information</h3>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
-            <label htmlFor="contactName" className="mb-2 block text-sm text-white/70">
+            <label htmlFor="contactName" className="mb-2 block text-sm text-[#636364]">
               Contact Person *
             </label>
             <input
@@ -99,12 +99,12 @@ export function SponsorRegistrationForm() {
               id="contactName"
               name="contactName"
               required
-              className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-lg border border-[#0b3d2e]/20 bg-white px-4 py-3 text-[#0b3d2e] placeholder:text-[#636364]/50 focus:border-[#0b3d2e] focus:outline-none focus:ring-1 focus:ring-[#0b3d2e]"
               placeholder="Full name"
             />
           </div>
           <div>
-            <label htmlFor="email" className="mb-2 block text-sm text-white/70">
+            <label htmlFor="email" className="mb-2 block text-sm text-[#636364]">
               Email Address *
             </label>
             <input
@@ -112,12 +112,12 @@ export function SponsorRegistrationForm() {
               id="email"
               name="email"
               required
-              className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-lg border border-[#0b3d2e]/20 bg-white px-4 py-3 text-[#0b3d2e] placeholder:text-[#636364]/50 focus:border-[#0b3d2e] focus:outline-none focus:ring-1 focus:ring-[#0b3d2e]"
               placeholder="contact@company.com"
             />
           </div>
           <div className="sm:col-span-2">
-            <label htmlFor="phone" className="mb-2 block text-sm text-white/70">
+            <label htmlFor="phone" className="mb-2 block text-sm text-[#636364]">
               Phone Number *
             </label>
             <input
@@ -125,7 +125,7 @@ export function SponsorRegistrationForm() {
               id="phone"
               name="phone"
               required
-              className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-lg border border-[#0b3d2e]/20 bg-white px-4 py-3 text-[#0b3d2e] placeholder:text-[#636364]/50 focus:border-[#0b3d2e] focus:outline-none focus:ring-1 focus:ring-[#0b3d2e]"
               placeholder="+62 xxx xxxx xxxx"
             />
           </div>
@@ -134,16 +134,16 @@ export function SponsorRegistrationForm() {
 
       {/* Sponsorship Interest */}
       <div>
-        <h3 className="mb-4 font-semibold text-white">Sponsorship Interest</h3>
+        <h3 className="mb-4 font-semibold text-[#0b3d2e]">Sponsorship Interest</h3>
         <div>
-          <label htmlFor="interestedTier" className="mb-2 block text-sm text-white/70">
+          <label htmlFor="interestedTier" className="mb-2 block text-sm text-[#636364]">
             Interested Tier *
           </label>
           <select
             id="interestedTier"
             name="interestedTier"
             required
-            className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+            className="w-full rounded-lg border border-[#0b3d2e]/20 bg-white px-4 py-3 text-[#0b3d2e] focus:border-[#0b3d2e] focus:outline-none focus:ring-1 focus:ring-[#0b3d2e]"
           >
             <option value="">Select a tier</option>
             <option value="title">Title Sponsor (Rp 500,000,000+)</option>
@@ -156,14 +156,14 @@ export function SponsorRegistrationForm() {
 
       {/* Message */}
       <div>
-        <label htmlFor="message" className="mb-2 block text-sm text-white/70">
+        <label htmlFor="message" className="mb-2 block text-sm text-[#636364]">
           Message
         </label>
         <textarea
           id="message"
           name="message"
           rows={4}
-          className="w-full rounded-lg border border-white/10 bg-white/5 px-4 py-3 text-white placeholder:text-white/30 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+          className="w-full rounded-lg border border-[#0b3d2e]/20 bg-white px-4 py-3 text-[#0b3d2e] placeholder:text-[#636364]/50 focus:border-[#0b3d2e] focus:outline-none focus:ring-1 focus:ring-[#0b3d2e]"
           placeholder="Tell us about your company and sponsorship goals..."
         />
       </div>
@@ -172,14 +172,13 @@ export function SponsorRegistrationForm() {
       <button
         type="submit"
         disabled={isSubmitting}
-        className="w-full rounded-lg bg-emerald-600 py-4 font-semibold text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
+        className="w-full rounded-lg bg-[#0b3d2e] py-4 font-semibold text-white transition-colors hover:bg-[#091f18] disabled:cursor-not-allowed disabled:opacity-50"
       >
         {isSubmitting ? 'Submitting...' : 'Submit Application'}
       </button>
 
-      <p className="text-center text-xs text-white/50">
-        Our sponsorship team will review your application and contact you within 2-3
-        business days.
+      <p className="text-center text-xs text-[#636364]">
+        Our sponsorship team will review your application and contact you within 2-3 business days.
       </p>
     </form>
   )

@@ -7,7 +7,6 @@ import type { Footer } from '@/payload-types'
 
 import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
 import { CMSLink } from '@/components/Link'
-import { Logo } from '@/components/Logo/Logo'
 
 export async function Footer() {
   const footerData: Footer = await getCachedGlobal('footer', 1)()
@@ -22,7 +21,11 @@ export async function Footer() {
           {/* Logo & Tagline */}
           <div className="flex flex-col items-center md:items-start gap-4">
             <Link href="/">
-              <Logo className="h-14 w-auto object-contain brightness-0 invert" />
+              <img
+                src="/apgc-logo-horizontal-footer.png"
+                alt="APGC Golf Logo"
+                className="h-14 w-auto object-contain"
+              />
             </Link>
             <p className="text-white/50 text-sm text-center md:text-left max-w-xs">
               Excellence in every swing. Tradition meets championship golf.

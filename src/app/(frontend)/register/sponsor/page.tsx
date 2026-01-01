@@ -52,10 +52,10 @@ const sponsorshipTiers = [
 
 export default function SponsorRegistrationPage() {
   return (
-    <div className="container py-16">
+    <div className="container pt-24 pb-16">
       <Link
         href="/sponsors"
-        className="mb-8 inline-flex items-center gap-2 text-sm text-white/70 hover:text-white"
+        className="mb-8 inline-flex items-center gap-2 text-sm text-[#636364] hover:text-[#0b3d2e]"
       >
         <ArrowLeft className="h-4 w-4" />
         Back to Sponsors
@@ -63,10 +63,10 @@ export default function SponsorRegistrationPage() {
 
       {/* Header */}
       <div className="mb-12 text-center">
-        <h1 className="text-3xl font-bold text-white md:text-4xl">Become a Sponsor</h1>
-        <p className="mx-auto mt-4 max-w-2xl text-lg text-white/60">
-          Partner with APGC Golf and connect with our community of passionate golfers
-          and industry leaders.
+        <h1 className="text-3xl font-bold text-[#0b3d2e] md:text-4xl">Become a Sponsor</h1>
+        <p className="mx-auto mt-4 max-w-2xl text-lg text-[#636364]">
+          Partner with APGC Golf and connect with our community of passionate golfers and industry
+          leaders.
         </p>
       </div>
 
@@ -75,14 +75,14 @@ export default function SponsorRegistrationPage() {
         {sponsorshipTiers.map((tier) => (
           <GlassCard key={tier.tier} className="p-6">
             <div className="mb-4 flex items-center gap-3">
-              <tier.icon className="h-6 w-6 text-emerald-400" />
-              <h3 className="font-semibold text-white">{tier.name}</h3>
+              <tier.icon className="h-6 w-6 text-[#0b3d2e]" />
+              <h3 className="font-semibold text-[#0b3d2e]">{tier.name}</h3>
             </div>
-            <p className="mb-4 text-xl font-bold text-emerald-400">{tier.price}</p>
+            <p className="mb-4 text-xl font-bold text-[#0b3d2e]">{tier.price}</p>
             <ul className="space-y-2">
               {tier.benefits.map((benefit, index) => (
-                <li key={index} className="flex items-start gap-2 text-sm text-white/70">
-                  <Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-emerald-400" />
+                <li key={index} className="flex items-start gap-2 text-sm text-[#636364]">
+                  <Check className="mt-0.5 h-4 w-4 flex-shrink-0 text-[#0b3d2e]" />
                   <span>{benefit}</span>
                 </li>
               ))}
@@ -93,8 +93,8 @@ export default function SponsorRegistrationPage() {
 
       {/* Application Form */}
       <GlassCard className="mx-auto max-w-2xl p-6 md:p-8">
-        <h2 className="mb-2 text-xl font-bold text-white">Sponsorship Application</h2>
-        <p className="mb-8 text-white/60">
+        <h2 className="mb-2 text-xl font-bold text-[#0b3d2e]">Sponsorship Application</h2>
+        <p className="mb-8 text-[#636364]">
           Fill out the form below and our team will contact you to discuss partnership
           opportunities.
         </p>

@@ -76,7 +76,7 @@ export default async function HomePage() {
   const { players, events, featuredEvent, news, sponsors } = await getFeaturedData()
 
   return (
-    <div className="pt-28">
+    <div>
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-[#0b3d2e]">
         {/* Background Image */}
@@ -264,7 +264,11 @@ export default async function HomePage() {
           {events.length > 0 && (
             <div className="grid md:grid-cols-2 gap-6 mb-12">
               {events.slice(0, 2).map((event, idx) => (
-                <GlassCard key={event.id} className="p-0 relative group overflow-hidden" hoverEffect>
+                <GlassCard
+                  key={event.id}
+                  className="p-0 relative group overflow-hidden"
+                  hoverEffect
+                >
                   <div className="relative h-64 overflow-hidden">
                     {typeof event.image === 'object' && event.image?.url ? (
                       <Image
@@ -482,11 +486,7 @@ export default async function HomePage() {
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
               {players.map((player) => (
-                <GlassCard
-                  key={player.id}
-                  className="group p-0 cursor-pointer"
-                  hoverEffect
-                >
+                <GlassCard key={player.id} className="group p-0 cursor-pointer" hoverEffect>
                   <Link href={`/players/${player.slug}`}>
                     <div className="relative h-64 overflow-hidden">
                       {typeof player.image === 'object' && player.image?.url ? (

@@ -4,9 +4,9 @@ function SponsorCardSkeleton() {
   return (
     <GlassCard className="p-6">
       <div className="flex flex-col items-center text-center">
-        <div className="h-20 w-40 animate-pulse rounded bg-white/10" />
-        <div className="mt-4 h-5 w-32 animate-pulse rounded bg-white/10" />
-        <div className="mt-2 h-3 w-24 animate-pulse rounded bg-white/5" />
+        <div className="h-20 w-40 animate-pulse rounded bg-[#0b3d2e]/10" />
+        <div className="mt-4 h-5 w-32 animate-pulse rounded bg-[#0b3d2e]/10" />
+        <div className="mt-2 h-3 w-24 animate-pulse rounded bg-[#0b3d2e]/5" />
       </div>
     </GlassCard>
   )
@@ -14,11 +14,11 @@ function SponsorCardSkeleton() {
 
 export default function SponsorsLoading() {
   return (
-    <div className="container py-16">
+    <div className="container py-16 bg-[#f0f7f4] min-h-screen">
       {/* Header Skeleton */}
       <div className="mb-16 text-center">
-        <div className="mx-auto h-12 w-48 animate-pulse rounded-lg bg-white/10" />
-        <div className="mx-auto mt-4 h-6 w-96 animate-pulse rounded-lg bg-white/5" />
+        <div className="mx-auto h-12 w-48 animate-pulse rounded-lg bg-[#0b3d2e]/10" />
+        <div className="mx-auto mt-4 h-6 w-96 animate-pulse rounded-lg bg-[#0b3d2e]/5" />
       </div>
 
       {/* Title Sponsors Skeleton */}

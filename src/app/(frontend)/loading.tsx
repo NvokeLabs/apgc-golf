@@ -2,42 +2,42 @@ import { GlassCard } from '@/components/golf'
 
 export default function HomeLoading() {
   return (
-    <div className="pt-28">
+    <div className="pt-28 bg-[#f0f7f4]">
       {/* Hero Skeleton */}
-      <section className="relative min-h-[90vh] flex items-center bg-[#0b3d2e]">
+      <section className="relative min-h-[90vh] flex items-center bg-[#f0f7f4]">
         <div className="container mx-auto px-6 py-20">
           <div className="grid lg:grid-cols-2 gap-12 lg:gap-24 items-center px-4 md:px-10">
             {/* Left Content */}
             <div className="max-w-xl">
               <div className="flex items-center gap-4 mb-8">
-                <div className="h-[1px] w-12 bg-white/30" />
-                <div className="h-6 w-40 animate-pulse rounded bg-white/10" />
+                <div className="h-[1px] w-12 bg-[#0b3d2e]/30" />
+                <div className="h-6 w-40 animate-pulse rounded bg-[#0b3d2e]/10" />
               </div>
-              <div className="h-20 w-3/4 animate-pulse rounded-lg bg-white/10 mb-4" />
-              <div className="h-16 w-2/3 animate-pulse rounded-lg bg-white/10 mb-8" />
-              <div className="h-6 w-full animate-pulse rounded bg-white/5" />
-              <div className="mt-2 h-6 w-2/3 animate-pulse rounded bg-white/5" />
+              <div className="h-20 w-3/4 animate-pulse rounded-lg bg-[#0b3d2e]/10 mb-4" />
+              <div className="h-16 w-2/3 animate-pulse rounded-lg bg-[#0b3d2e]/10 mb-8" />
+              <div className="h-6 w-full animate-pulse rounded bg-[#0b3d2e]/5" />
+              <div className="mt-2 h-6 w-2/3 animate-pulse rounded bg-[#0b3d2e]/5" />
             </div>
 
             {/* Right Content - Card Skeleton */}
             <div className="hidden lg:block">
-              <div className="bg-white/10 backdrop-blur-xl rounded-lg overflow-hidden max-w-3xl mx-auto shadow-2xl flex h-96">
-                <div className="w-2/5 animate-pulse bg-white/5" />
+              <div className="bg-white backdrop-blur-xl rounded-lg overflow-hidden max-w-3xl mx-auto shadow-2xl flex h-96 border border-[#0b3d2e]/10">
+                <div className="w-2/5 animate-pulse bg-[#0b3d2e]/5" />
                 <div className="flex-1 p-8">
-                  <div className="h-8 w-3/4 animate-pulse rounded bg-[#0b3d2e]/20 mb-6" />
+                  <div className="h-8 w-3/4 animate-pulse rounded bg-[#0b3d2e]/10 mb-6" />
                   <div className="space-y-4">
                     {[...Array(3)].map((_, i) => (
                       <div key={i} className="flex items-center gap-3">
                         <div className="w-10 h-10 rounded-full animate-pulse bg-[#0b3d2e]/10" />
                         <div className="flex-1">
                           <div className="h-3 w-16 animate-pulse rounded bg-[#0b3d2e]/10 mb-2" />
-                          <div className="h-5 w-32 animate-pulse rounded bg-[#0b3d2e]/20" />
+                          <div className="h-5 w-32 animate-pulse rounded bg-[#0b3d2e]/15" />
                         </div>
                       </div>
                     ))}
                   </div>
                   <div className="mt-auto pt-8">
-                    <div className="h-14 w-full animate-pulse rounded bg-[#0b3d2e]/30" />
+                    <div className="h-14 w-full animate-pulse rounded bg-[#0b3d2e]/20" />
                   </div>
                 </div>
               </div>
