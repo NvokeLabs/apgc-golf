@@ -16,6 +16,7 @@ import { Players } from './collections/Players'
 import { Posts } from './collections/Posts'
 import { Sponsors } from './collections/Sponsors'
 import { SponsorRegistrations } from './collections/SponsorRegistrations'
+import { Tickets } from './collections/Tickets'
 import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
 import { Header } from './Header/config'
@@ -82,6 +83,7 @@ export default buildConfig({
     // Registrations
     EventRegistrations,
     SponsorRegistrations,
+    Tickets,
     // System
     Media,
     Categories,

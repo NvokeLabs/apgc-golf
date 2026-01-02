@@ -116,6 +116,11 @@ const Component: React.FC<ComponentProps> = ({ prop1, prop2 }) => {
   - `NEXT_PUBLIC_SERVER_URL` - Public URL for CORS/links
   - `CRON_SECRET` - Scheduled publishing auth
   - `PREVIEW_SECRET` - Draft preview validation
+  - `XENDIT_SECRET_KEY` - Xendit payment gateway secret key
+  - `XENDIT_PUBLIC_KEY` - Xendit payment gateway public key
+  - `XENDIT_WEBHOOK_TOKEN` - Token to verify Xendit webhooks
+  - `RESEND_API_KEY` - Resend email service API key
+  - `BASE_URL` - Base URL for payment callbacks and email links
 
 ## External Dependencies
 - **PostgreSQL Database:** Primary data store
