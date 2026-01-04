@@ -94,7 +94,7 @@ export default async function EventRegistrationPage({ params }: Args) {
             <p className="mb-8 text-gray-600">Fill out the form below to register for this event</p>
 
             {canRegister ? (
-              <EventRegistrationForm eventId={event.id} eventSlug={event.slug} />
+              <EventRegistrationForm eventId={event.id} />
             ) : (
               <div className="rounded-lg border border-gray-200 bg-gray-50 p-8 text-center">
                 <p className="text-lg text-gray-600">

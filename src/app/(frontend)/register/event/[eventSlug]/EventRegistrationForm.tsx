@@ -1,15 +1,13 @@
 'use client'
 
 import { useState } from 'react'
-import { useRouter } from 'next/navigation'
+import { createRegistrationWithPayment, type RegistrationFormData } from './actions'
 
 interface EventRegistrationFormProps {
   eventId: number
-  eventSlug: string
 }
 
-export function EventRegistrationForm({ eventId, eventSlug }: EventRegistrationFormProps) {
-  const router = useRouter()
+export function EventRegistrationForm({ eventId }: EventRegistrationFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -21,34 +19,29 @@ export function EventRegistrationForm({ eventId, eventSlug }: EventRegistrationF
     const formData = new FormData(e.currentTarget)
 
     try {
-      const response = await fetch('/api/event-registrations', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          event: eventId,
-          playerName: formData.get('playerName'),
-          email: formData.get('email'),
-          phone: formData.get('phone'),
-          category: formData.get('category'),
-          handicap: formData.get('handicap') ? Number(formData.get('handicap')) : null,
-          isAlumni: formData.get('isAlumni') === 'on',
-          paymentMethod: formData.get('paymentMethod'),
-          notes: formData.get('notes'),
-          status: 'pending',
-        }),
+      // All registration and payment logic happens server-side via server action
+      const result = await createRegistrationWithPayment({
+        eventId,
+        playerName: formData.get('playerName') as string,
+        email: formData.get('email') as string,
+        phone: (formData.get('phone') as string) || undefined,
+        category: formData.get('category') as RegistrationFormData['category'],
+        notes: (formData.get('notes') as string) || undefined,
       })
 
-      if (!response.ok) {
-        throw new Error('Failed to submit registration')
+      if (!result.success) {
+        throw new Error(result.error || 'Failed to process registration')
       }
 
-      // Redirect to success page
-      router.push(`/register/event/${eventSlug}/success`)
+      // Redirect to Xendit checkout
+      if (result.checkoutUrl) {
+        window.location.href = result.checkoutUrl
+      } else {
+        throw new Error('No checkout URL returned')
+      }
     } catch (err) {
-      setError('Failed to submit registration. Please try again.')
-    } finally {
+      console.error('Registration error:', err)
+      setError(err instanceof Error ? err.message : 'Failed to submit registration. Please try again.')
       setIsSubmitting(false)
     }
   }
@@ -125,7 +118,7 @@ export function EventRegistrationForm({ eventId, eventSlug }: EventRegistrationF
       <div>
         <h3 className="mb-4 font-semibold text-gray-900">Registration Details</h3>
         <div className="grid gap-4 sm:grid-cols-2">
-          <div>
+          <div className="sm:col-span-2">
             <label htmlFor="category" className="mb-2 block text-sm text-gray-600">
               Category *
             </label>
@@ -136,42 +129,14 @@ export function EventRegistrationForm({ eventId, eventSlug }: EventRegistrationF
               className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
             >
               <option value="">Select category</option>
-              <option value="professional">Professional</option>
-              <option value="amateur">Amateur</option>
-              <option value="senior">Senior (50+)</option>
-              <option value="ladies">Ladies</option>
-            </select>
-          </div>
-          <div>
-            <label htmlFor="paymentMethod" className="mb-2 block text-sm text-gray-600">
-              Payment Method *
-            </label>
-            <select
-              id="paymentMethod"
-              name="paymentMethod"
-              required
-              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
-            >
-              <option value="">Select payment method</option>
-              <option value="bank-transfer">Bank Transfer</option>
-              <option value="credit-card">Credit Card</option>
-              <option value="cash">Cash (at venue)</option>
+              <option value="alumni">Alumni</option>
+              <option value="member">Member</option>
+              <option value="guest">Guest</option>
+              <option value="vip">VIP</option>
             </select>
           </div>
         </div>
 
-        <div className="mt-4">
-          <label className="flex items-center gap-3">
-            <input
-              type="checkbox"
-              name="isAlumni"
-              className="h-5 w-5 rounded border-gray-300 bg-white text-emerald-500 focus:ring-emerald-500"
-            />
-            <span className="text-sm text-gray-600">
-              I am an APGC Alumni (eligible for discounted rate)
-            </span>
-          </label>
-        </div>
       </div>
 
       {/* Additional Notes */}
@@ -194,12 +159,12 @@ export function EventRegistrationForm({ eventId, eventSlug }: EventRegistrationF
         disabled={isSubmitting}
         className="w-full rounded-lg bg-emerald-600 py-4 font-semibold text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {isSubmitting ? 'Submitting...' : 'Submit Registration'}
+        {isSubmitting ? 'Processing...' : 'Continue to Payment'}
       </button>
 
       <p className="text-center text-xs text-gray-500">
-        By registering, you agree to our terms and conditions. Payment instructions will be sent to
-        your email after registration.
+        By registering, you agree to our terms and conditions. You will be redirected to complete
+        payment securely via Xendit.
       </p>
     </form>
   )

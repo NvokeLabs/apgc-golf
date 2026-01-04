@@ -75,6 +75,7 @@ export interface Config {
     sponsors: Sponsor;
     'event-registrations': EventRegistration;
     'sponsor-registrations': SponsorRegistration;
+    tickets: Ticket;
     media: Media;
     categories: Category;
     users: User;
@@ -103,6 +104,7 @@ export interface Config {
     sponsors: SponsorsSelect<false> | SponsorsSelect<true>;
     'event-registrations': EventRegistrationsSelect<false> | EventRegistrationsSelect<true>;
     'sponsor-registrations': SponsorRegistrationsSelect<false> | SponsorRegistrationsSelect<true>;
+    tickets: TicketsSelect<false> | TicketsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
@@ -1299,6 +1301,49 @@ export interface EventRegistration {
    */
   notes?: string | null;
   agreedToTerms: boolean;
+  paymentStatus?: ('unpaid' | 'pending' | 'paid' | 'expired' | 'failed') | null;
+  /**
+   * Amount paid in IDR
+   */
+  amountPaid?: number | null;
+  paidAt?: string | null;
+  /**
+   * Xendit Payment Session ID
+   */
+  xenditSessionId?: string | null;
+  /**
+   * Xendit Checkout URL
+   */
+  xenditCheckoutUrl?: string | null;
+  /**
+   * Generated ticket for this registration
+   */
+  ticket?: (number | null) | Ticket;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tickets".
+ */
+export interface Ticket {
+  id: number;
+  /**
+   * Unique ticket code in format APGC-{id}-{hash}
+   */
+  ticketCode: string;
+  registration: number | EventRegistration;
+  event: number | Event;
+  /**
+   * Base64 encoded QR code data URL
+   */
+  qrCodeData?: string | null;
+  status?: ('pending' | 'checked_in' | 'cancelled') | null;
+  checkedInAt?: string | null;
+  /**
+   * Admin user who checked in this ticket
+   */
+  checkedInBy?: (number | null) | User;
   updatedAt: string;
   createdAt: string;
 }
@@ -1550,6 +1595,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'sponsor-registrations';
         value: number | SponsorRegistration;
+      } | null)
+    | ({
+        relationTo: 'tickets';
+        value: number | Ticket;
       } | null)
     | ({
         relationTo: 'media';
@@ -2087,6 +2136,12 @@ export interface EventRegistrationsSelect<T extends boolean = true> {
   phone?: T;
   notes?: T;
   agreedToTerms?: T;
+  paymentStatus?: T;
+  amountPaid?: T;
+  paidAt?: T;
+  xenditSessionId?: T;
+  xenditCheckoutUrl?: T;
+  ticket?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2104,6 +2159,21 @@ export interface SponsorRegistrationsSelect<T extends boolean = true> {
   message?: T;
   website?: T;
   adminNotes?: T;
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "tickets_select".
+ */
+export interface TicketsSelect<T extends boolean = true> {
+  ticketCode?: T;
+  registration?: T;
+  event?: T;
+  qrCodeData?: T;
+  status?: T;
+  checkedInAt?: T;
+  checkedInBy?: T;
   updatedAt?: T;
   createdAt?: T;
 }
