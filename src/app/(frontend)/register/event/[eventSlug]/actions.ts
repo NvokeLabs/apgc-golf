@@ -25,17 +25,17 @@ export type RegistrationResult = {
  * All sensitive operations happen server-side
  */
 export async function createRegistrationWithPayment(
-  data: RegistrationFormData
+  data: RegistrationFormData,
 ): Promise<RegistrationResult> {
   try {
     const payload = await getPayload({ config })
 
     // Fetch event details
-    const event = await payload.findByID({
+    const event = (await payload.findByID({
       collection: 'events',
       id: data.eventId,
       depth: 0,
-    }) as Event
+    })) as Event
 
     if (!event) {
       return { success: false, error: 'Event not found' }
@@ -43,7 +43,7 @@ export async function createRegistrationWithPayment(
 
     // Determine price based on category
     const isAlumni = data.category === 'alumni'
-    const price = isAlumni && event.alumniPrice ? event.alumniPrice : (event.price || 0)
+    const price = isAlumni && event.alumniPrice ? event.alumniPrice : event.price || 0
 
     if (price <= 0) {
       return { success: false, error: 'Event price is not configured' }
@@ -56,7 +56,7 @@ export async function createRegistrationWithPayment(
         event: data.eventId,
         playerName: data.playerName,
         email: data.email,
-        phone: data.phone || undefined,
+        phone: data.phone ? `+62${data.phone.replace(/^0+/, '')}` : undefined,
         category: data.category,
         notes: data.notes || undefined,
         agreedToTerms: true,
@@ -66,7 +66,8 @@ export async function createRegistrationWithPayment(
     })
 
     // Create Xendit Invoice
-    const baseUrl = process.env.BASE_URL || process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
+    const baseUrl =
+      process.env.BASE_URL || process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
     const eventSlug = event.slug || event.id
 
     const invoice = await createXenditInvoice({

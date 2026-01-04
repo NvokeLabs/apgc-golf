@@ -20,7 +20,8 @@
     "test": "pnpm run test:int && pnpm run test:e2e",
     "test:e2e": "cross-env NODE_OPTIONS=\"--no-deprecation --no-experimental-strip-types\" pnpm exec playwright test --config=playwright.config.ts",
     "test:int": "cross-env NODE_OPTIONS=--no-deprecation vitest run --config ./vitest.config.mts",
-    "seed": "cross-env NODE_OPTIONS=--no-deprecation tsx src/seed/run-seed.ts"
+    "seed": "cross-env NODE_OPTIONS=--no-deprecation tsx src/seed/run-seed.ts",
+    "prepare": "husky"
   },
   "dependencies": {
     "@payloadcms/admin-bar": "3.64.0",
@@ -76,7 +77,9 @@
     "copyfiles": "^2.4.1",
     "eslint": "^9.16.0",
     "eslint-config-next": "15.4.7",
+    "husky": "^9.1.7",
     "jsdom": "26.1.0",
+    "lint-staged": "^16.2.7",
     "playwright": "1.56.1",
     "playwright-core": "1.56.1",
     "postcss": "^8.4.38",
@@ -95,6 +98,15 @@
       "sharp",
       "esbuild",
       "unrs-resolver"
+    ]
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx}": [
+      "eslint --fix",
+      "prettier --write"
+    ],
+    "*.{json,md,css,scss}": [
+      "prettier --write"
     ]
   }
 }

@@ -16,7 +16,9 @@ export type TicketEmailParams = {
 /**
  * Send ticket confirmation email with QR code and optional PDF attachment
  */
-export async function sendTicketEmail(params: TicketEmailParams): Promise<{ success: boolean; error?: string }> {
+export async function sendTicketEmail(
+  params: TicketEmailParams,
+): Promise<{ success: boolean; error?: string }> {
   const {
     to,
     playerName,
@@ -33,7 +35,9 @@ export async function sendTicketEmail(params: TicketEmailParams): Promise<{ succ
     return { success: false, error: 'Email service not configured' }
   }
 
-  const fromEmail = process.env.RESEND_FROM_EMAIL || 'tickets@apgc-golf.com'
+  // In development, use Resend's test email if no verified domain is configured
+  // For production, set RESEND_FROM_EMAIL to your verified domain email
+  const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev'
 
   const attachments = pdfBuffer
     ? [
@@ -45,7 +49,9 @@ export async function sendTicketEmail(params: TicketEmailParams): Promise<{ succ
     : []
 
   try {
-    const { error } = await resend.emails.send({
+    console.log(`Attempting to send email from: ${fromEmail} to: ${to}`)
+
+    const { data, error } = await resend.emails.send({
       from: `APGC Golf <${fromEmail}>`,
       to: [to],
       subject: `Your Ticket for ${eventName}`,
@@ -61,14 +67,16 @@ export async function sendTicketEmail(params: TicketEmailParams): Promise<{ succ
     })
 
     if (error) {
-      console.error('Resend error:', error)
+      console.error('Resend API error:', JSON.stringify(error, null, 2))
       return { success: false, error: error.message }
     }
 
+    console.log(`Email sent successfully. ID: ${data?.id}`)
     return { success: true }
   } catch (err) {
-    console.error('Failed to send email:', err)
-    return { success: false, error: 'Failed to send email' }
+    const errorMessage = err instanceof Error ? err.message : 'Unknown error'
+    console.error('Failed to send email:', errorMessage, err)
+    return { success: false, error: errorMessage }
   }
 }
 

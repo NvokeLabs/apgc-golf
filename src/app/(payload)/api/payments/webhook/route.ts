@@ -34,11 +34,11 @@ export async function POST(request: NextRequest) {
     const payload = await getPayload({ config })
 
     // Fetch the registration
-    const registration = await payload.findByID({
+    const registration = (await payload.findByID({
       collection: 'event-registrations',
       id: registrationId,
       depth: 1,
-    }) as EventRegistration & { event: Event }
+    })) as EventRegistration & { event: Event }
 
     if (!registration) {
       console.error(`Registration not found: ${registrationId}`)
@@ -101,7 +101,8 @@ export async function POST(request: NextRequest) {
           })
         : 'TBD'
 
-      await sendTicketEmail({
+      console.log(`Sending ticket email to ${registration.email}...`)
+      const emailResult = await sendTicketEmail({
         to: registration.email,
         playerName: registration.playerName,
         eventName: event.title,
@@ -111,7 +112,14 @@ export async function POST(request: NextRequest) {
         qrCodeDataUrl: qrCodeData,
       })
 
-      console.log(`Ticket generated and email sent for registration ${registrationId}`)
+      if (!emailResult.success) {
+        console.error(`Failed to send ticket email: ${emailResult.error}`)
+        // Continue processing - ticket was created, just email failed
+      } else {
+        console.log(`Ticket email sent successfully to ${registration.email}`)
+      }
+
+      console.log(`Ticket generated for registration ${registrationId}`)
       return NextResponse.json({ success: true, ticketId: ticket.id })
     }
 
@@ -145,9 +153,6 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ success: true, message: `Status ${status} acknowledged` })
   } catch (error) {
     console.error('Error processing webhook:', error)
-    return NextResponse.json(
-      { error: 'Failed to process webhook' },
-      { status: 500 },
-    )
+    return NextResponse.json({ error: 'Failed to process webhook' }, { status: 500 })
   }
 }

@@ -41,7 +41,9 @@ export function EventRegistrationForm({ eventId }: EventRegistrationFormProps) {
       }
     } catch (err) {
       console.error('Registration error:', err)
-      setError(err instanceof Error ? err.message : 'Failed to submit registration. Please try again.')
+      setError(
+        err instanceof Error ? err.message : 'Failed to submit registration. Please try again.',
+      )
       setIsSubmitting(false)
     }
   }
@@ -84,32 +86,22 @@ export function EventRegistrationForm({ eventId }: EventRegistrationFormProps) {
               placeholder="your@email.com"
             />
           </div>
-          <div>
+          <div className="sm:col-span-2">
             <label htmlFor="phone" className="mb-2 block text-sm text-gray-600">
               Phone Number
             </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
-              placeholder="+62 xxx xxxx xxxx"
-            />
-          </div>
-          <div>
-            <label htmlFor="handicap" className="mb-2 block text-sm text-gray-600">
-              Handicap
-            </label>
-            <input
-              type="number"
-              id="handicap"
-              name="handicap"
-              min="0"
-              max="54"
-              step="0.1"
-              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
-              placeholder="e.g., 12.5"
-            />
+            <div className="flex">
+              <span className="inline-flex items-center rounded-l-lg border border-r-0 border-gray-300 bg-gray-50 px-4 text-gray-500">
+                +62
+              </span>
+              <input
+                type="tel"
+                id="phone"
+                name="phone"
+                className="w-full rounded-r-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                placeholder="8xx xxxx xxxx"
+              />
+            </div>
           </div>
         </div>
       </div>
@@ -136,7 +128,6 @@ export function EventRegistrationForm({ eventId }: EventRegistrationFormProps) {
             </select>
           </div>
         </div>
-
       </div>
 
       {/* Additional Notes */}
