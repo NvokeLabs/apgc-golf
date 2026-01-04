@@ -165,6 +165,7 @@ export function TicketPDF({
 
           {/* QR Code */}
           <View style={styles.qrSection}>
+            {/* eslint-disable-next-line jsx-a11y/alt-text -- @react-pdf/renderer Image doesn't support alt */}
             <Image src={qrCodeDataUrl} style={styles.qrCode} />
             <Text style={styles.ticketCode}>{ticketCode}</Text>
           </View>

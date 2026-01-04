@@ -1,4 +1,4 @@
-import type { Event, Sponsor } from '@/payload-types'
+import type { Event } from '@/payload-types'
 
 export function generateEventJsonLd(event: Event) {
   const imageUrl = typeof event.image === 'object' && event.image?.url ? event.image.url : undefined

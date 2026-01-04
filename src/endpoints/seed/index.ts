@@ -242,7 +242,7 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding golf players...`)
 
-  const playerDocs = await Promise.all(
+  const _playerDocs = await Promise.all(
     golfPlayers.map((player) =>
       payload.create({
         collection: 'players',
@@ -256,7 +256,7 @@ export const seed = async ({
   payload.logger.info(`— Seeding golf events...`)
 
   // Link sponsors to events
-  const eventDocs = await Promise.all(
+  const _eventDocs = await Promise.all(
     golfEvents.map((event, index) =>
       payload.create({
         collection: 'events',
@@ -273,7 +273,7 @@ export const seed = async ({
   payload.logger.info(`— Seeding golf news...`)
 
   // For news, we need to create proper Lexical content
-  const newsDocs = await Promise.all(
+  const _newsDocs = await Promise.all(
     golfNews.map((article) =>
       payload.create({
         collection: 'news',
