@@ -39,14 +39,30 @@ export async function sendTicketEmail(
   // For production, set RESEND_FROM_EMAIL to your verified domain email
   const fromEmail = process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev'
 
-  const attachments = pdfBuffer
-    ? [
-        {
-          filename: `ticket-${ticketCode}.pdf`,
-          content: pdfBuffer,
-        },
-      ]
-    : []
+  // Convert base64 QR code data URL to buffer for inline attachment
+  const qrCodeBase64 = qrCodeDataUrl.replace(/^data:image\/png;base64,/, '')
+  const qrCodeBuffer = Buffer.from(qrCodeBase64, 'base64')
+
+  const attachments: Array<{
+    filename: string
+    content: Buffer | string
+    content_type?: string
+    cid?: string
+  }> = [
+    {
+      filename: 'qrcode.png',
+      content: qrCodeBuffer,
+      content_type: 'image/png',
+      cid: 'qrcode',
+    },
+  ]
+
+  if (pdfBuffer) {
+    attachments.push({
+      filename: `ticket-${ticketCode}.pdf`,
+      content: pdfBuffer,
+    })
+  }
 
   try {
     console.log(`Attempting to send email from: ${fromEmail} to: ${to}`)
@@ -61,7 +77,6 @@ export async function sendTicketEmail(
         eventDate,
         eventLocation,
         ticketCode,
-        qrCodeDataUrl,
       }),
       attachments,
     })
@@ -86,9 +101,8 @@ function generateEmailHtml(params: {
   eventDate: string
   eventLocation: string
   ticketCode: string
-  qrCodeDataUrl: string
 }): string {
-  const { playerName, eventName, eventDate, eventLocation, ticketCode, qrCodeDataUrl } = params
+  const { playerName, eventName, eventDate, eventLocation, ticketCode } = params
 
   return `
 <!DOCTYPE html>
@@ -135,7 +149,7 @@ function generateEmailHtml(params: {
               <!-- QR Code -->
               <div style="text-align: center; margin-bottom: 30px;">
                 <p style="margin: 0 0 16px; color: #374151; font-size: 14px; font-weight: 600;">Scan this QR code at check-in:</p>
-                <img src="${qrCodeDataUrl}" alt="Ticket QR Code" style="width: 200px; height: 200px; border: 1px solid #e5e7eb; border-radius: 8px;">
+                <img src="cid:qrcode" alt="Ticket QR Code" style="width: 200px; height: 200px; border: 1px solid #e5e7eb; border-radius: 8px;">
                 <p style="margin: 16px 0 0; color: #6b7280; font-size: 12px; font-family: monospace;">${ticketCode}</p>
               </div>
 
