@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from 'react'
 import { Html5Qrcode } from 'html5-qrcode'
+import { AlertCircle, Camera } from 'lucide-react'
 
 type QRScannerProps = {
   onScan: (result: string) => void
@@ -59,19 +60,48 @@ export function QRScanner({ onScan, onError, isActive = true }: QRScannerProps) 
 
   if (!isActive) {
     return (
-      <div className="flex h-64 items-center justify-center rounded-lg bg-gray-100">
-        <p className="text-gray-500">Scanner paused</p>
+      <div
+        style={{
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          height: '256px',
+          borderRadius: '12px',
+          backgroundColor: 'var(--apgc-bg, #F6F7FB)',
+          border: '2px dashed var(--apgc-border, rgba(23, 16, 70, 0.1))',
+        }}
+      >
+        <Camera
+          size={32}
+          style={{ color: 'var(--apgc-text-muted, #717182)', marginBottom: '12px' }}
+        />
+        <p style={{ color: 'var(--apgc-text-muted, #717182)', margin: 0, fontSize: '14px' }}>
+          Scanner paused
+        </p>
       </div>
     )
   }
 
   return (
-    <div className="relative">
+    <div style={{ position: 'relative' }}>
       {error && (
-        <div className="mb-4 rounded-lg bg-red-50 p-4 text-red-700">
-          <p className="font-medium">Camera Error</p>
-          <p className="text-sm">{error}</p>
-          <p className="mt-2 text-sm">
+        <div
+          style={{
+            marginBottom: '16px',
+            borderRadius: '12px',
+            backgroundColor: 'rgba(239, 68, 68, 0.1)',
+            border: '1px solid rgba(239, 68, 68, 0.2)',
+            padding: '16px',
+            color: '#dc2626',
+          }}
+        >
+          <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
+            <AlertCircle size={18} />
+            <p style={{ fontWeight: 600, margin: 0 }}>Camera Error</p>
+          </div>
+          <p style={{ fontSize: '14px', margin: '0 0 8px 0' }}>{error}</p>
+          <p style={{ fontSize: '13px', margin: 0, color: '#991b1b' }}>
             Please ensure you have granted camera permissions to this website.
           </p>
         </div>
@@ -79,9 +109,28 @@ export function QRScanner({ onScan, onError, isActive = true }: QRScannerProps) 
       <div
         id="qr-reader"
         ref={containerRef}
-        className="overflow-hidden rounded-lg"
-        style={{ width: '100%', maxWidth: '400px', margin: '0 auto' }}
+        style={{
+          width: '100%',
+          maxWidth: '400px',
+          margin: '0 auto',
+          overflow: 'hidden',
+          borderRadius: '12px',
+        }}
       />
+      <style jsx global>{`
+        #qr-reader video {
+          border-radius: 12px !important;
+        }
+        #qr-reader__scan_region {
+          background: transparent !important;
+        }
+        #qr-reader__dashboard_section_csr {
+          display: none !important;
+        }
+        #qr-reader__dashboard_section_swaplink {
+          display: none !important;
+        }
+      `}</style>
     </div>
   )
 }

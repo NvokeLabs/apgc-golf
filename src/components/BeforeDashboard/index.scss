@@ -1,24 +1,28 @@
-@import '~@payloadcms/ui/scss';
+/* BeforeDashboard Component Styles */
+/* These styles are also defined in custom.scss for consistency */
 
-.dashboard .before-dashboard {
-  margin-bottom: base(1.5);
+.before-dashboard {
+  margin-bottom: 32px;
+}
 
-  &__banner {
-    & h4 {
-      margin: 0;
-    }
+/* Loading skeleton */
+.metric-card--loading {
+  min-height: 100px;
+}
+
+.metric-card__skeleton {
+  height: 100%;
+  background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
+  background-size: 200% 100%;
+  animation: skeleton-shimmer 1.5s infinite;
+  border-radius: 8px;
+}
+
+@keyframes skeleton-shimmer {
+  0% {
+    background-position: 200% 0;
   }
-
-  &__instructions {
-    list-style: decimal;
-    margin-bottom: base(0.5);
-
-    & li {
-      width: 100%;
-    }
-  }
-
-  & a:hover {
-    opacity: 0.85;
+  100% {
+    background-position: -200% 0;
   }
 }

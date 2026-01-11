@@ -1323,6 +1323,8 @@ export interface EventRegistration {
   createdAt: string;
 }
 /**
+ * Manage event tickets and check-in status
+ *
  * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "tickets".
  */

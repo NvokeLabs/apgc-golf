@@ -1,0 +1,567 @@
+/* APGC Admin Theme - Matching cms-latest design */
+
+/* ========================================
+   CSS Variables for Admin Theme
+   ======================================== */
+:root {
+  /* Primary Colors */
+  --apgc-primary: #ed5f24;
+  --apgc-primary-hover: #d54e15;
+  --apgc-primary-light: rgba(237, 95, 36, 0.1);
+
+  /* Sidebar Colors */
+  --apgc-sidebar-bg: #171046;
+  --apgc-sidebar-text: #ffffff;
+  --apgc-sidebar-text-muted: rgba(255, 255, 255, 0.7);
+  --apgc-sidebar-border: rgba(255, 255, 255, 0.1);
+  --apgc-sidebar-hover: rgba(237, 95, 36, 0.1);
+  --apgc-sidebar-active: rgba(237, 95, 36, 0.2);
+
+  /* Background Colors */
+  --apgc-bg: #f6f7fb;
+  --apgc-card-bg: #ffffff;
+  --apgc-border: rgba(23, 16, 70, 0.1);
+
+  /* Text Colors */
+  --apgc-text: #171046;
+  --apgc-text-muted: #717182;
+
+  /* Status Colors */
+  --apgc-success: #10b981;
+  --apgc-warning: #f59e0b;
+  --apgc-error: #ef4444;
+}
+
+/* ========================================
+   Global Admin Panel Styles
+   ======================================== */
+
+/* Main background */
+.payload {
+  background-color: var(--apgc-bg) !important;
+}
+
+/* ========================================
+   Navigation / Sidebar Styles
+   ======================================== */
+
+/* Sidebar container */
+.nav {
+  background-color: var(--apgc-sidebar-bg) !important;
+  border-right: 1px solid var(--apgc-sidebar-border) !important;
+}
+
+/* Nav links */
+.nav__link,
+.nav-group__toggle {
+  color: var(--apgc-sidebar-text-muted) !important;
+  transition: all 0.2s ease !important;
+  border-radius: 6px !important;
+  margin: 2px 8px !important;
+}
+
+.nav__link:hover,
+.nav-group__toggle:hover {
+  background-color: var(--apgc-sidebar-hover) !important;
+  color: var(--apgc-sidebar-text) !important;
+}
+
+.nav__link--active,
+.nav__link.active {
+  background-color: var(--apgc-sidebar-active) !important;
+  color: var(--apgc-sidebar-text) !important;
+  position: relative !important;
+}
+
+.nav__link--active::before,
+.nav__link.active::before {
+  content: '' !important;
+  position: absolute !important;
+  left: 0 !important;
+  top: 0 !important;
+  bottom: 0 !important;
+  width: 3px !important;
+  background-color: var(--apgc-primary) !important;
+  border-radius: 0 3px 3px 0 !important;
+}
+
+/* Nav group labels */
+.nav-group__label {
+  color: var(--apgc-sidebar-text-muted) !important;
+  font-size: 11px !important;
+  font-weight: 600 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  padding: 16px 16px 8px !important;
+}
+
+/* Nav icons */
+.nav__link svg,
+.nav-group__toggle svg {
+  color: var(--apgc-sidebar-text-muted) !important;
+}
+
+.nav__link:hover svg,
+.nav__link--active svg,
+.nav__link.active svg {
+  color: var(--apgc-primary) !important;
+}
+
+/* Logo area */
+.nav__header {
+  border-bottom: 1px solid var(--apgc-sidebar-border) !important;
+  padding: 20px 16px !important;
+}
+
+.nav__label {
+  color: var(--apgc-sidebar-text) !important;
+  font-weight: 700 !important;
+  font-size: 18px !important;
+}
+
+/* ========================================
+   Header / Top Bar Styles
+   ======================================== */
+
+.template-default__header,
+.app-header {
+  background-color: var(--apgc-card-bg) !important;
+  border-bottom: 1px solid var(--apgc-border) !important;
+}
+
+/* ========================================
+   Cards and Panels
+   ======================================== */
+
+.card,
+.collection-list,
+.document-fields {
+  background-color: var(--apgc-card-bg) !important;
+  border: 1px solid var(--apgc-border) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* ========================================
+   Buttons
+   ======================================== */
+
+/* Primary buttons */
+.btn--style-primary,
+button[class*='btn--style-primary'] {
+  background-color: var(--apgc-primary) !important;
+  border-color: var(--apgc-primary) !important;
+  color: white !important;
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  transition: all 0.2s ease !important;
+}
+
+.btn--style-primary:hover,
+button[class*='btn--style-primary']:hover {
+  background-color: var(--apgc-primary-hover) !important;
+  border-color: var(--apgc-primary-hover) !important;
+}
+
+/* Secondary buttons */
+.btn--style-secondary {
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+}
+
+/* ========================================
+   Form Fields
+   ======================================== */
+
+.field-type input,
+.field-type textarea,
+.field-type select {
+  border-radius: 8px !important;
+  border-color: var(--apgc-border) !important;
+  transition: all 0.2s ease !important;
+}
+
+.field-type input:focus,
+.field-type textarea:focus,
+.field-type select:focus {
+  border-color: var(--apgc-primary) !important;
+  box-shadow: 0 0 0 3px var(--apgc-primary-light) !important;
+}
+
+/* ========================================
+   Table / List Views
+   ======================================== */
+
+.table {
+  border-radius: 12px !important;
+  overflow: hidden !important;
+}
+
+.table th {
+  background-color: var(--apgc-bg) !important;
+  font-weight: 600 !important;
+  font-size: 12px !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.03em !important;
+  color: var(--apgc-text-muted) !important;
+}
+
+.table tr:hover td {
+  background-color: var(--apgc-bg) !important;
+}
+
+.table td {
+  border-color: var(--apgc-border) !important;
+}
+
+/* ========================================
+   Status Badges
+   ======================================== */
+
+.pill {
+  border-radius: 6px !important;
+  font-weight: 500 !important;
+  font-size: 12px !important;
+}
+
+.pill--style-success {
+  background-color: rgba(16, 185, 129, 0.1) !important;
+  color: var(--apgc-success) !important;
+}
+
+.pill--style-warning {
+  background-color: rgba(245, 158, 11, 0.1) !important;
+  color: var(--apgc-warning) !important;
+}
+
+.pill--style-error {
+  background-color: rgba(239, 68, 68, 0.1) !important;
+  color: var(--apgc-error) !important;
+}
+
+/* ========================================
+   Dashboard Styles
+   ======================================== */
+
+.dashboard {
+  padding: 32px !important;
+  max-width: 1200px !important;
+  margin: 0 auto !important;
+}
+
+/* ========================================
+   Login Page
+   ======================================== */
+
+.login {
+  background-color: var(--apgc-bg) !important;
+}
+
+.login__form {
+  background-color: var(--apgc-card-bg) !important;
+  border-radius: 16px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
+  padding: 40px !important;
+}
+
+/* ========================================
+   Scrollbar Styling
+   ======================================== */
+
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--apgc-border);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--apgc-text-muted);
+}
+
+/* ========================================
+   Animations
+   ======================================== */
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.dashboard,
+.collection-list,
+.document-fields {
+  animation: fadeIn 0.3s ease-out;
+}
+
+/* ========================================
+   Before Dashboard Component Styles
+   ======================================== */
+
+.before-dashboard {
+  margin-bottom: 32px;
+}
+
+.before-dashboard__banner {
+  display: none !important;
+}
+
+/* Dashboard Metrics Grid */
+.dashboard-metrics {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-metrics {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 640px) {
+  .dashboard-metrics {
+    grid-template-columns: 1fr;
+  }
+}
+
+.metric-card {
+  background: var(--apgc-card-bg);
+  border: 1px solid var(--apgc-border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: box-shadow 0.2s ease;
+}
+
+.metric-card:hover {
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+.metric-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 8px;
+}
+
+.metric-card__label {
+  font-size: 14px;
+  color: var(--apgc-text-muted);
+  font-weight: 500;
+}
+
+.metric-card__icon {
+  width: 20px;
+  height: 20px;
+  color: var(--apgc-text-muted);
+}
+
+.metric-card__icon--alert {
+  color: var(--apgc-warning);
+}
+
+.metric-card__value {
+  font-size: 28px;
+  font-weight: 700;
+  color: var(--apgc-text);
+  margin-bottom: 4px;
+}
+
+.metric-card__change {
+  font-size: 12px;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.metric-card__change--up {
+  color: var(--apgc-success);
+}
+
+.metric-card__change--down {
+  color: var(--apgc-error);
+}
+
+.metric-card__change--neutral {
+  color: var(--apgc-text-muted);
+}
+
+/* Dashboard Content Grid */
+.dashboard-content {
+  display: grid;
+  grid-template-columns: 2fr 1fr;
+  gap: 24px;
+}
+
+@media (max-width: 1024px) {
+  .dashboard-content {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* Activity Feed */
+.activity-feed {
+  background: var(--apgc-card-bg);
+  border: 1px solid var(--apgc-border);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.activity-feed__title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--apgc-text);
+  margin-bottom: 16px;
+}
+
+.activity-feed__list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+.activity-feed__item {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--apgc-border);
+}
+
+.activity-feed__item:last-child {
+  border-bottom: none;
+}
+
+.activity-feed__icon {
+  width: 32px;
+  height: 32px;
+  border-radius: 8px;
+  background: var(--apgc-primary-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.activity-feed__icon svg {
+  width: 16px;
+  height: 16px;
+  color: var(--apgc-primary);
+}
+
+.activity-feed__content {
+  flex: 1;
+}
+
+.activity-feed__text {
+  font-size: 14px;
+  color: var(--apgc-text);
+  margin-bottom: 2px;
+}
+
+.activity-feed__time {
+  font-size: 12px;
+  color: var(--apgc-text-muted);
+}
+
+/* Quick Actions */
+.quick-actions {
+  background: var(--apgc-card-bg);
+  border: 1px solid var(--apgc-border);
+  border-radius: 12px;
+  padding: 24px;
+}
+
+.quick-actions__title {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--apgc-text);
+  margin-bottom: 16px;
+}
+
+.quick-actions__grid {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.quick-action-btn {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 16px;
+  background: var(--apgc-bg);
+  border: 1px solid var(--apgc-border);
+  border-radius: 8px;
+  color: var(--apgc-text);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  cursor: pointer;
+}
+
+.quick-action-btn:hover {
+  background: var(--apgc-primary-light);
+  border-color: var(--apgc-primary);
+  color: var(--apgc-primary);
+}
+
+.quick-action-btn svg {
+  width: 18px;
+  height: 18px;
+}
+
+/* Pro Tip Card */
+.pro-tip {
+  background: var(--apgc-card-bg);
+  border: 1px solid var(--apgc-border);
+  border-radius: 12px;
+  padding: 24px;
+  margin-top: 16px;
+}
+
+.pro-tip__title {
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--apgc-text);
+  margin-bottom: 8px;
+}
+
+.pro-tip__text {
+  font-size: 13px;
+  color: var(--apgc-text-muted);
+  line-height: 1.5;
+}
+
+/* Welcome Header */
+.dashboard-header {
+  margin-bottom: 24px;
+}
+
+.dashboard-header__title {
+  font-size: 24px;
+  font-weight: 700;
+  color: var(--apgc-text);
+  margin: 0 0 4px 0;
+}
+
+.dashboard-header__subtitle {
+  font-size: 14px;
+  color: var(--apgc-text-muted);
+  margin: 0;
+}

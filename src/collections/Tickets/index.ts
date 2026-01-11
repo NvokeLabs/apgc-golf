@@ -14,6 +14,10 @@ export const Tickets: CollectionConfig = {
     defaultColumns: ['ticketCode', 'registration', 'event', 'status', 'checkedInAt'],
     useAsTitle: 'ticketCode',
     group: 'Registrations',
+    description: 'Manage event tickets and check-in status',
+    components: {
+      beforeList: ['@/components/admin/TicketsBeforeList'],
+    },
   },
   fields: [
     {
