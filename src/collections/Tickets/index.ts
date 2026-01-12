@@ -17,6 +17,13 @@ export const Tickets: CollectionConfig = {
     description: 'Manage event tickets and check-in status',
     components: {
       beforeList: ['@/components/admin/TicketsBeforeList'],
+      views: {
+        edit: {
+          default: {
+            Component: '@/components/admin/views/TicketEditView',
+          },
+        },
+      },
     },
   },
   fields: [
@@ -26,6 +33,7 @@ export const Tickets: CollectionConfig = {
       unique: true,
       required: true,
       admin: {
+        readOnly: true,
         description: 'Unique ticket code in format APGC-{id}-{hash}',
       },
     },
@@ -34,17 +42,24 @@ export const Tickets: CollectionConfig = {
       type: 'relationship',
       relationTo: 'event-registrations',
       required: true,
+      admin: {
+        readOnly: true,
+      },
     },
     {
       name: 'event',
       type: 'relationship',
       relationTo: 'events',
       required: true,
+      admin: {
+        readOnly: true,
+      },
     },
     {
       name: 'qrCodeData',
       type: 'text',
       admin: {
+        readOnly: true,
         description: 'Base64 encoded QR code data URL',
       },
     },
@@ -57,11 +72,15 @@ export const Tickets: CollectionConfig = {
         { label: 'Checked In', value: 'checked_in' },
         { label: 'Cancelled', value: 'cancelled' },
       ],
+      admin: {
+        readOnly: true,
+      },
     },
     {
       name: 'checkedInAt',
       type: 'date',
       admin: {
+        readOnly: true,
         date: {
           pickerAppearance: 'dayAndTime',
         },
@@ -72,6 +91,7 @@ export const Tickets: CollectionConfig = {
       type: 'relationship',
       relationTo: 'users',
       admin: {
+        readOnly: true,
         description: 'Admin user who checked in this ticket',
       },
     },

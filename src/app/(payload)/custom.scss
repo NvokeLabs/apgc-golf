@@ -1,5 +1,8 @@
 /* APGC Admin Theme - Matching cms-latest design */
 
+/* Import custom Nav styles */
+@import '../../components/admin/Nav/styles.scss';
+
 /* ========================================
    CSS Variables for Admin Theme
    ======================================== */
@@ -262,6 +265,58 @@ button[class*='btn--style-primary']:hover {
   border-radius: 16px !important;
   box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08) !important;
   padding: 40px !important;
+}
+
+.login__brand {
+  margin-bottom: 0 !important;
+}
+
+/* Hide top navbar */
+.app-header {
+  display: none !important;
+}
+
+/* Add padding to compensate for hidden header */
+.template-default__wrap {
+  padding-top: 60px !important;
+}
+
+/* Nav toggler - when sidebar is OPEN, position at right edge of sidebar */
+.nav-toggler.nav-toggler--is-open,
+.app-header__mobile-nav-toggler.nav-toggler--is-open {
+  left: 240px !important;
+  top: 20px !important;
+  position: fixed !important;
+  z-index: 1000 !important;
+}
+
+/* When sidebar is CLOSED - keep toggle at top left */
+.nav-toggler:not(.nav-toggler--is-open),
+.app-header__mobile-nav-toggler:not(.nav-toggler--is-open) {
+  left: 16px !important;
+  top: 16px !important;
+  position: fixed !important;
+  z-index: 1000 !important;
+}
+
+.nav-toggler:hover,
+.app-header__mobile-nav-toggler:hover {
+  background-color: rgba(237, 95, 36, 0.15) !important;
+  border-color: rgba(237, 95, 36, 0.3) !important;
+  color: #ed5f24 !important;
+}
+
+.nav-toggler svg,
+.app-header__mobile-nav-toggler svg {
+  width: 16px !important;
+  height: 16px !important;
+  color: inherit !important;
+  flex-shrink: 0 !important;
+}
+
+/* Hide default dashboard collections/globals section */
+.dashboard__wrap > .dashboard__card-list {
+  display: none !important;
 }
 
 /* ========================================

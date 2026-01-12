@@ -1,0 +1,567 @@
+/* Ticket Edit View - Fancy Dashboard Style */
+
+.ticket-edit-view {
+  padding: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+  animation: fadeIn 0.3s ease-out;
+
+  /* Loading State */
+  &__loading {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    gap: 16px;
+    color: var(--apgc-text-muted);
+  }
+
+  &__loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 3px solid var(--apgc-border);
+    border-top-color: var(--apgc-primary);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+  }
+
+  /* Error State */
+  &__error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    min-height: 400px;
+    gap: 16px;
+    color: var(--apgc-text-muted);
+    text-align: center;
+
+    svg {
+      color: var(--apgc-error);
+    }
+
+    h2 {
+      color: var(--apgc-text);
+      margin: 0;
+    }
+
+    p {
+      margin: 0;
+    }
+  }
+
+  /* Header */
+  &__header {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 32px;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  &__header-left {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+
+  &__back-btn {
+    align-self: flex-start;
+    color: var(--apgc-text-muted) !important;
+    padding: 0 !important;
+    height: auto !important;
+
+    &:hover {
+      color: var(--apgc-primary) !important;
+    }
+  }
+
+  &__title-group {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 28px;
+    font-weight: 700;
+    color: var(--apgc-text);
+    margin: 0;
+  }
+
+  &__title-icon {
+    color: var(--apgc-primary);
+  }
+
+  &__subtitle {
+    font-size: 14px;
+    color: var(--apgc-text-muted);
+  }
+
+  &__header-actions {
+    display: flex;
+    gap: 12px;
+  }
+
+  &__scanner-btn {
+    background-color: var(--apgc-primary) !important;
+    color: white !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 8px !important;
+    font-weight: 500 !important;
+    border-radius: 8px !important;
+    transition: background-color 0.2s ease !important;
+
+    &:hover {
+      background-color: var(--apgc-primary-hover) !important;
+    }
+  }
+
+  /* Content Grid */
+  &__content {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 32px;
+    align-items: start;
+  }
+
+  @media (max-width: 1024px) {
+    &__content {
+      grid-template-columns: 1fr;
+    }
+  }
+
+  &__main {
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+  }
+
+  &__sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+  }
+}
+
+/* Ticket Card - Fancy Ticket Style */
+.ticket-card {
+  background: linear-gradient(135deg, #171046 0%, #2a1f6e 100%);
+  border-radius: 20px;
+  overflow: hidden;
+  box-shadow: 0 20px 40px rgba(23, 16, 70, 0.3);
+  color: white;
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 4px;
+    background: linear-gradient(90deg, var(--apgc-primary), #f5a623);
+  }
+
+  &__header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 24px 28px;
+    border-bottom: 1px dashed rgba(255, 255, 255, 0.15);
+  }
+
+  &__badge-container {
+    display: flex;
+  }
+
+  &__status-badge {
+    font-size: 13px !important;
+    font-weight: 600 !important;
+    padding: 6px 14px !important;
+    border-radius: 20px !important;
+    display: flex !important;
+    align-items: center !important;
+    gap: 6px !important;
+  }
+
+  &__logo {
+    opacity: 0.9;
+  }
+
+  &__logo-img {
+    height: 30px;
+    width: auto;
+    object-fit: contain;
+  }
+
+  &__body {
+    padding: 28px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+  }
+
+  /* QR Code Section */
+  &__qr-section {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+  }
+
+  &__qr-wrapper {
+    background: white;
+    padding: 16px;
+    border-radius: 16px;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
+  }
+
+  &__qr-image {
+    width: 180px;
+    height: 180px;
+    display: block;
+  }
+
+  &__qr-placeholder {
+    width: 180px;
+    height: 180px;
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    color: rgba(255, 255, 255, 0.5);
+
+    span {
+      font-size: 12px;
+    }
+  }
+
+  /* Ticket Code Section */
+  &__code-section {
+    text-align: center;
+  }
+
+  &__code-label {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: rgba(255, 255, 255, 0.6);
+    margin-bottom: 8px;
+  }
+
+  &__code-value {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: rgba(255, 255, 255, 0.1);
+    padding: 12px 20px;
+    border-radius: 12px;
+    border: 1px solid rgba(255, 255, 255, 0.15);
+
+    code {
+      font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+      font-size: 18px;
+      font-weight: 600;
+      letter-spacing: 0.05em;
+      color: white;
+    }
+  }
+
+  &__copy-btn {
+    background: transparent;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    padding: 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: color 0.2s ease;
+
+    &:hover {
+      color: var(--apgc-primary);
+    }
+  }
+
+  /* Divider */
+  &__divider {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    position: relative;
+  }
+
+  &__divider-line {
+    flex: 1;
+    height: 1px;
+    background: repeating-linear-gradient(
+      90deg,
+      rgba(255, 255, 255, 0.2) 0,
+      rgba(255, 255, 255, 0.2) 8px,
+      transparent 8px,
+      transparent 16px
+    );
+  }
+
+  &__divider-notch {
+    width: 24px;
+    height: 24px;
+    background: var(--apgc-bg, #f6f7fb);
+    border-radius: 50%;
+    position: absolute;
+
+    &--left {
+      left: -40px;
+    }
+
+    &--right {
+      right: -40px;
+    }
+  }
+
+  /* Event Section */
+  &__event-section {
+    text-align: center;
+    width: 100%;
+    padding: 0 20px;
+  }
+
+  &__event-title {
+    font-size: 22px;
+    font-weight: 700;
+    margin: 0 0 12px 0;
+    color: white;
+  }
+
+  &__event-meta {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+    margin: 0 12px;
+
+    svg {
+      color: var(--apgc-primary);
+    }
+  }
+
+  /* Attendee Section */
+  &__attendee-section {
+    width: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    padding: 20px;
+    background: rgba(255, 255, 255, 0.05);
+    border-radius: 12px;
+    margin-top: 8px;
+  }
+
+  &__attendee-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+  }
+
+  &__attendee-icon {
+    color: var(--apgc-primary);
+    margin-top: 2px;
+  }
+
+  &__attendee-label {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: rgba(255, 255, 255, 0.5);
+    margin-bottom: 2px;
+  }
+
+  &__attendee-value {
+    display: block;
+    font-size: 14px;
+    color: white;
+    word-break: break-word;
+  }
+}
+
+/* Info Card */
+.info-card {
+  background: var(--apgc-card-bg);
+  border: 1px solid var(--apgc-border);
+  border-radius: 12px;
+  padding: 20px;
+  transition: box-shadow 0.2s ease;
+
+  &:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.06);
+  }
+
+  &--muted {
+    background: var(--apgc-bg);
+  }
+
+  &__title {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--apgc-text);
+    margin: 0 0 16px 0;
+    padding-bottom: 12px;
+    border-bottom: 1px solid var(--apgc-border);
+
+    svg {
+      color: var(--apgc-primary);
+    }
+  }
+
+  &__content {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+
+  &__detail {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+  }
+
+  &__detail-label {
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--apgc-text-muted);
+  }
+
+  &__detail-value {
+    font-size: 14px;
+    color: var(--apgc-text);
+    font-weight: 500;
+  }
+
+  &__code {
+    font-family: 'SF Mono', 'Monaco', 'Inconsolata', monospace;
+    font-size: 12px;
+    background: var(--apgc-border);
+    padding: 4px 8px;
+    border-radius: 4px;
+    color: var(--apgc-text-muted);
+    word-break: break-all;
+  }
+
+  &__link {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 13px;
+    color: var(--apgc-primary);
+    text-decoration: none;
+    font-weight: 500;
+    margin-top: 8px;
+    transition: opacity 0.2s ease;
+
+    &:hover {
+      opacity: 0.8;
+      text-decoration: underline;
+    }
+  }
+}
+
+/* Status Display */
+.status-display {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 14px 18px;
+  border-radius: 10px;
+  font-size: 15px;
+  font-weight: 600;
+
+  &.ticket-status--success {
+    background: rgba(16, 185, 129, 0.1);
+    color: var(--apgc-success);
+  }
+
+  &.ticket-status--warning {
+    background: rgba(245, 158, 11, 0.1);
+    color: var(--apgc-warning);
+  }
+
+  &.ticket-status--error {
+    background: rgba(239, 68, 68, 0.1);
+    color: var(--apgc-error);
+  }
+}
+
+/* Status Icon Colors */
+.ticket-status--success {
+  color: var(--apgc-success);
+}
+
+.ticket-status--warning {
+  color: var(--apgc-warning);
+}
+
+.ticket-status--error {
+  color: var(--apgc-error);
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Responsive */
+@media (max-width: 640px) {
+  .ticket-edit-view {
+    padding: 16px;
+
+    &__header {
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    &__title {
+      font-size: 22px;
+    }
+  }
+
+  .ticket-card {
+    &__attendee-section {
+      grid-template-columns: 1fr;
+    }
+
+    &__qr-image {
+      width: 150px;
+      height: 150px;
+    }
+  }
+}

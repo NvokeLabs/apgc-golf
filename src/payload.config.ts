@@ -41,8 +41,13 @@ export default buildConfig({
       ],
     },
     components: {
+      Nav: '@/components/admin/Nav',
       beforeLogin: ['@/components/BeforeLogin'],
       beforeDashboard: ['@/components/BeforeDashboard'],
+      graphics: {
+        Logo: '@/components/admin/Logo',
+        Icon: '@/components/admin/Logo',
+      },
     },
     importMap: {
       baseDir: path.resolve(dirname),
