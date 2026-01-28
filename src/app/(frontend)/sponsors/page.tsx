@@ -7,6 +7,11 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { cache } from 'react'
 import { Check, ArrowRight, Star, Trophy, Shield, Globe, Users, Handshake } from 'lucide-react'
+import {
+  getSponsorsPageContent,
+  getSponsorshipTiers,
+  getSiteLabels,
+} from '@/utilities/getSiteContent'
 
 export const metadata: Metadata = {
   title: 'Sponsors | APGC Golf',
@@ -33,53 +38,75 @@ const getSponsors = cache(async () => {
   return sponsors.docs
 })
 
-const sponsorshipTiers = [
+// Default sponsorship tiers (fallback if CMS data is empty)
+const defaultSponsorshipTiers = [
   {
     name: 'Gold Partner',
     price: 'Rp 100,000,000',
-    icon: <Shield className="w-8 h-8 text-[#636364]" />,
+    tierKey: 'gold' as const,
     benefits: [
-      'Official Partner Status',
-      'Logo on Tournament Website',
-      'Hospitality Passes for 10 Guests',
-      'Invitation to Sponsor Lunch',
-      'On-site Activation Space',
-      'Program Guide Advertisement',
+      { benefit: 'Official Partner Status' },
+      { benefit: 'Logo on Tournament Website' },
+      { benefit: 'Hospitality Passes for 10 Guests' },
+      { benefit: 'Invitation to Sponsor Lunch' },
+      { benefit: 'On-site Activation Space' },
+      { benefit: 'Program Guide Advertisement' },
     ],
-    popular: false,
+    isHighlighted: false,
   },
   {
     name: 'Platinum Partner',
     price: 'Rp 250,000,000',
-    icon: <Star className="w-8 h-8 text-[#0b3d2e]/80" />,
+    tierKey: 'platinum' as const,
     benefits: [
-      'Official Category Exclusivity',
-      'Major Logo Placement on Course',
-      'VIP Hospitality for 20 Guests',
-      'Pro-Am Spots for 2 Executives',
-      'Access to Awards Gala',
-      'Digital Media Campaign Inclusion',
+      { benefit: 'Official Category Exclusivity' },
+      { benefit: 'Major Logo Placement on Course' },
+      { benefit: 'VIP Hospitality for 20 Guests' },
+      { benefit: 'Pro-Am Spots for 2 Executives' },
+      { benefit: 'Access to Awards Gala' },
+      { benefit: 'Digital Media Campaign Inclusion' },
     ],
-    popular: false,
+    isHighlighted: false,
   },
   {
     name: 'Title Sponsor',
     price: 'Rp 500,000,000',
-    icon: <Trophy className="w-8 h-8 text-[#0b3d2e]" />,
+    tierKey: 'title' as const,
     benefits: [
-      'Exclusive Title Naming Rights',
-      'Premium Logo Placement on All Media',
-      'VIP Hospitality for 50 Guests',
-      'Pro-Am Spots for 4 Executives',
-      'Private Meet & Greet with Players',
-      'Course Branding (1st & 18th Tees)',
+      { benefit: 'Exclusive Title Naming Rights' },
+      { benefit: 'Premium Logo Placement on All Media' },
+      { benefit: 'VIP Hospitality for 50 Guests' },
+      { benefit: 'Pro-Am Spots for 4 Executives' },
+      { benefit: 'Private Meet & Greet with Players' },
+      { benefit: 'Course Branding (1st & 18th Tees)' },
     ],
-    popular: true,
+    isHighlighted: true,
   },
 ]
 
+// Helper to get icon based on tier
+const getTierIcon = (tierKey: string) => {
+  switch (tierKey) {
+    case 'title':
+      return <Trophy className="w-8 h-8 text-[#0b3d2e]" />
+    case 'platinum':
+      return <Star className="w-8 h-8 text-[#0b3d2e]/80" />
+    case 'gold':
+    default:
+      return <Shield className="w-8 h-8 text-[#636364]" />
+  }
+}
+
 export default async function SponsorsPage() {
-  const sponsors = await getSponsors()
+  const [sponsors, cmsTiers, pageContent, labels] = await Promise.all([
+    getSponsors(),
+    getSponsorshipTiers(),
+    getSponsorsPageContent(),
+    getSiteLabels(),
+  ])
+
+  // Use CMS tiers if available, otherwise use defaults
+  const sponsorshipTiers = cmsTiers.length > 0 ? cmsTiers : defaultSponsorshipTiers
 
   const titleSponsors = sponsors.filter((s) => s.tier === 'title')
   const platinumSponsors = sponsors.filter((s) => s.tier === 'platinum')
@@ -91,14 +118,17 @@ export default async function SponsorsPage() {
         {/* Header */}
         <div className="mb-16 text-center max-w-3xl mx-auto">
           <span className="text-[#0b3d2e] text-xs font-bold tracking-widest uppercase mb-4 block">
-            Our Partners
+            {pageContent?.header?.label || 'Our Partners'}
           </span>
           <h1 className="text-4xl md:text-5xl font-light text-[#0b3d2e] mb-6">
-            The Driving <span className="font-serif italic font-medium">Force</span>
+            {pageContent?.header?.title || 'The Driving'}{' '}
+            <span className="font-serif italic font-medium">
+              {pageContent?.header?.titleHighlight || 'Force'}
+            </span>
           </h1>
           <p className="text-[#636364] text-lg">
-            We are proud to partner with world-leading brands who share our passion for excellence,
-            tradition, and the future of golf.
+            {pageContent?.header?.description ||
+              'We are proud to partner with world-leading brands who share our passion for excellence, tradition, and the future of golf.'}
           </p>
         </div>
 
@@ -184,18 +214,20 @@ export default async function SponsorsPage() {
               ))}
             </div>
           )}
-
         </div>
 
         {/* Become a Sponsor Section */}
         <div className="py-16 border-t border-[#0b3d2e]/10">
           <div className="text-center mb-12">
             <h2 className="text-3xl font-light text-[#0b3d2e] mb-4">
-              Become a <span className="font-serif italic font-medium">Sponsor</span>
+              {pageContent?.becomeASponsor?.title || 'Become a'}{' '}
+              <span className="font-serif italic font-medium">
+                {pageContent?.becomeASponsor?.titleHighlight || 'Sponsor'}
+              </span>
             </h2>
             <p className="text-[#636364] max-w-2xl mx-auto">
-              Join an elite group of global brands and connect with a passionate audience of
-              affluent golf enthusiasts.
+              {pageContent?.becomeASponsor?.description ||
+                'Join an elite group of global brands and connect with a passionate audience of affluent golf enthusiasts.'}
             </p>
           </div>
 
@@ -203,27 +235,27 @@ export default async function SponsorsPage() {
             {sponsorshipTiers.map((tier, idx) => (
               <GlassCard
                 key={idx}
-                className={`relative p-8 flex flex-col bg-white border-2 ${tier.popular ? 'border-[#D66232] shadow-2xl shadow-[#D66232]/20 ring-2 ring-[#D66232]/30 ring-offset-2' : 'border-[#0b3d2e]/10 hover:shadow-lg transition-shadow'}`}
+                className={`relative p-8 flex flex-col bg-white border-2 ${tier.isHighlighted ? 'border-[#D66232] shadow-2xl shadow-[#D66232]/20 ring-2 ring-[#D66232]/30 ring-offset-2' : 'border-[#0b3d2e]/10 hover:shadow-lg transition-shadow'}`}
               >
-                {tier.popular && (
+                {tier.isHighlighted && (
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#D66232] text-white border-2 border-[#D66232] text-xs font-bold px-4 py-1 rounded-full uppercase tracking-widest shadow-lg">
-                    Most Popular
+                    {labels?.miscLabels?.mostPopular || 'Most Popular'}
                   </div>
                 )}
 
                 <div className="mb-6">
                   <div className="inline-flex p-3 rounded-xl bg-[#D66232]/10 mb-4 text-[#D66232]">
-                    {tier.icon}
+                    {getTierIcon(tier.tierKey)}
                   </div>
                   <h3 className="text-2xl font-bold text-[#0b3d2e] mb-2">{tier.name}</h3>
                   <p className="text-3xl text-[#0b3d2e] font-light">{tier.price}</p>
                 </div>
 
                 <ul className="space-y-4 mb-8 flex-1">
-                  {tier.benefits.map((benefit, i) => (
+                  {tier.benefits?.map((item, i) => (
                     <li key={i} className="flex items-start gap-3 text-[#636364] text-sm">
                       <Check className="w-5 h-5 shrink-0 text-[#D66232]" />
-                      <span>{benefit}</span>
+                      <span>{item.benefit}</span>
                     </li>
                   ))}
                 </ul>
@@ -232,7 +264,7 @@ export default async function SponsorsPage() {
                   href="/register/sponsor"
                   className="w-full py-4 text-lg group border-2 border-[#0b3d2e] bg-transparent text-[#0b3d2e] hover:bg-[#0b3d2e] hover:text-white transition-colors flex items-center justify-center gap-2 rounded-lg"
                 >
-                  Inquire Now
+                  {labels?.buttonLabels?.inquireNow || 'Inquire Now'}
                   <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                 </Link>
               </GlassCard>
@@ -244,61 +276,95 @@ export default async function SponsorsPage() {
         <div className="py-24 border-t border-[#0b3d2e]/10">
           <div className="text-center mb-16">
             <h2 className="text-3xl font-light text-[#0b3d2e] mb-6">
-              Why <span className="font-serif italic font-medium">Partner With Us?</span>
+              {pageContent?.whyPartner?.title || 'Why'}{' '}
+              <span className="font-serif italic font-medium">
+                {pageContent?.whyPartner?.titleHighlight || 'Partner With Us?'}
+              </span>
             </h2>
             <p className="text-[#636364] max-w-3xl mx-auto text-lg">
-              Align your brand with excellence. Our tournament offers a unique platform to engage
-              with a sophisticated audience and drive tangible business results.
+              {pageContent?.whyPartner?.description ||
+                'Align your brand with excellence. Our tournament offers a unique platform to engage with a sophisticated audience and drive tangible business results.'}
             </p>
           </div>
 
           <div className="grid md:grid-cols-3 gap-8 mb-16">
-            <GlassCard className="p-8 flex flex-col items-center text-center bg-white/40 border-[#0b3d2e]/10">
-              <div className="w-16 h-16 rounded-full bg-[#0b3d2e]/5 flex items-center justify-center mb-6 text-[#0b3d2e]">
-                <Globe className="w-8 h-8" />
-              </div>
-              <h3 className="text-xl font-bold text-[#0b3d2e] mb-4">Global Reach</h3>
-              <p className="text-[#636364] leading-relaxed">
-                Broadcasted to over 200 countries and territories, reaching 500 million households
-                worldwide, ensuring your brand is seen on a global stage.
-              </p>
-            </GlassCard>
+            {pageContent?.whyPartner?.benefits && pageContent.whyPartner.benefits.length > 0 ? (
+              pageContent.whyPartner.benefits.map((benefit, idx) => {
+                const IconComponent =
+                  benefit.icon === 'globe'
+                    ? Globe
+                    : benefit.icon === 'users'
+                      ? Users
+                      : benefit.icon === 'handshake'
+                        ? Handshake
+                        : benefit.icon === 'trophy'
+                          ? Trophy
+                          : Star
+                return (
+                  <GlassCard
+                    key={idx}
+                    className="p-8 flex flex-col items-center text-center bg-white/40 border-[#0b3d2e]/10"
+                  >
+                    <div className="w-16 h-16 rounded-full bg-[#0b3d2e]/5 flex items-center justify-center mb-6 text-[#0b3d2e]">
+                      <IconComponent className="w-8 h-8" />
+                    </div>
+                    <h3 className="text-xl font-bold text-[#0b3d2e] mb-4">{benefit.title}</h3>
+                    <p className="text-[#636364] leading-relaxed">{benefit.description}</p>
+                  </GlassCard>
+                )
+              })
+            ) : (
+              <>
+                <GlassCard className="p-8 flex flex-col items-center text-center bg-white/40 border-[#0b3d2e]/10">
+                  <div className="w-16 h-16 rounded-full bg-[#0b3d2e]/5 flex items-center justify-center mb-6 text-[#0b3d2e]">
+                    <Globe className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-xl font-bold text-[#0b3d2e] mb-4">Global Reach</h3>
+                  <p className="text-[#636364] leading-relaxed">
+                    Broadcasted to over 200 countries and territories, reaching 500 million
+                    households worldwide, ensuring your brand is seen on a global stage.
+                  </p>
+                </GlassCard>
 
-            <GlassCard className="p-8 flex flex-col items-center text-center bg-white/40 border-[#0b3d2e]/10">
-              <div className="w-16 h-16 rounded-full bg-[#0b3d2e]/5 flex items-center justify-center mb-6 text-[#0b3d2e]">
-                <Users className="w-8 h-8" />
-              </div>
-              <h3 className="text-xl font-bold text-[#0b3d2e] mb-4">Elite Audience</h3>
-              <p className="text-[#636364] leading-relaxed">
-                Connect directly with high-net-worth individuals, corporate leaders, and key
-                decision-makers in a relaxed, premium environment.
-              </p>
-            </GlassCard>
+                <GlassCard className="p-8 flex flex-col items-center text-center bg-white/40 border-[#0b3d2e]/10">
+                  <div className="w-16 h-16 rounded-full bg-[#0b3d2e]/5 flex items-center justify-center mb-6 text-[#0b3d2e]">
+                    <Users className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-xl font-bold text-[#0b3d2e] mb-4">Elite Audience</h3>
+                  <p className="text-[#636364] leading-relaxed">
+                    Connect directly with high-net-worth individuals, corporate leaders, and key
+                    decision-makers in a relaxed, premium environment.
+                  </p>
+                </GlassCard>
 
-            <GlassCard className="p-8 flex flex-col items-center text-center bg-white/40 border-[#0b3d2e]/10">
-              <div className="w-16 h-16 rounded-full bg-[#0b3d2e]/5 flex items-center justify-center mb-6 text-[#0b3d2e]">
-                <Handshake className="w-8 h-8" />
-              </div>
-              <h3 className="text-xl font-bold text-[#0b3d2e] mb-4">Business Networking</h3>
-              <p className="text-[#636364] leading-relaxed">
-                Exclusive pro-am spots, VIP hospitality, and private events provide unparalleled
-                opportunities for relationship building and B2B networking.
-              </p>
-            </GlassCard>
+                <GlassCard className="p-8 flex flex-col items-center text-center bg-white/40 border-[#0b3d2e]/10">
+                  <div className="w-16 h-16 rounded-full bg-[#0b3d2e]/5 flex items-center justify-center mb-6 text-[#0b3d2e]">
+                    <Handshake className="w-8 h-8" />
+                  </div>
+                  <h3 className="text-xl font-bold text-[#0b3d2e] mb-4">Business Networking</h3>
+                  <p className="text-[#636364] leading-relaxed">
+                    Exclusive pro-am spots, VIP hospitality, and private events provide unparalleled
+                    opportunities for relationship building and B2B networking.
+                  </p>
+                </GlassCard>
+              </>
+            )}
           </div>
 
           <div className="bg-[#0b3d2e] border border-[#0b3d2e]/20 rounded-2xl p-12 text-center relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-white/0 via-white/20 to-white/0" />
-            <h3 className="text-2xl font-light text-white mb-4">Have specific questions?</h3>
+            <h3 className="text-2xl font-light text-white mb-4">
+              {pageContent?.ctaSection?.title || 'Have specific questions?'}
+            </h3>
             <p className="text-white/60 mb-8 max-w-2xl mx-auto">
-              Our dedicated sponsorship team is here to answer your questions and help customize a
-              package that meets your specific business objectives.
+              {pageContent?.ctaSection?.description ||
+                'Our dedicated sponsorship team is here to answer your questions and help customize a package that meets your specific business objectives.'}
             </p>
             <Link
-              href="/register/sponsor"
+              href={pageContent?.ctaSection?.buttonLink || '/register/sponsor'}
               className="inline-block bg-white text-[#0b3d2e] hover:bg-[#f8f5e9] font-bold px-8 py-4 text-lg rounded-xl transition-transform hover:scale-105"
             >
-              Contact Customer Service
+              {pageContent?.ctaSection?.buttonText || 'Contact Customer Service'}
             </Link>
           </div>
         </div>

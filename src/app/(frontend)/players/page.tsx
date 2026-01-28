@@ -7,6 +7,7 @@ import { cache } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { Trophy, TrendingUp } from 'lucide-react'
+import { getSiteLabels } from '@/utilities/getSiteContent'
 
 export const metadata: Metadata = {
   title: 'Players | APGC Golf',
@@ -33,7 +34,7 @@ const getPlayers = cache(async () => {
 })
 
 export default async function PlayersPage() {
-  const players = await getPlayers()
+  const [players, labels] = await Promise.all([getPlayers(), getSiteLabels()])
 
   const featuredPlayers = players.filter((p) => p.isFeatured)
 
@@ -42,7 +43,9 @@ export default async function PlayersPage() {
       <div className="container mx-auto px-6 max-w-7xl">
         {/* Top Players Section */}
         <div className="mb-16">
-          <h2 className="text-3xl text-[#0b3d2e] mb-8 font-bold">Top Players</h2>
+          <h2 className="text-3xl text-[#0b3d2e] mb-8 font-bold">
+            {labels?.sectionLabels?.topPlayers || 'Top Players'}
+          </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredPlayers.slice(0, 4).map((player, index) => (
               <Link key={player.id} href={`/players/${player.slug}`}>
@@ -54,7 +57,7 @@ export default async function PlayersPage() {
                   {index === 0 && (
                     <div className="absolute top-3 left-3 z-10">
                       <span className="bg-[#0b3d2e] text-white text-xs font-bold px-2 py-1 rounded">
-                        MVP
+                        {labels?.miscLabels?.mvp || 'MVP'}
                       </span>
                     </div>
                   )}
@@ -77,7 +80,9 @@ export default async function PlayersPage() {
                       />
                     )}
                     <div className="absolute inset-0 flex items-center justify-center bg-[#0b3d2e]/10 opacity-0 group-hover:opacity-100 transition-opacity">
-                      <p className="text-white font-medium text-sm drop-shadow-md">View Profile</p>
+                      <p className="text-white font-medium text-sm drop-shadow-md">
+                        {labels?.buttonLabels?.viewProfile || 'View Profile'}
+                      </p>
                     </div>
                   </div>
 
@@ -94,7 +99,9 @@ export default async function PlayersPage() {
 
         {/* All Players List */}
         <div className="space-y-3 mb-8">
-          <h2 className="text-2xl text-[#0b3d2e] mb-6 font-bold">All Players</h2>
+          <h2 className="text-2xl text-[#0b3d2e] mb-6 font-bold">
+            {labels?.sectionLabels?.allPlayers || 'All Players'}
+          </h2>
 
           {players.length > 0 ? (
             players.map((player) => (
@@ -124,7 +131,7 @@ export default async function PlayersPage() {
                         {player.name}
                       </h3>
                       <p className="text-[#636364] text-sm">
-                        {player.wins ?? 0} Wins • {player.country}
+                        {player.wins ?? 0} {labels?.fieldLabels?.wins || 'Wins'} • {player.country}
                       </p>
                     </div>
                   </div>
@@ -135,10 +142,12 @@ export default async function PlayersPage() {
                     </div>
                     <div className="hidden md:flex items-center gap-2 text-[#636364]">
                       <TrendingUp className="w-4 h-4 text-[#0b3d2e]" />
-                      <span className="text-sm">{player.points ?? 0} pts</span>
+                      <span className="text-sm">
+                        {player.points ?? 0} {labels?.miscLabels?.pts || 'pts'}
+                      </span>
                     </div>
                     <div className="text-[#636364]">
-                      Rank:{' '}
+                      {labels?.fieldLabels?.rank || 'Rank'}:{' '}
                       <span className="text-[#0b3d2e] font-medium">#{player.rank || 'N/A'}</span>
                     </div>
                   </div>
@@ -147,7 +156,9 @@ export default async function PlayersPage() {
             ))
           ) : (
             <div className="text-center py-12">
-              <p className="text-[#636364]">No players found</p>
+              <p className="text-[#636364]">
+                {labels?.miscLabels?.noPlayersFound || 'No players found'}
+              </p>
             </div>
           )}
         </div>

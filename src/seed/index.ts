@@ -4,6 +4,10 @@ import type { Payload } from 'payload'
 export async function seedDatabase(payload: Payload) {
   console.log('🌱 Starting database seed...')
 
+  // Seed CMS Content (Globals and SponsorshipTiers)
+  await seedCMSContent(payload)
+  console.log(`✅ Seeded CMS content`)
+
   // Seed Players
   const players = await seedPlayers(payload)
   console.log(`✅ Created ${players.length} players`)
@@ -393,7 +397,7 @@ async function seedNews(payload: Payload) {
               children: [
                 {
                   type: 'text',
-                  text: 'In a stunning display of skill and composure, Ricky Wijaya has secured his third consecutive APGC Championship title, cementing his legacy as one of the greatest players in the organization\'s history.',
+                  text: "In a stunning display of skill and composure, Ricky Wijaya has secured his third consecutive APGC Championship title, cementing his legacy as one of the greatest players in the organization's history.",
                 },
               ],
             },
@@ -431,7 +435,7 @@ async function seedNews(payload: Payload) {
               children: [
                 {
                   type: 'text',
-                  text: 'APGC is proud to announce a new strategic partnership with TaylorMade, one of the world\'s premier golf equipment manufacturers. This partnership will bring exclusive benefits to all APGC members.',
+                  text: "APGC is proud to announce a new strategic partnership with TaylorMade, one of the world's premier golf equipment manufacturers. This partnership will bring exclusive benefits to all APGC members.",
                 },
               ],
             },
@@ -469,7 +473,7 @@ async function seedNews(payload: Payload) {
               children: [
                 {
                   type: 'text',
-                  text: 'The APGC committee has officially released the 2025 tournament calendar, featuring 12 events across some of Indonesia\'s most prestigious golf courses.',
+                  text: "The APGC committee has officially released the 2025 tournament calendar, featuring 12 events across some of Indonesia's most prestigious golf courses.",
                 },
               ],
             },
@@ -560,7 +564,7 @@ async function seedSponsors(payload: Payload) {
       slug: 'bank-central-asia',
       tier: 'title' as const,
       website: 'https://www.bca.co.id',
-      description: 'Indonesia\'s largest private bank and proud title sponsor of APGC.',
+      description: "Indonesia's largest private bank and proud title sponsor of APGC.",
       isActive: true,
       order: 1,
       benefits: [
@@ -574,7 +578,7 @@ async function seedSponsors(payload: Payload) {
       slug: 'pertamina',
       tier: 'platinum' as const,
       website: 'https://www.pertamina.com',
-      description: 'Indonesia\'s national oil company supporting Indonesian sports.',
+      description: "Indonesia's national oil company supporting Indonesian sports.",
       isActive: true,
       order: 2,
       benefits: [{ benefit: 'Logo on all event materials' }, { benefit: 'Speaking opportunity' }],
@@ -604,7 +608,7 @@ async function seedSponsors(payload: Payload) {
       slug: 'tokopedia',
       tier: 'gold' as const,
       website: 'https://www.tokopedia.com',
-      description: 'Indonesia\'s leading e-commerce platform.',
+      description: "Indonesia's leading e-commerce platform.",
       isActive: true,
       order: 5,
       benefits: [{ benefit: 'Digital presence' }, { benefit: 'Member discounts' }],
@@ -614,7 +618,7 @@ async function seedSponsors(payload: Payload) {
       slug: 'indofood',
       tier: 'gold' as const,
       website: 'https://www.indofood.com',
-      description: 'One of Indonesia\'s largest food processing companies.',
+      description: "One of Indonesia's largest food processing companies.",
       isActive: true,
       order: 6,
       benefits: [{ benefit: 'Catering partnership' }, { benefit: 'Brand visibility' }],
@@ -624,7 +628,7 @@ async function seedSponsors(payload: Payload) {
       slug: 'astra-international',
       tier: 'platinum' as const,
       website: 'https://www.astra.co.id',
-      description: 'Indonesia\'s largest diversified conglomerate.',
+      description: "Indonesia's largest diversified conglomerate.",
       isActive: true,
       order: 7,
       benefits: [{ benefit: 'Vehicle display' }, { benefit: 'Premium sponsorship' }],
@@ -634,7 +638,7 @@ async function seedSponsors(payload: Payload) {
       slug: 'semen-indonesia',
       tier: 'gold' as const,
       website: 'https://www.semenindonesia.com',
-      description: 'Indonesia\'s largest cement producer.',
+      description: "Indonesia's largest cement producer.",
       isActive: true,
       order: 8,
       benefits: [{ benefit: 'Event signage' }, { benefit: 'Brand presence' }],
@@ -644,7 +648,7 @@ async function seedSponsors(payload: Payload) {
       slug: 'bank-mandiri',
       tier: 'platinum' as const,
       website: 'https://www.bankmandiri.co.id',
-      description: 'One of Indonesia\'s largest banks.',
+      description: "One of Indonesia's largest banks.",
       isActive: true,
       order: 9,
       benefits: [{ benefit: 'Banking services' }, { benefit: 'Member benefits' }],
@@ -701,4 +705,401 @@ async function seedSponsors(payload: Payload) {
     }
   }
   return created
+}
+
+async function seedCMSContent(payload: Payload) {
+  // Seed SiteLabels Global
+  await payload.updateGlobal({
+    slug: 'site-labels',
+    context: { disableRevalidate: true },
+    data: {
+      statusLabels: {
+        registrationOpen: 'Pendaftaran Dibuka',
+        registrationClosed: 'Pendaftaran Ditutup',
+        soldOut: 'Habis Terjual',
+        upcoming: 'Akan Datang',
+        comingSoon: 'Segera Hadir',
+        eventCompleted: 'Event Selesai',
+        open: 'Buka',
+        closed: 'Tutup',
+      },
+      buttonLabels: {
+        registerNow: 'Daftar Sekarang',
+        viewDetails: 'Lihat Detail',
+        viewAll: 'Lihat Semua',
+        viewAllEvents: 'Lihat Semua Event',
+        viewAllPlayers: 'Lihat Semua Pemain',
+        viewAllNews: 'Lihat Arsip Berita',
+        readMore: 'Baca Selengkapnya',
+        readArticle: 'Baca Artikel',
+        backToHome: 'Kembali ke Beranda',
+        continueToPayment: 'Lanjut ke Pembayaran',
+        inquireNow: 'Hubungi Sekarang',
+        viewProfile: 'Lihat Profil',
+        eventDetails: 'Detail Event',
+        tryAgain: 'Coba Lagi',
+        browseMoreEvents: 'Jelajahi Event Lainnya',
+        returnToHome: 'Kembali ke Beranda',
+      },
+      fieldLabels: {
+        prizeFund: 'Total Hadiah',
+        location: 'Lokasi',
+        date: 'Tanggal',
+        tournamentDates: 'Tanggal Turnamen',
+        entryFee: 'Biaya Pendaftaran',
+        careerWins: 'Kemenangan Karir',
+        points: 'Poin',
+        rank: 'Peringkat',
+        worldRank: 'Peringkat Dunia',
+        tourWins: 'Kemenangan Tur',
+        registeredPlayers: 'Pemain Terdaftar',
+        status: 'Status',
+        alumniPrice: 'Harga Alumni',
+        memberId: 'ID Anggota',
+        fullName: 'Nama Lengkap',
+        gender: 'Jenis Kelamin',
+        handicap: 'Handicap',
+        latestGrossScore: 'Skor Gross Terakhir',
+        email: 'Email',
+        matchPlay: 'Match Play',
+        age: 'Usia',
+        turnedPro: 'Menjadi Pro',
+        majorChampionships: 'Kejuaraan Major',
+        wins: 'Kemenangan',
+      },
+      navigationLabels: {
+        backToEventList: 'Kembali ke Daftar Event',
+        backToEvent: 'Kembali ke Event',
+        backToSponsors: 'Kembali ke Sponsor',
+        backToPlayers: 'Kembali ke Pemain',
+        backToNews: 'Kembali ke Berita',
+        backToEvents: 'Kembali ke Event',
+        viewOtherEvents: 'Lihat event lainnya',
+      },
+      sectionLabels: {
+        aboutTheEvent: 'Tentang Event',
+        aboutThePlayer: 'Tentang Pemain',
+        eventSchedule: 'Jadwal Event',
+        teeTimesAndPairings: 'Waktu Tee & Pasangan',
+        eventGallery: 'Galeri Event',
+        registration: 'Pendaftaran',
+        eventSponsors: 'Sponsor Event',
+        memberProfile: 'Profil Anggota',
+        careerStats: 'Statistik Karir',
+        recentResults: 'Hasil Terbaru',
+        topPlayers: 'Pemain Unggulan',
+        allPlayers: 'Semua Pemain',
+        relatedArticles: 'Artikel Terkait',
+        shareArticle: 'Bagikan Artikel',
+      },
+      miscLabels: {
+        limitedSpots: 'Slot terbatas',
+        noResultsFound: 'Tidak ada hasil ditemukan',
+        noEventsFound: 'Tidak ada event ditemukan.',
+        noPlayersFound: 'Tidak ada pemain ditemukan',
+        noArticlesFound: 'Tidak ada artikel ditemukan',
+        minRead: 'menit baca',
+        group: 'Grup',
+        tee: 'Tee',
+        mostPopular: 'Paling Populer',
+        available: 'Tersedia',
+        unavailable: 'Tidak Tersedia',
+        mvp: 'MVP',
+        memberData: 'Data Anggota',
+        noBiographyAvailable: 'Tidak ada biografi tersedia untuk pemain ini.',
+        pts: 'poin',
+      },
+    },
+  })
+
+  // Seed HomePage Global
+  await payload.updateGlobal({
+    slug: 'home-page',
+    context: { disableRevalidate: true },
+    data: {
+      hero: {
+        tagline: 'Final Musim 2025',
+        titleLine1: 'Warisan',
+        titleLine2: 'Yang Tercipta',
+        description:
+          'Saksikan sejarah di lapangan legendaris. Tempat para master berkompetisi untuk kejayaan tertinggi.',
+      },
+      featuredEventSection: {
+        label: 'Event Unggulan',
+      },
+      upcomingEventsSection: {
+        label: 'Event Mendatang',
+        title: 'Jadwal Turnamen',
+        description: 'Rasakan pengalaman golf kejuaraan di venue terbaik.',
+      },
+      broadcastSection: {
+        title: 'Jadwal Siaran',
+        rounds: [
+          {
+            round: 'Ronde 1',
+            day: 'Kamis',
+            time: '14:00 - 18:00 WIB',
+            network: 'APGC TV',
+            highlight: 'Tee Shot Pembuka',
+          },
+          {
+            round: 'Ronde 2',
+            day: 'Jumat',
+            time: '14:00 - 18:00 WIB',
+            network: 'APGC TV',
+            highlight: '',
+          },
+          {
+            round: 'Ronde 3',
+            day: 'Sabtu',
+            time: '13:00 - 19:00 WIB',
+            network: 'APGC TV',
+            highlight: '',
+          },
+          {
+            round: 'Ronde Final',
+            day: 'Minggu',
+            time: '12:00 - 19:00 WIB',
+            network: 'APGC TV',
+            highlight: 'Trofi Kejuaraan',
+          },
+        ],
+      },
+      partnersSection: {
+        label: 'Partner Resmi',
+      },
+      featuredPlayersSection: {
+        title: 'Pemain Unggulan',
+        description: 'Kontestan top yang berjuang untuk gelar juara.',
+      },
+      newsSection: {
+        title: 'Berita Terbaru',
+        description: 'Update dari lapangan dan behind the scenes.',
+      },
+    },
+  })
+
+  // Seed SponsorsPage Global
+  await payload.updateGlobal({
+    slug: 'sponsors-page',
+    context: { disableRevalidate: true },
+    data: {
+      header: {
+        label: 'Partner Kami',
+        title: 'Kekuatan',
+        titleHighlight: 'Pendorong',
+        description:
+          'Kami bangga bermitra dengan brand-brand terkemuka dunia yang berbagi passion kami untuk keunggulan, tradisi, dan masa depan golf.',
+      },
+      becomeASponsor: {
+        title: 'Jadilah',
+        titleHighlight: 'Sponsor',
+        description:
+          'Bergabunglah dengan grup eksklusif brand global dan terhubung dengan audiens pecinta golf yang affluent.',
+      },
+      whyPartner: {
+        title: 'Mengapa',
+        titleHighlight: 'Bermitra Dengan Kami?',
+        description:
+          'Selaraskan brand Anda dengan keunggulan. Turnamen kami menawarkan platform unik untuk berinteraksi dengan audiens sophisticated dan mendorong hasil bisnis nyata.',
+        benefits: [
+          {
+            icon: 'globe' as const,
+            title: 'Eksposur Premium',
+            description:
+              'Tampilkan brand Anda di depan pecinta golf melalui event, liputan media, dan platform digital kami.',
+          },
+          {
+            icon: 'users' as const,
+            title: 'Akses Eksklusif',
+            description:
+              'Nikmati hospitality VIP, networking event, dan engagement langsung dengan pemain dan member.',
+          },
+          {
+            icon: 'handshake' as const,
+            title: 'Dampak Komunitas',
+            description:
+              'Dukung pertumbuhan golf di Indonesia dan jadilah bagian dari pengembangan juara masa depan.',
+          },
+        ],
+      },
+      ctaSection: {
+        title: 'Punya pertanyaan khusus?',
+        description:
+          'Tim sponsorship kami siap menjawab pertanyaan Anda dan membantu menyesuaikan paket yang memenuhi tujuan bisnis spesifik Anda.',
+        buttonText: 'Hubungi Customer Service',
+        buttonLink: '/register/sponsor',
+      },
+    },
+  })
+
+  // Seed FormContent Global
+  await payload.updateGlobal({
+    slug: 'form-content',
+    context: { disableRevalidate: true },
+    data: {
+      eventRegistration: {
+        pageTitle: 'Daftar untuk',
+        pageDescription: 'Isi formulir di bawah untuk mendaftar event ini',
+        personalInfoHeading: 'Informasi Pribadi',
+        registrationDetailsHeading: 'Detail Pendaftaran',
+        fullNameLabel: 'Nama Lengkap *',
+        fullNamePlaceholder: 'Masukkan nama lengkap Anda',
+        emailLabel: 'Alamat Email *',
+        emailPlaceholder: 'email@anda.com',
+        phoneLabel: 'Nomor Telepon',
+        phonePrefix: '+62',
+        phonePlaceholder: '8xx xxxx xxxx',
+        categoryLabel: 'Kategori *',
+        categoryPlaceholder: 'Pilih kategori',
+        notesLabel: 'Catatan Tambahan',
+        notesPlaceholder: 'Kebutuhan khusus atau catatan...',
+        submitButtonText: 'Lanjut ke Pembayaran',
+        processingText: 'Memproses...',
+        termsText:
+          'Dengan mendaftar, Anda menyetujui syarat dan ketentuan kami. Anda akan diarahkan untuk menyelesaikan pembayaran secara aman melalui Xendit.',
+        eventSummaryTitle: 'Ringkasan Event',
+        alumniLabel: 'Alumni:',
+      },
+      sponsorRegistration: {
+        pageTitle: 'Jadilah Sponsor',
+        pageDescription:
+          'Bermitra dengan APGC Golf dan terhubung dengan komunitas pecinta golf dan pemimpin industri kami.',
+        formTitle: 'Aplikasi Sponsorship',
+        formDescription:
+          'Isi formulir di bawah dan tim kami akan menghubungi Anda untuk mendiskusikan peluang kemitraan.',
+        companyInfoHeading: 'Informasi Perusahaan',
+        contactInfoHeading: 'Informasi Kontak',
+        sponsorshipInterestHeading: 'Minat Sponsorship',
+        companyNameLabel: 'Nama Perusahaan *',
+        companyNamePlaceholder: 'Masukkan nama perusahaan',
+        companyWebsiteLabel: 'Website Perusahaan',
+        companyWebsitePlaceholder: 'https://www.contoh.com',
+        contactPersonLabel: 'Nama Kontak *',
+        contactPersonPlaceholder: 'Nama lengkap',
+        emailLabel: 'Alamat Email *',
+        emailPlaceholder: 'kontak@perusahaan.com',
+        phoneLabel: 'Nomor Telepon *',
+        phonePlaceholder: '+62 xxx xxxx xxxx',
+        tierLabel: 'Tier yang Diminati *',
+        tierPlaceholder: 'Pilih tier',
+        messageLabel: 'Pesan',
+        messagePlaceholder: 'Ceritakan tentang perusahaan dan tujuan sponsorship Anda...',
+        submitButtonText: 'Kirim Aplikasi',
+        processingText: 'Mengirim...',
+        footerText:
+          'Tim sponsorship kami akan meninjau aplikasi Anda dan menghubungi dalam 2-3 hari kerja.',
+      },
+      successMessages: {
+        eventRegistrationTitle: 'Pendaftaran Berhasil!',
+        eventRegistrationDescription:
+          'Terima kasih telah mendaftar. Kami telah mengirim email konfirmasi dengan instruksi pembayaran ke alamat email Anda. Silakan periksa inbox Anda.',
+        whatsNextTitle: 'Langkah Selanjutnya?',
+        whatsNextDescription:
+          'Selesaikan pembayaran dalam 48 jam untuk mengamankan tempat Anda. Anda akan menerima konfirmasi akhir setelah pembayaran terverifikasi.',
+        paymentSuccessTitle: 'Pembayaran Berhasil!',
+        paymentSuccessDescription:
+          'Terima kasih atas pendaftaran Anda. Pembayaran Anda telah berhasil diproses.',
+        checkEmailTitle: 'Periksa email Anda',
+        checkEmailDescription:
+          'Tiket dengan QR code telah dikirim ke alamat email Anda. Silakan tunjukkan saat check-in di event.',
+        sponsorApplicationTitle: 'Aplikasi Terkirim!',
+        sponsorApplicationDescription:
+          'Terima kasih atas minat Anda untuk bermitra dengan APGC Golf. Tim sponsorship kami akan meninjau aplikasi Anda dan menghubungi dalam 2-3 hari kerja.',
+        sponsorWhatsNextTitle: 'Langkah Selanjutnya?',
+        sponsorWhatsNextDescription:
+          'Tim kami akan menghubungi untuk mendiskusikan detail kemitraan, manfaat, dan menyesuaikan paket sponsorship yang sesuai dengan kebutuhan Anda.',
+      },
+      errorMessages: {
+        paymentFailedTitle: 'Pembayaran Gagal',
+        paymentFailedDescription:
+          'Maaf, pembayaran Anda tidak dapat diproses. Ini mungkin karena saldo tidak mencukupi, kartu kadaluarsa, atau masalah sementara dengan penyedia pembayaran.',
+        paymentFailedSecondary:
+          'Pendaftaran Anda telah disimpan. Anda dapat mencoba lagi dengan metode pembayaran lain atau hubungi kami jika masalah berlanjut.',
+        registrationFailed: 'Gagal mengirim pendaftaran. Silakan coba lagi.',
+        eventNotFound: 'Event tidak ditemukan.',
+        registrationClosed: 'Pendaftaran untuk event ini saat ini ditutup.',
+        needHelpText: 'Butuh bantuan?',
+        contactUsText: 'Hubungi kami',
+        contactEmail: 'info@apgc-golf.com',
+      },
+      categoryOptions: {
+        categories: [
+          { value: 'alumni', label: 'Alumni' },
+          { value: 'member', label: 'Member' },
+          { value: 'guest', label: 'Tamu' },
+          { value: 'vip', label: 'VIP' },
+        ],
+      },
+    },
+  })
+
+  // Seed SponsorshipTiers Collection
+  const existingTiers = await payload.find({
+    collection: 'sponsorship-tiers',
+    limit: 1,
+  })
+
+  if (existingTiers.totalDocs === 0) {
+    const tiers = [
+      {
+        name: 'Title Sponsor',
+        tierKey: 'title' as const,
+        order: 1,
+        isActive: true,
+        price: 'Rp 500.000.000+',
+        priceNumeric: 500000000,
+        description: 'Kemitraan premier dengan hak penamaan eksklusif dan eksposur brand maksimal.',
+        benefits: [
+          { benefit: 'Hak penamaan untuk Kejuaraan Tahunan' },
+          { benefit: 'Branding eksklusif di semua materi event' },
+          { benefit: 'Suite hospitality VIP di semua event besar' },
+          { benefit: 'Kesempatan berbicara di upacara penghargaan' },
+          { benefit: 'Penempatan logo premium di semua channel' },
+        ],
+        isHighlighted: false,
+      },
+      {
+        name: 'Platinum Partner',
+        tierKey: 'platinum' as const,
+        order: 2,
+        isActive: true,
+        price: 'Rp 250.000.000+',
+        priceNumeric: 250000000,
+        description: 'Kemitraan visibilitas tinggi dengan manfaat premium dan akses VIP.',
+        benefits: [
+          { benefit: 'Penempatan logo premium di materi event' },
+          { benefit: 'Akses VIP ke semua event' },
+          { benefit: 'Kampanye fitur media sosial' },
+          { benefit: 'Penempatan banner di semua turnamen' },
+          { benefit: 'Manajer kemitraan khusus' },
+        ],
+        isHighlighted: true,
+      },
+      {
+        name: 'Gold Partner',
+        tierKey: 'gold' as const,
+        order: 3,
+        isActive: true,
+        price: 'Rp 100.000.000+',
+        priceNumeric: 100000000,
+        description: 'Kemitraan solid dengan visibilitas dan peluang engagement yang sangat baik.',
+        benefits: [
+          { benefit: 'Logo di halaman sponsor website' },
+          { benefit: 'Mention di media sosial' },
+          { benefit: 'Penempatan signage event' },
+          { benefit: 'Tiket event gratis' },
+        ],
+        isHighlighted: false,
+      },
+    ]
+
+    for (const tier of tiers) {
+      await payload.create({
+        collection: 'sponsorship-tiers',
+        context: { disableRevalidate: true },
+        data: tier,
+      })
+    }
+  }
 }

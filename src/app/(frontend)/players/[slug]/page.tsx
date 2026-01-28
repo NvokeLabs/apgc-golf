@@ -20,6 +20,7 @@ import {
   CheckCircle2,
   XCircle,
 } from 'lucide-react'
+import { getSiteLabels } from '@/utilities/getSiteContent'
 
 type Args = {
   params: Promise<{ slug: string }>
@@ -101,7 +102,7 @@ function DetailRow({
 
 export default async function PlayerPage({ params }: Args) {
   const { slug } = await params
-  const player = await getPlayer(slug)
+  const [player, labels] = await Promise.all([getPlayer(slug), getSiteLabels()])
 
   if (!player) {
     notFound()
@@ -120,7 +121,7 @@ export default async function PlayerPage({ params }: Args) {
           className="inline-flex items-center mb-8 text-[#636364] hover:text-[#0b3d2e] pl-0 -ml-4 group transition-colors"
         >
           <ChevronLeft className="mr-2 w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-          Back to Players
+          {labels?.navigationLabels?.backToPlayers || 'Back to Players'}
         </Link>
 
         <div className="grid lg:grid-cols-12 gap-12">
@@ -156,19 +157,25 @@ export default async function PlayerPage({ params }: Args) {
             <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
               {player.rank && (
                 <GlassCard className="px-6 py-4">
-                  <p className="text-[#636364] text-xs uppercase tracking-wider mb-1">World Rank</p>
+                  <p className="text-[#636364] text-xs uppercase tracking-wider mb-1">
+                    {labels?.fieldLabels?.worldRank || 'World Rank'}
+                  </p>
                   <p className="text-3xl text-[#0b3d2e] font-light">#{player.rank}</p>
                 </GlassCard>
               )}
               <GlassCard className="px-6 py-4">
-                <p className="text-[#636364] text-xs uppercase tracking-wider mb-1">Tour Wins</p>
+                <p className="text-[#636364] text-xs uppercase tracking-wider mb-1">
+                  {labels?.fieldLabels?.tourWins || 'Tour Wins'}
+                </p>
                 <div className="flex items-center gap-2">
                   <Trophy className="w-5 h-5 text-[#0b3d2e]" />
                   <p className="text-3xl text-[#0b3d2e] font-light">{player.wins ?? 0}</p>
                 </div>
               </GlassCard>
               <GlassCard className="px-6 py-4">
-                <p className="text-[#636364] text-xs uppercase tracking-wider mb-1">Points</p>
+                <p className="text-[#636364] text-xs uppercase tracking-wider mb-1">
+                  {labels?.fieldLabels?.points || 'Points'}
+                </p>
                 <div className="flex items-center gap-2">
                   <TrendingUp className="w-5 h-5 text-[#0b3d2e]" />
                   <p className="text-3xl text-[#0b3d2e] font-light">{player.points ?? 0}</p>
@@ -180,47 +187,65 @@ export default async function PlayerPage({ params }: Args) {
               {/* Detailed Profile Section */}
               <GlassCard className="p-8">
                 <h3 className="text-lg text-[#0b3d2e] font-bold uppercase tracking-widest mb-6 pb-2 border-b border-[#0b3d2e]/10">
-                  Member Profile
+                  {labels?.sectionLabels?.memberProfile || 'Member Profile'}
                 </h3>
 
                 <div className="flex flex-col gap-1">
                   {player.memberId && (
                     <DetailRow
-                      label="Member ID"
+                      label={labels?.fieldLabels?.memberId || 'Member ID'}
                       value={player.memberId}
                       icon={<Hash className="w-4 h-4" />}
                     />
                   )}
                   <DetailRow
-                    label="Full Name"
+                    label={labels?.fieldLabels?.fullName || 'Full Name'}
                     value={player.name}
                     icon={<User className="w-4 h-4" />}
                   />
-                  {player.gender && <DetailRow label="Gender" value={player.gender} />}
+                  {player.gender && (
+                    <DetailRow
+                      label={labels?.fieldLabels?.gender || 'Gender'}
+                      value={player.gender}
+                    />
+                  )}
                   {player.handicap != null && (
-                    <DetailRow label="Handicap" value={player.handicap} />
+                    <DetailRow
+                      label={labels?.fieldLabels?.handicap || 'Handicap'}
+                      value={player.handicap}
+                    />
                   )}
                   {player.latestGrossScore != null && (
-                    <DetailRow label="Latest Gross Score" value={player.latestGrossScore} />
+                    <DetailRow
+                      label={labels?.fieldLabels?.latestGrossScore || 'Latest Gross Score'}
+                      value={player.latestGrossScore}
+                    />
                   )}
                   {player.email && (
                     <DetailRow
-                      label="Email"
+                      label={labels?.fieldLabels?.email || 'Email'}
                       value={player.email}
                       icon={<Mail className="w-4 h-4" />}
                     />
                   )}
-                  {player.status && <DetailRow label="Status" value={player.status} />}
+                  {player.status && (
+                    <DetailRow
+                      label={labels?.fieldLabels?.status || 'Status'}
+                      value={player.status}
+                    />
+                  )}
                   <DetailRow
-                    label="Match Play"
+                    label={labels?.fieldLabels?.matchPlay || 'Match Play'}
                     value={
                       player.matchPlayAvailable ? (
                         <span className="flex items-center justify-end gap-2 text-[#0b3d2e]">
-                          Available <CheckCircle2 className="w-4 h-4" />
+                          {labels?.miscLabels?.available || 'Available'}{' '}
+                          <CheckCircle2 className="w-4 h-4" />
                         </span>
                       ) : (
                         <span className="flex items-center justify-end gap-2 text-[#636364]">
-                          Unavailable <XCircle className="w-4 h-4" />
+                          {labels?.miscLabels?.unavailable || 'Unavailable'}{' '}
+                          <XCircle className="w-4 h-4" />
                         </span>
                       )
                     }
@@ -234,7 +259,8 @@ export default async function PlayerPage({ params }: Args) {
                 {/* Bio */}
                 <div>
                   <h3 className="text-xl text-[#0b3d2e] font-light mb-4">
-                    About the <span className="font-serif italic font-medium">Player</span>
+                    {labels?.sectionLabels?.aboutThePlayer || 'About the'}{' '}
+                    <span className="font-serif italic font-medium">Player</span>
                   </h3>
                   <GlassCard className="p-6">
                     {player.bio ? (
@@ -243,13 +269,14 @@ export default async function PlayerPage({ params }: Args) {
                       </div>
                     ) : (
                       <p className="text-[#636364] leading-relaxed">
-                        No biography available for this player.
+                        {labels?.miscLabels?.noBiographyAvailable ||
+                          'No biography available for this player.'}
                       </p>
                     )}
                     {player.memberDescription && (
                       <div className="mt-4 pt-4 border-t border-[#0b3d2e]/10">
                         <p className="text-sm text-[#0b3d2e]/60 uppercase tracking-wider mb-2">
-                          Member Data
+                          {labels?.miscLabels?.memberData || 'Member Data'}
                         </p>
                         <p className="text-[#0b3d2e] text-sm">{player.memberDescription}</p>
                       </div>
@@ -260,20 +287,23 @@ export default async function PlayerPage({ params }: Args) {
                 {/* Career Stats */}
                 <div>
                   <h3 className="text-xl text-[#0b3d2e] font-light mb-4">
-                    Career <span className="font-serif italic font-medium">Stats</span>
+                    {labels?.sectionLabels?.careerStats || 'Career'}{' '}
+                    <span className="font-serif italic font-medium">Stats</span>
                   </h3>
                   <div className="grid grid-cols-2 gap-3">
                     {player.age && (
                       <GlassCard className="p-4 text-center">
                         <p className="text-2xl font-light text-[#0b3d2e]">{player.age}</p>
-                        <p className="text-xs text-[#636364] uppercase tracking-wider">Age</p>
+                        <p className="text-xs text-[#636364] uppercase tracking-wider">
+                          {labels?.fieldLabels?.age || 'Age'}
+                        </p>
                       </GlassCard>
                     )}
                     {player.turnedPro && (
                       <GlassCard className="p-4 text-center">
                         <p className="text-2xl font-light text-[#0b3d2e]">{player.turnedPro}</p>
                         <p className="text-xs text-[#636364] uppercase tracking-wider">
-                          Turned Pro
+                          {labels?.fieldLabels?.turnedPro || 'Turned Pro'}
                         </p>
                       </GlassCard>
                     )}
@@ -286,7 +316,7 @@ export default async function PlayerPage({ params }: Args) {
                           </p>
                         </div>
                         <p className="text-xs text-[#636364] uppercase tracking-wider">
-                          Major Championships
+                          {labels?.fieldLabels?.majorChampionships || 'Major Championships'}
                         </p>
                       </GlassCard>
                     )}
@@ -297,7 +327,8 @@ export default async function PlayerPage({ params }: Args) {
                 {player.recentResults && player.recentResults.length > 0 && (
                   <div>
                     <h3 className="text-xl text-[#0b3d2e] font-light mb-4">
-                      Recent <span className="font-serif italic font-medium">Results</span>
+                      {labels?.sectionLabels?.recentResults || 'Recent'}{' '}
+                      <span className="font-serif italic font-medium">Results</span>
                     </h3>
                     <div className="space-y-3">
                       {player.recentResults.map((result, index) => (

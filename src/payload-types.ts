@@ -73,6 +73,7 @@ export interface Config {
     events: Event;
     news: News;
     sponsors: Sponsor;
+    'sponsorship-tiers': SponsorshipTier;
     'event-registrations': EventRegistration;
     'sponsor-registrations': SponsorRegistration;
     tickets: Ticket;
@@ -102,6 +103,7 @@ export interface Config {
     events: EventsSelect<false> | EventsSelect<true>;
     news: NewsSelect<false> | NewsSelect<true>;
     sponsors: SponsorsSelect<false> | SponsorsSelect<true>;
+    'sponsorship-tiers': SponsorshipTiersSelect<false> | SponsorshipTiersSelect<true>;
     'event-registrations': EventRegistrationsSelect<false> | EventRegistrationsSelect<true>;
     'sponsor-registrations': SponsorRegistrationsSelect<false> | SponsorRegistrationsSelect<true>;
     tickets: TicketsSelect<false> | TicketsSelect<true>;
@@ -125,10 +127,18 @@ export interface Config {
   globals: {
     header: Header;
     footer: Footer;
+    'site-labels': SiteLabel;
+    'home-page': HomePage;
+    'sponsors-page': SponsorsPage;
+    'form-content': FormContent;
   };
   globalsSelect: {
     header: HeaderSelect<false> | HeaderSelect<true>;
     footer: FooterSelect<false> | FooterSelect<true>;
+    'site-labels': SiteLabelsSelect<false> | SiteLabelsSelect<true>;
+    'home-page': HomePageSelect<false> | HomePageSelect<true>;
+    'sponsors-page': SponsorsPageSelect<false> | SponsorsPageSelect<true>;
+    'form-content': FormContentSelect<false> | FormContentSelect<true>;
   };
   locale: null;
   user: User & {
@@ -1285,6 +1295,56 @@ export interface News {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sponsorship-tiers".
+ */
+export interface SponsorshipTier {
+  id: number;
+  /**
+   * Display name (e.g., "Title Sponsor", "Platinum Partner")
+   */
+  name: string;
+  /**
+   * Tier level for sorting
+   */
+  tierKey: 'title' | 'platinum' | 'gold' | 'custom';
+  /**
+   * Display order (lower = first)
+   */
+  order?: number | null;
+  /**
+   * Show on website
+   */
+  isActive?: boolean | null;
+  /**
+   * Display price (e.g., "Rp 500,000,000")
+   */
+  price: string;
+  /**
+   * Numeric value for sorting/comparison
+   */
+  priceNumeric?: number | null;
+  /**
+   * Brief tier description
+   */
+  description?: string | null;
+  /**
+   * List of benefits included in this tier
+   */
+  benefits?:
+    | {
+        benefit: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Show "Most Popular" badge
+   */
+  isHighlighted?: boolean | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "event-registrations".
  */
 export interface EventRegistration {
@@ -1589,6 +1649,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'sponsors';
         value: number | Sponsor;
+      } | null)
+    | ({
+        relationTo: 'sponsorship-tiers';
+        value: number | SponsorshipTier;
       } | null)
     | ({
         relationTo: 'event-registrations';
@@ -2121,6 +2185,28 @@ export interface SponsorsSelect<T extends boolean = true> {
         benefit?: T;
         id?: T;
       };
+  updatedAt?: T;
+  createdAt?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sponsorship-tiers_select".
+ */
+export interface SponsorshipTiersSelect<T extends boolean = true> {
+  name?: T;
+  tierKey?: T;
+  order?: T;
+  isActive?: T;
+  price?: T;
+  priceNumeric?: T;
+  description?: T;
+  benefits?:
+    | T
+    | {
+        benefit?: T;
+        id?: T;
+      };
+  isHighlighted?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2681,6 +2767,316 @@ export interface Footer {
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-labels".
+ */
+export interface SiteLabel {
+  id: number;
+  statusLabels?: {
+    registrationOpen?: string | null;
+    registrationClosed?: string | null;
+    soldOut?: string | null;
+    upcoming?: string | null;
+    comingSoon?: string | null;
+    eventCompleted?: string | null;
+    open?: string | null;
+    closed?: string | null;
+  };
+  buttonLabels?: {
+    registerNow?: string | null;
+    viewDetails?: string | null;
+    viewAll?: string | null;
+    viewAllEvents?: string | null;
+    viewAllPlayers?: string | null;
+    viewAllNews?: string | null;
+    readMore?: string | null;
+    readArticle?: string | null;
+    backToHome?: string | null;
+    continueToPayment?: string | null;
+    inquireNow?: string | null;
+    viewProfile?: string | null;
+    eventDetails?: string | null;
+    tryAgain?: string | null;
+    browseMoreEvents?: string | null;
+    returnToHome?: string | null;
+  };
+  fieldLabels?: {
+    prizeFund?: string | null;
+    location?: string | null;
+    date?: string | null;
+    tournamentDates?: string | null;
+    entryFee?: string | null;
+    careerWins?: string | null;
+    points?: string | null;
+    rank?: string | null;
+    worldRank?: string | null;
+    tourWins?: string | null;
+    registeredPlayers?: string | null;
+    status?: string | null;
+    alumniPrice?: string | null;
+    memberId?: string | null;
+    fullName?: string | null;
+    gender?: string | null;
+    handicap?: string | null;
+    latestGrossScore?: string | null;
+    email?: string | null;
+    matchPlay?: string | null;
+    age?: string | null;
+    turnedPro?: string | null;
+    majorChampionships?: string | null;
+    wins?: string | null;
+  };
+  navigationLabels?: {
+    backToEventList?: string | null;
+    backToEvent?: string | null;
+    backToSponsors?: string | null;
+    backToPlayers?: string | null;
+    backToNews?: string | null;
+    backToEvents?: string | null;
+    viewOtherEvents?: string | null;
+  };
+  sectionLabels?: {
+    aboutTheEvent?: string | null;
+    aboutThePlayer?: string | null;
+    eventSchedule?: string | null;
+    teeTimesAndPairings?: string | null;
+    eventGallery?: string | null;
+    registration?: string | null;
+    eventSponsors?: string | null;
+    memberProfile?: string | null;
+    careerStats?: string | null;
+    recentResults?: string | null;
+    topPlayers?: string | null;
+    allPlayers?: string | null;
+    relatedArticles?: string | null;
+    shareArticle?: string | null;
+  };
+  miscLabels?: {
+    limitedSpots?: string | null;
+    noResultsFound?: string | null;
+    noEventsFound?: string | null;
+    noPlayersFound?: string | null;
+    noArticlesFound?: string | null;
+    minRead?: string | null;
+    group?: string | null;
+    tee?: string | null;
+    mostPopular?: string | null;
+    available?: string | null;
+    unavailable?: string | null;
+    mvp?: string | null;
+    memberData?: string | null;
+    noBiographyAvailable?: string | null;
+    pts?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page".
+ */
+export interface HomePage {
+  id: number;
+  hero?: {
+    /**
+     * Small text above the main title
+     */
+    tagline?: string | null;
+    /**
+     * First line of the hero title
+     */
+    titleLine1?: string | null;
+    /**
+     * Second line of the hero title (italic)
+     */
+    titleLine2?: string | null;
+    /**
+     * Hero description text
+     */
+    description?: string | null;
+    /**
+     * Hero background image
+     */
+    backgroundImage?: (number | null) | Media;
+  };
+  featuredEventSection?: {
+    label?: string | null;
+  };
+  upcomingEventsSection?: {
+    label?: string | null;
+    title?: string | null;
+    description?: string | null;
+  };
+  broadcastSection?: {
+    title?: string | null;
+    rounds?:
+      | {
+          round: string;
+          day: string;
+          time: string;
+          network: string;
+          /**
+           * Special note (e.g., "Opening Tee Shots", "Championship Trophy")
+           */
+          highlight?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  partnersSection?: {
+    label?: string | null;
+  };
+  featuredPlayersSection?: {
+    title?: string | null;
+    description?: string | null;
+  };
+  newsSection?: {
+    title?: string | null;
+    description?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sponsors-page".
+ */
+export interface SponsorsPage {
+  id: number;
+  header?: {
+    label?: string | null;
+    /**
+     * First part of the title
+     */
+    title?: string | null;
+    /**
+     * Highlighted part of the title
+     */
+    titleHighlight?: string | null;
+    description?: string | null;
+  };
+  becomeASponsor?: {
+    title?: string | null;
+    titleHighlight?: string | null;
+    description?: string | null;
+  };
+  whyPartner?: {
+    title?: string | null;
+    titleHighlight?: string | null;
+    description?: string | null;
+    benefits?:
+      | {
+          icon?: ('globe' | 'users' | 'handshake' | 'trophy' | 'star') | null;
+          title: string;
+          description?: string | null;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  ctaSection?: {
+    title?: string | null;
+    description?: string | null;
+    buttonText?: string | null;
+    buttonLink?: string | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form-content".
+ */
+export interface FormContent {
+  id: number;
+  eventRegistration?: {
+    /**
+     * Text before event name in page title
+     */
+    pageTitle?: string | null;
+    pageDescription?: string | null;
+    personalInfoHeading?: string | null;
+    registrationDetailsHeading?: string | null;
+    fullNameLabel?: string | null;
+    fullNamePlaceholder?: string | null;
+    emailLabel?: string | null;
+    emailPlaceholder?: string | null;
+    phoneLabel?: string | null;
+    phonePrefix?: string | null;
+    phonePlaceholder?: string | null;
+    categoryLabel?: string | null;
+    categoryPlaceholder?: string | null;
+    notesLabel?: string | null;
+    notesPlaceholder?: string | null;
+    submitButtonText?: string | null;
+    processingText?: string | null;
+    termsText?: string | null;
+    eventSummaryTitle?: string | null;
+    alumniLabel?: string | null;
+  };
+  sponsorRegistration?: {
+    pageTitle?: string | null;
+    pageDescription?: string | null;
+    formTitle?: string | null;
+    formDescription?: string | null;
+    companyInfoHeading?: string | null;
+    contactInfoHeading?: string | null;
+    sponsorshipInterestHeading?: string | null;
+    companyNameLabel?: string | null;
+    companyNamePlaceholder?: string | null;
+    companyWebsiteLabel?: string | null;
+    companyWebsitePlaceholder?: string | null;
+    contactPersonLabel?: string | null;
+    contactPersonPlaceholder?: string | null;
+    emailLabel?: string | null;
+    emailPlaceholder?: string | null;
+    phoneLabel?: string | null;
+    phonePlaceholder?: string | null;
+    tierLabel?: string | null;
+    tierPlaceholder?: string | null;
+    messageLabel?: string | null;
+    messagePlaceholder?: string | null;
+    submitButtonText?: string | null;
+    processingText?: string | null;
+    footerText?: string | null;
+  };
+  successMessages?: {
+    eventRegistrationTitle?: string | null;
+    eventRegistrationDescription?: string | null;
+    whatsNextTitle?: string | null;
+    whatsNextDescription?: string | null;
+    paymentSuccessTitle?: string | null;
+    paymentSuccessDescription?: string | null;
+    checkEmailTitle?: string | null;
+    checkEmailDescription?: string | null;
+    sponsorApplicationTitle?: string | null;
+    sponsorApplicationDescription?: string | null;
+    sponsorWhatsNextTitle?: string | null;
+    sponsorWhatsNextDescription?: string | null;
+  };
+  errorMessages?: {
+    paymentFailedTitle?: string | null;
+    paymentFailedDescription?: string | null;
+    paymentFailedSecondary?: string | null;
+    registrationFailed?: string | null;
+    eventNotFound?: string | null;
+    registrationClosed?: string | null;
+    needHelpText?: string | null;
+    contactUsText?: string | null;
+    contactEmail?: string | null;
+  };
+  categoryOptions?: {
+    categories?:
+      | {
+          value: string;
+          label: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
+  updatedAt?: string | null;
+  createdAt?: string | null;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
  * via the `definition` "header_select".
  */
 export interface HeaderSelect<T extends boolean = true> {
@@ -2720,6 +3116,333 @@ export interface FooterSelect<T extends boolean = true> {
               label?: T;
             };
         id?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "site-labels_select".
+ */
+export interface SiteLabelsSelect<T extends boolean = true> {
+  statusLabels?:
+    | T
+    | {
+        registrationOpen?: T;
+        registrationClosed?: T;
+        soldOut?: T;
+        upcoming?: T;
+        comingSoon?: T;
+        eventCompleted?: T;
+        open?: T;
+        closed?: T;
+      };
+  buttonLabels?:
+    | T
+    | {
+        registerNow?: T;
+        viewDetails?: T;
+        viewAll?: T;
+        viewAllEvents?: T;
+        viewAllPlayers?: T;
+        viewAllNews?: T;
+        readMore?: T;
+        readArticle?: T;
+        backToHome?: T;
+        continueToPayment?: T;
+        inquireNow?: T;
+        viewProfile?: T;
+        eventDetails?: T;
+        tryAgain?: T;
+        browseMoreEvents?: T;
+        returnToHome?: T;
+      };
+  fieldLabels?:
+    | T
+    | {
+        prizeFund?: T;
+        location?: T;
+        date?: T;
+        tournamentDates?: T;
+        entryFee?: T;
+        careerWins?: T;
+        points?: T;
+        rank?: T;
+        worldRank?: T;
+        tourWins?: T;
+        registeredPlayers?: T;
+        status?: T;
+        alumniPrice?: T;
+        memberId?: T;
+        fullName?: T;
+        gender?: T;
+        handicap?: T;
+        latestGrossScore?: T;
+        email?: T;
+        matchPlay?: T;
+        age?: T;
+        turnedPro?: T;
+        majorChampionships?: T;
+        wins?: T;
+      };
+  navigationLabels?:
+    | T
+    | {
+        backToEventList?: T;
+        backToEvent?: T;
+        backToSponsors?: T;
+        backToPlayers?: T;
+        backToNews?: T;
+        backToEvents?: T;
+        viewOtherEvents?: T;
+      };
+  sectionLabels?:
+    | T
+    | {
+        aboutTheEvent?: T;
+        aboutThePlayer?: T;
+        eventSchedule?: T;
+        teeTimesAndPairings?: T;
+        eventGallery?: T;
+        registration?: T;
+        eventSponsors?: T;
+        memberProfile?: T;
+        careerStats?: T;
+        recentResults?: T;
+        topPlayers?: T;
+        allPlayers?: T;
+        relatedArticles?: T;
+        shareArticle?: T;
+      };
+  miscLabels?:
+    | T
+    | {
+        limitedSpots?: T;
+        noResultsFound?: T;
+        noEventsFound?: T;
+        noPlayersFound?: T;
+        noArticlesFound?: T;
+        minRead?: T;
+        group?: T;
+        tee?: T;
+        mostPopular?: T;
+        available?: T;
+        unavailable?: T;
+        mvp?: T;
+        memberData?: T;
+        noBiographyAvailable?: T;
+        pts?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "home-page_select".
+ */
+export interface HomePageSelect<T extends boolean = true> {
+  hero?:
+    | T
+    | {
+        tagline?: T;
+        titleLine1?: T;
+        titleLine2?: T;
+        description?: T;
+        backgroundImage?: T;
+      };
+  featuredEventSection?:
+    | T
+    | {
+        label?: T;
+      };
+  upcomingEventsSection?:
+    | T
+    | {
+        label?: T;
+        title?: T;
+        description?: T;
+      };
+  broadcastSection?:
+    | T
+    | {
+        title?: T;
+        rounds?:
+          | T
+          | {
+              round?: T;
+              day?: T;
+              time?: T;
+              network?: T;
+              highlight?: T;
+              id?: T;
+            };
+      };
+  partnersSection?:
+    | T
+    | {
+        label?: T;
+      };
+  featuredPlayersSection?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  newsSection?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sponsors-page_select".
+ */
+export interface SponsorsPageSelect<T extends boolean = true> {
+  header?:
+    | T
+    | {
+        label?: T;
+        title?: T;
+        titleHighlight?: T;
+        description?: T;
+      };
+  becomeASponsor?:
+    | T
+    | {
+        title?: T;
+        titleHighlight?: T;
+        description?: T;
+      };
+  whyPartner?:
+    | T
+    | {
+        title?: T;
+        titleHighlight?: T;
+        description?: T;
+        benefits?:
+          | T
+          | {
+              icon?: T;
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+      };
+  ctaSection?:
+    | T
+    | {
+        title?: T;
+        description?: T;
+        buttonText?: T;
+        buttonLink?: T;
+      };
+  updatedAt?: T;
+  createdAt?: T;
+  globalType?: T;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "form-content_select".
+ */
+export interface FormContentSelect<T extends boolean = true> {
+  eventRegistration?:
+    | T
+    | {
+        pageTitle?: T;
+        pageDescription?: T;
+        personalInfoHeading?: T;
+        registrationDetailsHeading?: T;
+        fullNameLabel?: T;
+        fullNamePlaceholder?: T;
+        emailLabel?: T;
+        emailPlaceholder?: T;
+        phoneLabel?: T;
+        phonePrefix?: T;
+        phonePlaceholder?: T;
+        categoryLabel?: T;
+        categoryPlaceholder?: T;
+        notesLabel?: T;
+        notesPlaceholder?: T;
+        submitButtonText?: T;
+        processingText?: T;
+        termsText?: T;
+        eventSummaryTitle?: T;
+        alumniLabel?: T;
+      };
+  sponsorRegistration?:
+    | T
+    | {
+        pageTitle?: T;
+        pageDescription?: T;
+        formTitle?: T;
+        formDescription?: T;
+        companyInfoHeading?: T;
+        contactInfoHeading?: T;
+        sponsorshipInterestHeading?: T;
+        companyNameLabel?: T;
+        companyNamePlaceholder?: T;
+        companyWebsiteLabel?: T;
+        companyWebsitePlaceholder?: T;
+        contactPersonLabel?: T;
+        contactPersonPlaceholder?: T;
+        emailLabel?: T;
+        emailPlaceholder?: T;
+        phoneLabel?: T;
+        phonePlaceholder?: T;
+        tierLabel?: T;
+        tierPlaceholder?: T;
+        messageLabel?: T;
+        messagePlaceholder?: T;
+        submitButtonText?: T;
+        processingText?: T;
+        footerText?: T;
+      };
+  successMessages?:
+    | T
+    | {
+        eventRegistrationTitle?: T;
+        eventRegistrationDescription?: T;
+        whatsNextTitle?: T;
+        whatsNextDescription?: T;
+        paymentSuccessTitle?: T;
+        paymentSuccessDescription?: T;
+        checkEmailTitle?: T;
+        checkEmailDescription?: T;
+        sponsorApplicationTitle?: T;
+        sponsorApplicationDescription?: T;
+        sponsorWhatsNextTitle?: T;
+        sponsorWhatsNextDescription?: T;
+      };
+  errorMessages?:
+    | T
+    | {
+        paymentFailedTitle?: T;
+        paymentFailedDescription?: T;
+        paymentFailedSecondary?: T;
+        registrationFailed?: T;
+        eventNotFound?: T;
+        registrationClosed?: T;
+        needHelpText?: T;
+        contactUsText?: T;
+        contactEmail?: T;
+      };
+  categoryOptions?:
+    | T
+    | {
+        categories?:
+          | T
+          | {
+              value?: T;
+              label?: T;
+              id?: T;
+            };
       };
   updatedAt?: T;
   createdAt?: T;

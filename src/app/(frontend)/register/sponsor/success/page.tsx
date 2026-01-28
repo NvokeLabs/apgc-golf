@@ -3,12 +3,16 @@ import type { Metadata } from 'next'
 import { GlassCard } from '@/components/golf'
 import Link from 'next/link'
 import { CheckCircle, Handshake, ArrowRight } from 'lucide-react'
+import { getFormContent, getSiteLabels } from '@/utilities/getSiteContent'
 
 export const metadata: Metadata = {
   title: 'Application Submitted | APGC Golf',
 }
 
-export default function SponsorRegistrationSuccessPage() {
+export default async function SponsorRegistrationSuccessPage() {
+  const [formContent, labels] = await Promise.all([getFormContent(), getSiteLabels()])
+  const successContent = formContent?.successMessages
+
   return (
     <div className="pt-24 pb-20 min-h-screen flex items-center justify-center">
       <div className="container mx-auto px-6 max-w-lg">
@@ -18,22 +22,24 @@ export default function SponsorRegistrationSuccessPage() {
           </div>
 
           <h1 className="text-3xl font-serif italic text-[#0b3d2e] mb-4">
-            Application Submitted!
+            {successContent?.sponsorApplicationTitle || 'Application Submitted!'}
           </h1>
 
           <p className="text-[#636364] mb-8 leading-relaxed">
-            Thank you for your interest in partnering with APGC Golf. Our sponsorship
-            team will review your application and contact you within 2-3 business days.
+            {successContent?.sponsorApplicationDescription ||
+              'Thank you for your interest in partnering with APGC Golf. Our sponsorship team will review your application and contact you within 2-3 business days.'}
           </p>
 
           <div className="bg-[#0b3d2e]/5 rounded-xl p-6 mb-8 border border-[#0b3d2e]/10">
             <div className="flex items-center justify-center gap-2 text-[#0b3d2e] mb-2">
               <Handshake className="w-5 h-5" />
-              <span className="font-medium">What&apos;s Next?</span>
+              <span className="font-medium">
+                {successContent?.sponsorWhatsNextTitle || "What's Next?"}
+              </span>
             </div>
             <p className="text-sm text-[#636364]">
-              Our team will reach out to discuss partnership details, benefits,
-              and customize a sponsorship package that fits your needs.
+              {successContent?.sponsorWhatsNextDescription ||
+                'Our team will reach out to discuss partnership details, benefits, and customize a sponsorship package that fits your needs.'}
             </p>
           </div>
 
@@ -42,14 +48,14 @@ export default function SponsorRegistrationSuccessPage() {
               href="/sponsors"
               className="flex items-center justify-center gap-2 w-full rounded-xl bg-[#0b3d2e] py-4 font-bold text-white transition-colors hover:bg-[#091f18] shadow-lg"
             >
-              View Current Sponsors
+              {labels?.buttonLabels?.viewAll || 'View Current Sponsors'}
               <ArrowRight className="w-4 h-4" />
             </Link>
             <Link
               href="/"
               className="block w-full rounded-xl border border-[#0b3d2e]/20 py-4 font-medium text-[#0b3d2e] transition-colors hover:bg-[#0b3d2e]/5"
             >
-              Back to Home
+              {labels?.buttonLabels?.backToHome || 'Back to Home'}
             </Link>
           </div>
         </GlassCard>

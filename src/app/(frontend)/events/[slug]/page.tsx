@@ -19,6 +19,7 @@ import {
   Camera,
 } from 'lucide-react'
 import { generateEventJsonLd } from '@/utilities/structuredData'
+import { getSiteLabels } from '@/utilities/getSiteContent'
 
 type Args = {
   params: Promise<{ slug: string }>
@@ -83,7 +84,7 @@ const tierLabels: Record<string, string> = {
 
 export default async function EventPage({ params }: Args) {
   const { slug } = await params
-  const event = await getEvent(slug)
+  const [event, labels] = await Promise.all([getEvent(slug), getSiteLabels()])
 
   if (!event) {
     notFound()
@@ -131,7 +132,7 @@ export default async function EventPage({ params }: Args) {
             className="inline-flex items-center mb-8 text-[#636364] hover:text-[#0b3d2e] pl-0 -ml-4 group transition-colors"
           >
             <ChevronLeft className="mr-2 w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-            Back to Event List
+            {labels?.navigationLabels?.backToEventList || 'Back to Event List'}
           </Link>
 
           {/* Hero Section */}
@@ -155,7 +156,7 @@ export default async function EventPage({ params }: Args) {
                     </span>
                     {event.status === 'open' && (
                       <span className="px-3 py-1 rounded-full text-[10px] uppercase tracking-widest font-semibold bg-[#0b3d2e] text-white border border-white/20">
-                        Registration Open
+                        {labels?.statusLabels?.registrationOpen || 'Registration Open'}
                       </span>
                     )}
                   </div>
@@ -196,12 +197,12 @@ export default async function EventPage({ params }: Args) {
                     }`}
                   >
                     {event.status === 'sold-out'
-                      ? 'Sold Out'
+                      ? labels?.statusLabels?.soldOut || 'Sold Out'
                       : event.status === 'closed'
-                        ? 'Registration Closed'
+                        ? labels?.statusLabels?.registrationClosed || 'Registration Closed'
                         : event.status === 'completed'
-                          ? 'Event Completed'
-                          : 'Register Now'}
+                          ? labels?.statusLabels?.eventCompleted || 'Event Completed'
+                          : labels?.buttonLabels?.registerNow || 'Register Now'}
                     {isRegistrationOpen && <ArrowRight className="ml-2 w-5 h-5" />}
                   </Link>
                   {event.price && (
@@ -220,7 +221,8 @@ export default async function EventPage({ params }: Args) {
               {/* Description */}
               <section>
                 <h2 className="text-2xl text-[#0b3d2e] font-light mb-6">
-                  About the <span className="font-serif italic font-medium">Event</span>
+                  {labels?.sectionLabels?.aboutTheEvent || 'About the'}{' '}
+                  <span className="font-serif italic font-medium">Event</span>
                 </h2>
                 <GlassCard className="p-6">
                   {event.description ? (
@@ -239,7 +241,8 @@ export default async function EventPage({ params }: Args) {
               {event.schedule && event.schedule.length > 0 && (
                 <section>
                   <h2 className="text-2xl text-[#0b3d2e] font-light mb-6">
-                    Event <span className="font-serif italic font-medium">Schedule</span>
+                    {labels?.sectionLabels?.eventSchedule || 'Event'}{' '}
+                    <span className="font-serif italic font-medium">Schedule</span>
                   </h2>
                   <div className="space-y-6">
                     {event.schedule.map((day, dayIndex) => (
@@ -276,15 +279,20 @@ export default async function EventPage({ params }: Args) {
               {event.pairings && event.pairings.length > 0 && (
                 <section>
                   <h2 className="text-2xl text-[#0b3d2e] font-light mb-6">
-                    Tee Times & <span className="font-serif italic font-medium">Pairings</span>
+                    {labels?.sectionLabels?.teeTimesAndPairings || 'Tee Times &'}{' '}
+                    <span className="font-serif italic font-medium">Pairings</span>
                   </h2>
                   <div className="space-y-4">
                     {event.pairings.map((pairing, index) => (
                       <GlassCard key={index} className="p-4">
                         <div className="flex items-center justify-between mb-3">
-                          <span className="font-bold text-[#0b3d2e]">Group {pairing.group}</span>
+                          <span className="font-bold text-[#0b3d2e]">
+                            {labels?.miscLabels?.group || 'Group'} {pairing.group}
+                          </span>
                           <div className="flex items-center gap-4 text-sm text-[#636364]">
-                            <span>Tee {pairing.tee}</span>
+                            <span>
+                              {labels?.miscLabels?.tee || 'Tee'} {pairing.tee}
+                            </span>
                             <span className="font-mono">{pairing.time}</span>
                           </div>
                         </div>
@@ -310,7 +318,8 @@ export default async function EventPage({ params }: Args) {
                 <section>
                   <h2 className="text-2xl text-[#0b3d2e] font-light mb-6 flex items-center gap-2">
                     <Camera className="w-5 h-5" />
-                    Event <span className="font-serif italic font-medium">Gallery</span>
+                    {labels?.sectionLabels?.eventGallery || 'Event'}{' '}
+                    <span className="font-serif italic font-medium">Gallery</span>
                   </h2>
                   <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                     {event.gallery.map((item, index) => {
@@ -339,20 +348,21 @@ export default async function EventPage({ params }: Args) {
             {/* Right Sidebar */}
             <div className="lg:col-span-4 space-y-8">
               {/* Registration Card */}
-              <GlassCard className="p-8 sticky top-32">
+              <GlassCard className="p-8">
                 <h3 className="text-lg text-[#0b3d2e] font-bold uppercase tracking-widest mb-6 pb-2 border-b border-[#0b3d2e]/10">
-                  Registration
+                  {labels?.sectionLabels?.registration || 'Registration'}
                 </h3>
 
                 {event.price && (
                   <div className="mb-6">
                     <p className="text-[#636364] text-xs uppercase tracking-wider mb-1">
-                      Entry Fee
+                      {labels?.fieldLabels?.entryFee || 'Entry Fee'}
                     </p>
                     <p className="text-3xl font-light text-[#0b3d2e]">{formatPrice(event.price)}</p>
                     {event.alumniPrice && (
                       <p className="mt-2 text-sm text-[#636364]">
-                        Alumni Price: {formatPrice(event.alumniPrice)}
+                        {labels?.fieldLabels?.alumniPrice || 'Alumni Price'}:{' '}
+                        {formatPrice(event.alumniPrice)}
                       </p>
                     )}
                   </div>
@@ -360,19 +370,25 @@ export default async function EventPage({ params }: Args) {
 
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between py-2 border-b border-[#0b3d2e]/10">
-                    <span className="text-[#636364] text-sm">Date</span>
+                    <span className="text-[#636364] text-sm">
+                      {labels?.fieldLabels?.date || 'Date'}
+                    </span>
                     <span className="text-[#0b3d2e] text-sm font-medium">
                       {event.date ? formatDate(event.date) : 'TBA'}
                     </span>
                   </div>
                   <div className="flex justify-between py-2 border-b border-[#0b3d2e]/10">
-                    <span className="text-[#636364] text-sm">Location</span>
+                    <span className="text-[#636364] text-sm">
+                      {labels?.fieldLabels?.location || 'Location'}
+                    </span>
                     <span className="text-[#0b3d2e] text-sm font-medium text-right max-w-[60%]">
                       {event.location || 'TBA'}
                     </span>
                   </div>
                   <div className="flex justify-between py-2">
-                    <span className="text-[#636364] text-sm">Status</span>
+                    <span className="text-[#636364] text-sm">
+                      {labels?.fieldLabels?.status || 'Status'}
+                    </span>
                     <span
                       className={`text-sm font-medium ${
                         event.status === 'open'
@@ -383,13 +399,13 @@ export default async function EventPage({ params }: Args) {
                       }`}
                     >
                       {event.status === 'open'
-                        ? 'Open'
+                        ? labels?.statusLabels?.open || 'Open'
                         : event.status === 'upcoming'
-                          ? 'Coming Soon'
+                          ? labels?.statusLabels?.comingSoon || 'Coming Soon'
                           : event.status === 'sold-out'
-                            ? 'Sold Out'
+                            ? labels?.statusLabels?.soldOut || 'Sold Out'
                             : event.status === 'closed'
-                              ? 'Closed'
+                              ? labels?.statusLabels?.closed || 'Closed'
                               : 'Completed'}
                     </span>
                   </div>
@@ -400,7 +416,7 @@ export default async function EventPage({ params }: Args) {
                     href={`/register/event/${event.slug}`}
                     className="block w-full bg-[#0b3d2e] hover:bg-[#091f18] text-white font-bold py-4 rounded-xl text-center transition-colors shadow-lg"
                   >
-                    Register Now
+                    {labels?.buttonLabels?.registerNow || 'Register Now'}
                   </Link>
                 ) : (
                   <button
@@ -408,10 +424,10 @@ export default async function EventPage({ params }: Args) {
                     className="block w-full bg-[#636364]/50 text-white font-bold py-4 rounded-xl text-center cursor-not-allowed"
                   >
                     {event.status === 'sold-out'
-                      ? 'Sold Out'
+                      ? labels?.statusLabels?.soldOut || 'Sold Out'
                       : event.status === 'completed'
-                        ? 'Event Ended'
-                        : 'Registration Closed'}
+                        ? labels?.statusLabels?.eventCompleted || 'Event Ended'
+                        : labels?.statusLabels?.registrationClosed || 'Registration Closed'}
                   </button>
                 )}
               </GlassCard>
@@ -420,7 +436,7 @@ export default async function EventPage({ params }: Args) {
               {event.sponsors && event.sponsors.length > 0 && (
                 <GlassCard className="p-6">
                   <h3 className="text-lg text-[#0b3d2e] font-bold uppercase tracking-widest mb-6 pb-2 border-b border-[#0b3d2e]/10">
-                    Event Sponsors
+                    {labels?.sectionLabels?.eventSponsors || 'Event Sponsors'}
                   </h3>
                   <div className="space-y-4">
                     {event.sponsors.map((sponsor) => {

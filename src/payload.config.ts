@@ -1,5 +1,6 @@
 // storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
+import { resendAdapter } from '@payloadcms/email-resend'
 
 import sharp from 'sharp' // sharp-import
 import path from 'path'
@@ -16,10 +17,15 @@ import { Players } from './collections/Players'
 import { Posts } from './collections/Posts'
 import { Sponsors } from './collections/Sponsors'
 import { SponsorRegistrations } from './collections/SponsorRegistrations'
+import { SponsorshipTiers } from './collections/SponsorshipTiers'
 import { Tickets } from './collections/Tickets'
 import { Users } from './collections/Users'
 import { Footer } from './Footer/config'
+import { FormContent } from './FormContent/config'
 import { Header } from './Header/config'
+import { HomePage } from './HomePage/config'
+import { SiteLabels } from './SiteLabels/config'
+import { SponsorsPage } from './SponsorsPage/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
@@ -83,6 +89,11 @@ export default buildConfig({
       connectionString: process.env.DATABASE_URI || '',
     },
   }),
+  email: resendAdapter({
+    defaultFromAddress: process.env.RESEND_FROM_EMAIL || 'onboarding@resend.dev',
+    defaultFromName: 'APGC Golf',
+    apiKey: process.env.RESEND_API_KEY || '',
+  }),
   collections: [
     // Content
     Pages,
@@ -92,6 +103,7 @@ export default buildConfig({
     Events,
     News,
     Sponsors,
+    SponsorshipTiers,
     // Registrations
     EventRegistrations,
     SponsorRegistrations,
@@ -102,7 +114,7 @@ export default buildConfig({
     Users,
   ],
   cors: [getServerSideURL()].filter(Boolean),
-  globals: [Header, Footer],
+  globals: [Header, Footer, SiteLabels, HomePage, SponsorsPage, FormContent],
   plugins: [
     ...plugins,
     // storage-adapter-placeholder

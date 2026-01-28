@@ -18,6 +18,7 @@ import {
   TrendingUp,
   ArrowUpRight,
 } from 'lucide-react'
+import { getHomePageContent, getSiteLabels } from '@/utilities/getSiteContent'
 
 export const metadata: Metadata = {
   title: 'APGC Golf | Alumni Polinema Golf Club',
@@ -73,16 +74,55 @@ const getFeaturedData = cache(async () => {
 })
 
 export default async function HomePage() {
-  const { players, events, featuredEvent, news, sponsors } = await getFeaturedData()
+  const [{ players, events, featuredEvent, news, sponsors }, homeContent, labels] =
+    await Promise.all([getFeaturedData(), getHomePageContent(), getSiteLabels()])
+
+  // Get broadcast rounds from CMS or use defaults
+  const broadcastRounds = homeContent?.broadcastSection?.rounds?.length
+    ? homeContent.broadcastSection.rounds
+    : [
+        {
+          round: 'Round 1',
+          day: 'Thursday',
+          time: '1:00 PM - 6:00 PM',
+          network: 'Golf Channel',
+          highlight: 'Opening Tee Shots',
+        },
+        {
+          round: 'Round 2',
+          day: 'Friday',
+          time: '1:00 PM - 6:00 PM',
+          network: 'Golf Channel',
+          highlight: 'Cut Day',
+        },
+        {
+          round: 'Round 3',
+          day: 'Saturday',
+          time: '12:00 PM - 6:00 PM',
+          network: 'CBS Sports',
+          highlight: 'Moving Day',
+        },
+        {
+          round: 'Final Round',
+          day: 'Sunday',
+          time: '12:00 PM - 6:00 PM',
+          network: 'CBS Sports',
+          highlight: 'Championship Trophy',
+        },
+      ]
 
   return (
-    <div>
+    <div className="-mt-[50px]">
       {/* Hero Section */}
       <section className="relative min-h-[90vh] flex items-center justify-center overflow-hidden bg-[#0b3d2e]">
         {/* Background Image */}
         <div className="absolute inset-0 z-0">
           <Image
-            src="https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=1920&q=80"
+            src={
+              (typeof homeContent?.hero?.backgroundImage === 'object' &&
+                homeContent.hero.backgroundImage?.url) ||
+              'https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=1920&q=80'
+            }
             alt="Golf Course"
             fill
             className="object-cover opacity-100"
@@ -99,18 +139,20 @@ export default async function HomePage() {
               <div className="flex items-center gap-4 mb-8">
                 <div className="h-[1px] w-12 bg-white" />
                 <span className="text-white font-serif italic tracking-wider text-lg">
-                  The 2025 Season Finale
+                  {homeContent?.hero?.tagline || 'The 2025 Season Finale'}
                 </span>
               </div>
 
               <h1 className="text-5xl lg:text-7xl text-white leading-[1.1] mb-8 font-light">
-                Legacy <br />
-                <span className="font-serif italic font-medium text-white/90">In The Making</span>
+                {homeContent?.hero?.titleLine1 || 'Legacy'} <br />
+                <span className="font-serif italic font-medium text-white/90">
+                  {homeContent?.hero?.titleLine2 || 'In The Making'}
+                </span>
               </h1>
 
               <p className="text-white/80 text-lg font-light leading-relaxed mb-10 max-w-md">
-                Witness history at the legendary Cypress Point. Where masters of the craft compete
-                for the ultimate glory.
+                {homeContent?.hero?.description ||
+                  'Witness history at the legendary Cypress Point. Where masters of the craft compete for the ultimate glory.'}
               </p>
             </div>
 
@@ -141,13 +183,15 @@ export default async function HomePage() {
 
                     <div className="absolute top-4 left-4 bg-[#D66232] text-white px-4 py-2 rounded-sm flex items-center gap-2">
                       <Star className="w-4 h-4 fill-current" />
-                      <span className="text-xs uppercase tracking-wider">Featured Event</span>
+                      <span className="text-xs uppercase tracking-wider">
+                        {homeContent?.featuredEventSection?.label || 'Featured Event'}
+                      </span>
                     </div>
 
                     {featuredEvent.prizeFund && (
                       <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-sm">
                         <p className="text-[#0b3d2e]/60 text-[10px] uppercase tracking-wider mb-1">
-                          Prize Fund
+                          {labels?.fieldLabels?.prizeFund || 'Prize Fund'}
                         </p>
                         <p className="text-2xl font-serif text-[#0b3d2e]">
                           {featuredEvent.prizeFund}
@@ -170,7 +214,7 @@ export default async function HomePage() {
                           </div>
                           <div>
                             <p className="text-[#0b3d2e]/60 text-xs uppercase tracking-wider mb-1">
-                              Location
+                              {labels?.fieldLabels?.location || 'Location'}
                             </p>
                             <p className="text-[#0b3d2e]">{featuredEvent.location || 'TBA'}</p>
                           </div>
@@ -182,7 +226,7 @@ export default async function HomePage() {
                           </div>
                           <div>
                             <p className="text-[#0b3d2e]/60 text-xs uppercase tracking-wider mb-1">
-                              Tournament Dates
+                              {labels?.fieldLabels?.tournamentDates || 'Tournament Dates'}
                             </p>
                             <p className="text-[#0b3d2e]">
                               {featuredEvent.date
@@ -202,9 +246,11 @@ export default async function HomePage() {
                           </div>
                           <div>
                             <p className="text-[#0b3d2e]/60 text-xs uppercase tracking-wider mb-1">
-                              Registered Players
+                              {labels?.fieldLabels?.registeredPlayers || 'Registered Players'}
                             </p>
-                            <p className="text-[#0b3d2e]">Registration Open</p>
+                            <p className="text-[#0b3d2e]">
+                              {labels?.statusLabels?.registrationOpen || 'Registration Open'}
+                            </p>
                           </div>
                         </div>
                       </div>
@@ -215,11 +261,11 @@ export default async function HomePage() {
                         href={`/register/event/${featuredEvent.slug}`}
                         className="w-full bg-[#0b3d2e] hover:bg-[#0b3d2e]/90 text-white border-none rounded-sm px-6 py-4 text-sm tracking-[0.15em] uppercase transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-2"
                       >
-                        <span>Register Now</span>
+                        <span>{labels?.buttonLabels?.registerNow || 'Register Now'}</span>
                         <ArrowRight className="w-4 h-4" />
                       </Link>
                       <p className="text-center text-[#0b3d2e]/50 text-xs mt-4">
-                        Limited spots available
+                        {labels?.miscLabels?.limitedSpots || 'Limited spots available'}
                       </p>
                     </div>
                   </div>
@@ -240,14 +286,15 @@ export default async function HomePage() {
               <div className="flex items-center gap-2 mb-4">
                 <span className="w-2 h-2 rounded-full bg-[#0b3d2e] animate-pulse" />
                 <span className="text-[#0b3d2e] text-xs font-bold tracking-[0.2em] uppercase">
-                  Upcoming Events
+                  {homeContent?.upcomingEventsSection?.label || 'Upcoming Events'}
                 </span>
               </div>
               <h2 className="text-4xl md:text-5xl font-bold text-[#0b3d2e] mb-2">
-                Tournament Schedule
+                {homeContent?.upcomingEventsSection?.title || 'Tournament Schedule'}
               </h2>
               <p className="text-[#636364] text-lg">
-                Experience championship golf at the finest venues.
+                {homeContent?.upcomingEventsSection?.description ||
+                  'Experience championship golf at the finest venues.'}
               </p>
             </div>
 
@@ -255,7 +302,7 @@ export default async function HomePage() {
               href="/events"
               className="bg-[#0b3d2e] text-white hover:bg-[#091f18] shadow-lg shadow-emerald-900/20 border-none px-6 py-3 rounded-lg flex items-center gap-2"
             >
-              View All Events
+              {labels?.buttonLabels?.viewAllEvents || 'View All Events'}
               <ArrowRight className="w-4 h-4" />
             </Link>
           </div>
@@ -356,40 +403,11 @@ export default async function HomePage() {
           <div>
             <h3 className="text-2xl font-semibold text-[#0b3d2e] mb-6 flex items-center gap-2">
               <CalendarDays className="w-5 h-5 text-[#0b3d2e]" />
-              Broadcast Schedule
+              {homeContent?.broadcastSection?.title || 'Broadcast Schedule'}
             </h3>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {[
-                {
-                  round: 'Round 1',
-                  date: 'Thursday',
-                  coverage: '1:00 PM - 6:00 PM',
-                  network: 'Golf Channel',
-                  highlight: 'Opening Tee Shots',
-                },
-                {
-                  round: 'Round 2',
-                  date: 'Friday',
-                  coverage: '1:00 PM - 6:00 PM',
-                  network: 'Golf Channel',
-                  highlight: 'Cut Day',
-                },
-                {
-                  round: 'Round 3',
-                  date: 'Saturday',
-                  coverage: '12:00 PM - 6:00 PM',
-                  network: 'CBS Sports',
-                  highlight: 'Moving Day',
-                },
-                {
-                  round: 'Final Round',
-                  date: 'Sunday',
-                  coverage: '12:00 PM - 6:00 PM',
-                  network: 'CBS Sports',
-                  highlight: 'Championship Trophy',
-                },
-              ].map((day, idx) => (
+              {broadcastRounds.map((day, idx) => (
                 <GlassCard
                   key={idx}
                   className="p-6 relative overflow-hidden border-[#0b3d2e]/5 bg-white/40"
@@ -403,21 +421,23 @@ export default async function HomePage() {
                     <span className="text-[#0b3d2e] text-xs font-bold tracking-wider uppercase mb-2 block">
                       {day.round}
                     </span>
-                    <h4 className="text-lg font-semibold text-[#0b3d2e] mb-4">{day.date}</h4>
+                    <h4 className="text-lg font-semibold text-[#0b3d2e] mb-4">{day.day}</h4>
 
                     <div className="space-y-3">
                       <div className="flex items-start gap-3">
                         <Tv className="w-4 h-4 text-[#636364] mt-0.5 shrink-0" />
                         <div>
                           <p className="text-[#0b3d2e] text-sm font-medium">{day.network}</p>
-                          <p className="text-[#636364] text-xs">{day.coverage}</p>
+                          <p className="text-[#636364] text-xs">{day.time}</p>
                         </div>
                       </div>
 
-                      <div className="flex items-start gap-3">
-                        <Star className="w-4 h-4 text-[#0b3d2e]/60 mt-0.5 shrink-0" />
-                        <p className="text-[#636364] text-sm">{day.highlight}</p>
-                      </div>
+                      {day.highlight && (
+                        <div className="flex items-start gap-3">
+                          <Star className="w-4 h-4 text-[#0b3d2e]/60 mt-0.5 shrink-0" />
+                          <p className="text-[#636364] text-sm">{day.highlight}</p>
+                        </div>
+                      )}
                     </div>
                   </div>
                 </GlassCard>
@@ -432,29 +452,55 @@ export default async function HomePage() {
         <section id="sponsors" className="py-12 relative overflow-hidden">
           <div className="container mx-auto px-6 mb-8">
             <span className="text-[#0b3d2e] text-xs font-bold tracking-widest uppercase block text-center opacity-80">
-              Official Partners
+              {homeContent?.partnersSection?.label || 'Official Partners'}
             </span>
           </div>
 
           <div className="absolute left-0 top-0 bottom-0 w-32 bg-gradient-to-r from-white to-transparent z-10 pointer-events-none" />
           <div className="absolute right-0 top-0 bottom-0 w-32 bg-gradient-to-l from-white to-transparent z-10 pointer-events-none" />
 
-          <div className="relative flex overflow-x-hidden">
-            <div className="flex items-center gap-16 whitespace-nowrap py-4 animate-marquee-sponsors">
+          <div className="relative flex overflow-x-hidden group">
+            <div className="flex items-center gap-16 whitespace-nowrap py-4 animate-marquee-sponsors group-hover:[animation-play-state:paused]">
               {sponsors.map((sponsor, index) => (
-                <div key={`s1-${index}`} className="flex items-center justify-center min-w-[200px]">
-                  <span className="text-3xl md:text-4xl font-bold text-[#0b3d2e]/20 hover:text-[#0b3d2e]/50 transition-colors duration-300 cursor-pointer font-serif tracking-tight">
-                    {sponsor.name}
-                  </span>
+                <div
+                  key={`s1-${index}`}
+                  className="flex items-center justify-center min-w-[200px] h-16"
+                >
+                  {typeof sponsor.logo === 'object' && sponsor.logo?.url ? (
+                    <Image
+                      src={sponsor.logo.url}
+                      alt={sponsor.name}
+                      width={160}
+                      height={64}
+                      className="object-contain max-h-16 w-auto opacity-50 hover:opacity-80 transition-opacity duration-300 cursor-pointer"
+                    />
+                  ) : (
+                    <span className="text-3xl md:text-4xl font-bold text-[#0b3d2e]/20 hover:text-[#0b3d2e]/50 transition-colors duration-300 cursor-pointer font-serif tracking-tight">
+                      {sponsor.name}
+                    </span>
+                  )}
                 </div>
               ))}
             </div>
-            <div className="flex items-center gap-16 whitespace-nowrap py-4 animate-marquee-sponsors">
+            <div className="flex items-center gap-16 whitespace-nowrap py-4 animate-marquee-sponsors group-hover:[animation-play-state:paused]">
               {sponsors.map((sponsor, index) => (
-                <div key={`s2-${index}`} className="flex items-center justify-center min-w-[200px]">
-                  <span className="text-3xl md:text-4xl font-bold text-[#0b3d2e]/20 hover:text-[#0b3d2e]/50 transition-colors duration-300 cursor-pointer font-serif tracking-tight">
-                    {sponsor.name}
-                  </span>
+                <div
+                  key={`s2-${index}`}
+                  className="flex items-center justify-center min-w-[200px] h-16"
+                >
+                  {typeof sponsor.logo === 'object' && sponsor.logo?.url ? (
+                    <Image
+                      src={sponsor.logo.url}
+                      alt={sponsor.name}
+                      width={160}
+                      height={64}
+                      className="object-contain max-h-16 w-auto opacity-50 hover:opacity-80 transition-opacity duration-300 cursor-pointer"
+                    />
+                  ) : (
+                    <span className="text-3xl md:text-4xl font-bold text-[#0b3d2e]/20 hover:text-[#0b3d2e]/50 transition-colors duration-300 cursor-pointer font-serif tracking-tight">
+                      {sponsor.name}
+                    </span>
+                  )}
                 </div>
               ))}
             </div>
@@ -469,17 +515,18 @@ export default async function HomePage() {
             <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
               <div>
                 <h2 className="text-3xl md:text-4xl font-bold text-[#0b3d2e] mb-4">
-                  Featured Players
+                  {homeContent?.featuredPlayersSection?.title || 'Featured Players'}
                 </h2>
                 <p className="text-[#636364]">
-                  Top contenders fighting for the championship title.
+                  {homeContent?.featuredPlayersSection?.description ||
+                    'Top contenders fighting for the championship title.'}
                 </p>
               </div>
               <Link
                 href="/players"
                 className="text-[#0b3d2e] hover:text-[#091f18] font-medium transition-colors flex items-center gap-2"
               >
-                View All Players
+                {labels?.buttonLabels?.viewAllPlayers || 'View All Players'}
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -523,7 +570,7 @@ export default async function HomePage() {
                           <span className="font-bold">{player.wins ?? 0}</span>
                         </div>
                         <p className="text-xs text-[#636364] uppercase tracking-wider">
-                          Career Wins
+                          {labels?.fieldLabels?.careerWins || 'Career Wins'}
                         </p>
                       </div>
                       <div className="text-center border-l border-[#0b3d2e]/10">
@@ -531,7 +578,9 @@ export default async function HomePage() {
                           <TrendingUp className="w-4 h-4 text-[#0b3d2e]" />
                           <span className="font-bold">{player.points ?? 0}</span>
                         </div>
-                        <p className="text-xs text-[#636364] uppercase tracking-wider">Points</p>
+                        <p className="text-xs text-[#636364] uppercase tracking-wider">
+                          {labels?.fieldLabels?.points || 'Points'}
+                        </p>
                       </div>
                     </div>
                   </Link>
@@ -548,14 +597,19 @@ export default async function HomePage() {
           <div className="container mx-auto px-6">
             <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
               <div>
-                <h2 className="text-3xl md:text-4xl font-bold text-[#0b3d2e] mb-4">Latest News</h2>
-                <p className="text-[#636364]">Updates from the green and behind the scenes.</p>
+                <h2 className="text-3xl md:text-4xl font-bold text-[#0b3d2e] mb-4">
+                  {homeContent?.newsSection?.title || 'Latest News'}
+                </h2>
+                <p className="text-[#636364]">
+                  {homeContent?.newsSection?.description ||
+                    'Updates from the green and behind the scenes.'}
+                </p>
               </div>
               <Link
                 href="/news"
                 className="text-[#0b3d2e] hover:text-[#091f18] font-medium transition-colors flex items-center gap-2"
               >
-                View News Archive
+                {labels?.buttonLabels?.viewAllNews || 'View News Archive'}
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
@@ -608,7 +662,8 @@ export default async function HomePage() {
                         </h3>
                       </div>
                       <div className="flex items-center text-[#636364] text-sm group-hover:text-[#0b3d2e] transition-colors mt-4">
-                        Read Article <ArrowUpRight className="w-4 h-4 ml-1" />
+                        {labels?.buttonLabels?.readArticle || 'Read Article'}{' '}
+                        <ArrowUpRight className="w-4 h-4 ml-1" />
                       </div>
                     </div>
                   </Link>

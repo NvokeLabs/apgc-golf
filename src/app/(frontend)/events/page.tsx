@@ -7,6 +7,7 @@ import { cache } from 'react'
 import Image from 'next/image'
 import Link from 'next/link'
 import { MapPin, Calendar, Trophy, ArrowRight } from 'lucide-react'
+import { getSiteLabels } from '@/utilities/getSiteContent'
 
 export const metadata: Metadata = {
   title: 'Events | APGC Golf',
@@ -37,7 +38,7 @@ const TierBadge = ({ tier }: { tier: string }) => {
 }
 
 export default async function EventsPage() {
-  const events = await getEvents()
+  const [events, labels] = await Promise.all([getEvents(), getSiteLabels()])
 
   return (
     <div className="pt-24 pb-20 min-h-screen">
@@ -132,7 +133,7 @@ export default async function EventsPage() {
                             className={`w-5 h-5 shrink-0 ${event.status === 'closed' ? 'text-gray-500' : 'text-[#0b3d2e]'}`}
                           />
                           <span className="font-light">
-                            Prize Fund:{' '}
+                            {labels?.fieldLabels?.prizeFund || 'Prize Fund'}:{' '}
                             <span
                               className={`font-medium ${event.status === 'closed' ? 'text-gray-600' : 'text-[#0b3d2e]'}`}
                             >
@@ -154,16 +155,16 @@ export default async function EventsPage() {
                         }`}
                       >
                         {event.status === 'open'
-                          ? 'Registration Open'
+                          ? labels?.statusLabels?.registrationOpen || 'Registration Open'
                           : event.status === 'closed'
-                            ? 'Closed'
+                            ? labels?.statusLabels?.closed || 'Closed'
                             : event.status === 'sold-out'
-                              ? 'Sold Out'
-                              : 'Upcoming'}
+                              ? labels?.statusLabels?.soldOut || 'Sold Out'
+                              : labels?.statusLabels?.upcoming || 'Upcoming'}
                       </span>
 
                       <span className="text-[#0b3d2e] hover:text-[#0b3d2e] hover:bg-[#0b3d2e]/10 font-medium text-sm flex items-center gap-2 group/btn">
-                        Event Details
+                        {labels?.buttonLabels?.eventDetails || 'Event Details'}
                         <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                       </span>
                     </div>
@@ -173,7 +174,9 @@ export default async function EventsPage() {
             ))
           ) : (
             <div className="col-span-full text-center py-12">
-              <p className="text-[#636364]">No events found.</p>
+              <p className="text-[#636364]">
+                {labels?.miscLabels?.noEventsFound || 'No events found.'}
+              </p>
             </div>
           )}
         </div>

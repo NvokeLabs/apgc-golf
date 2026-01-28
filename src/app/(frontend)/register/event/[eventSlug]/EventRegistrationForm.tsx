@@ -2,12 +2,22 @@
 
 import { useState } from 'react'
 import { createRegistrationWithPayment, type RegistrationFormData } from './actions'
+import type { FormContent } from '@/payload-types'
+
+type EventFormContent = FormContent['eventRegistration']
+type CategoryOption = { value?: string | null; label?: string | null; id?: string | null }
 
 interface EventRegistrationFormProps {
   eventId: number
+  formContent?: EventFormContent
+  categoryOptions?: CategoryOption[] | null
 }
 
-export function EventRegistrationForm({ eventId }: EventRegistrationFormProps) {
+export function EventRegistrationForm({
+  eventId,
+  formContent,
+  categoryOptions,
+}: EventRegistrationFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
@@ -58,11 +68,13 @@ export function EventRegistrationForm({ eventId }: EventRegistrationFormProps) {
 
       {/* Personal Information */}
       <div>
-        <h3 className="mb-4 font-semibold text-gray-900">Personal Information</h3>
+        <h3 className="mb-4 font-semibold text-gray-900">
+          {formContent?.personalInfoHeading || 'Personal Information'}
+        </h3>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label htmlFor="playerName" className="mb-2 block text-sm text-gray-600">
-              Full Name *
+              {formContent?.fullNameLabel || 'Full Name *'}
             </label>
             <input
               type="text"
@@ -70,12 +82,12 @@ export function EventRegistrationForm({ eventId }: EventRegistrationFormProps) {
               name="playerName"
               required
               className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
-              placeholder="Enter your full name"
+              placeholder={formContent?.fullNamePlaceholder || 'Enter your full name'}
             />
           </div>
           <div>
             <label htmlFor="email" className="mb-2 block text-sm text-gray-600">
-              Email Address *
+              {formContent?.emailLabel || 'Email Address *'}
             </label>
             <input
               type="email"
@@ -83,23 +95,23 @@ export function EventRegistrationForm({ eventId }: EventRegistrationFormProps) {
               name="email"
               required
               className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
-              placeholder="your@email.com"
+              placeholder={formContent?.emailPlaceholder || 'your@email.com'}
             />
           </div>
           <div className="sm:col-span-2">
             <label htmlFor="phone" className="mb-2 block text-sm text-gray-600">
-              Phone Number
+              {formContent?.phoneLabel || 'Phone Number'}
             </label>
             <div className="flex">
               <span className="inline-flex items-center rounded-l-lg border border-r-0 border-gray-300 bg-gray-50 px-4 text-gray-500">
-                +62
+                {formContent?.phonePrefix || '+62'}
               </span>
               <input
                 type="tel"
                 id="phone"
                 name="phone"
                 className="w-full rounded-r-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
-                placeholder="8xx xxxx xxxx"
+                placeholder={formContent?.phonePlaceholder || '8xx xxxx xxxx'}
               />
             </div>
           </div>
@@ -108,11 +120,13 @@ export function EventRegistrationForm({ eventId }: EventRegistrationFormProps) {
 
       {/* Registration Details */}
       <div>
-        <h3 className="mb-4 font-semibold text-gray-900">Registration Details</h3>
+        <h3 className="mb-4 font-semibold text-gray-900">
+          {formContent?.registrationDetailsHeading || 'Registration Details'}
+        </h3>
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="sm:col-span-2">
             <label htmlFor="category" className="mb-2 block text-sm text-gray-600">
-              Category *
+              {formContent?.categoryLabel || 'Category *'}
             </label>
             <select
               id="category"
@@ -120,11 +134,21 @@ export function EventRegistrationForm({ eventId }: EventRegistrationFormProps) {
               required
               className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
             >
-              <option value="">Select category</option>
-              <option value="alumni">Alumni</option>
-              <option value="member">Member</option>
-              <option value="guest">Guest</option>
-              <option value="vip">VIP</option>
+              <option value="">{formContent?.categoryPlaceholder || 'Select category'}</option>
+              {categoryOptions && categoryOptions.length > 0 ? (
+                categoryOptions.map((cat) => (
+                  <option key={cat.id || cat.value} value={cat.value || ''}>
+                    {cat.label}
+                  </option>
+                ))
+              ) : (
+                <>
+                  <option value="alumni">Alumni</option>
+                  <option value="member">Member</option>
+                  <option value="guest">Guest</option>
+                  <option value="vip">VIP</option>
+                </>
+              )}
             </select>
           </div>
         </div>
@@ -133,14 +157,14 @@ export function EventRegistrationForm({ eventId }: EventRegistrationFormProps) {
       {/* Additional Notes */}
       <div>
         <label htmlFor="notes" className="mb-2 block text-sm text-gray-600">
-          Additional Notes
+          {formContent?.notesLabel || 'Additional Notes'}
         </label>
         <textarea
           id="notes"
           name="notes"
           rows={3}
           className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
-          placeholder="Any special requirements or notes..."
+          placeholder={formContent?.notesPlaceholder || 'Any special requirements or notes...'}
         />
       </div>
 
@@ -150,12 +174,14 @@ export function EventRegistrationForm({ eventId }: EventRegistrationFormProps) {
         disabled={isSubmitting}
         className="w-full rounded-lg bg-emerald-600 py-4 font-semibold text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {isSubmitting ? 'Processing...' : 'Continue to Payment'}
+        {isSubmitting
+          ? formContent?.processingText || 'Processing...'
+          : formContent?.submitButtonText || 'Continue to Payment'}
       </button>
 
       <p className="text-center text-xs text-gray-500">
-        By registering, you agree to our terms and conditions. You will be redirected to complete
-        payment securely via Xendit.
+        {formContent?.termsText ||
+          'By registering, you agree to our terms and conditions. You will be redirected to complete payment securely via Xendit.'}
       </p>
     </form>
   )
