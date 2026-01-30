@@ -61,7 +61,7 @@ export const seed = async ({
         slug: global,
         data: {
           navItems: [],
-        },
+        } as Record<string, unknown>,
         depth: 0,
         context: {
           disableRevalidate: true,
@@ -264,7 +264,10 @@ export const seed = async ({
         context: { skipRevalidate: true },
         data: {
           ...event,
-          sponsors: index === 0 ? sponsorDocs.slice(0, 5).map((s) => s.id) : sponsorDocs.slice(0, 3).map((s) => s.id),
+          sponsors:
+            index === 0
+              ? sponsorDocs.slice(0, 5).map((s) => s.id)
+              : sponsorDocs.slice(0, 3).map((s) => s.id),
         },
       }),
     ),
