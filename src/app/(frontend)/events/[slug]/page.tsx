@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 
-import { GlassCard } from '@/components/golf'
+import { GlassCard, EventDetailsTabs, ParticipantsList } from '@/components/golf'
 import RichText from '@/components/RichText'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
@@ -20,6 +20,7 @@ import {
 } from 'lucide-react'
 import { generateEventJsonLd } from '@/utilities/structuredData'
 import { getSiteLabels } from '@/utilities/getSiteContent'
+import { getEventParticipants } from '@/utilities/getEventParticipants'
 
 type Args = {
   params: Promise<{ slug: string }>
@@ -89,6 +90,8 @@ export default async function EventPage({ params }: Args) {
   if (!event) {
     notFound()
   }
+
+  const participants = await getEventParticipants(event.id)
 
   const imageUrl =
     typeof event.image === 'object' && event.image?.url
@@ -186,6 +189,15 @@ export default async function EventPage({ params }: Args) {
                         <span className="text-lg font-light">{event.prizeFund} Purse</span>
                       </div>
                     )}
+                    {participants.length > 0 && (
+                      <div className="flex items-center gap-2">
+                        <Users className="w-5 h-5 text-white/80" />
+                        <span className="text-lg font-light">
+                          {participants.length}{' '}
+                          {participants.length === 1 ? 'Participant' : 'Participants'}
+                        </span>
+                      </div>
+                    )}
                   </div>
                 </div>
 
@@ -217,132 +229,162 @@ export default async function EventPage({ params }: Args) {
 
           <div className="grid lg:grid-cols-12 gap-12">
             {/* Left Content */}
-            <div className="lg:col-span-8 space-y-12">
-              {/* Description */}
-              <section>
-                <h2 className="text-2xl text-[#0b3d2e] font-light mb-6">
-                  {labels?.sectionLabels?.aboutTheEvent || 'About the'}{' '}
-                  <span className="font-serif italic font-medium">Event</span>
-                </h2>
-                <GlassCard className="p-6">
-                  {event.description ? (
-                    <div className="prose prose-lg max-w-none prose-p:text-[#636364] prose-p:leading-relaxed">
-                      <RichText data={event.description} />
-                    </div>
-                  ) : (
-                    <p className="text-[#636364] text-lg leading-relaxed">
-                      More details coming soon.
-                    </p>
-                  )}
-                </GlassCard>
-              </section>
-
-              {/* Schedule */}
-              {event.schedule && event.schedule.length > 0 && (
-                <section>
-                  <h2 className="text-2xl text-[#0b3d2e] font-light mb-6">
-                    {labels?.sectionLabels?.eventSchedule || 'Event'}{' '}
-                    <span className="font-serif italic font-medium">Schedule</span>
-                  </h2>
-                  <div className="space-y-6">
-                    {event.schedule.map((day, dayIndex) => (
-                      <GlassCard key={dayIndex} className="p-6">
-                        <h3 className="text-[#0b3d2e] font-bold uppercase tracking-widest text-sm mb-4 pb-2 border-b border-[#0b3d2e]/10">
-                          {day.day}
-                        </h3>
-                        <div className="space-y-3">
-                          {day.items?.map((item, itemIndex) => (
-                            <div
-                              key={itemIndex}
-                              className="flex items-center gap-4 p-3 rounded-lg bg-white/40 border border-[#0b3d2e]/5"
-                            >
-                              <div className="flex items-center gap-2 text-sm text-[#636364]">
-                                <Clock className="w-4 h-4" />
-                                <span className="font-mono">{item.time}</span>
-                              </div>
-                              <div className="flex-1">
-                                <p className="text-[#0b3d2e] font-medium">{item.activity}</p>
-                                {item.location && (
-                                  <p className="text-sm text-[#636364]">{item.location}</p>
-                                )}
-                              </div>
-                            </div>
-                          ))}
-                        </div>
-                      </GlassCard>
-                    ))}
-                  </div>
-                </section>
-              )}
-
-              {/* Pairings */}
-              {event.pairings && event.pairings.length > 0 && (
-                <section>
-                  <h2 className="text-2xl text-[#0b3d2e] font-light mb-6">
-                    {labels?.sectionLabels?.teeTimesAndPairings || 'Tee Times &'}{' '}
-                    <span className="font-serif italic font-medium">Pairings</span>
-                  </h2>
-                  <div className="space-y-4">
-                    {event.pairings.map((pairing, index) => (
-                      <GlassCard key={index} className="p-4">
-                        <div className="flex items-center justify-between mb-3">
-                          <span className="font-bold text-[#0b3d2e]">
-                            {labels?.miscLabels?.group || 'Group'} {pairing.group}
-                          </span>
-                          <div className="flex items-center gap-4 text-sm text-[#636364]">
-                            <span>
-                              {labels?.miscLabels?.tee || 'Tee'} {pairing.tee}
-                            </span>
-                            <span className="font-mono">{pairing.time}</span>
+            <div className="lg:col-span-8">
+              <EventDetailsTabs
+                participantCount={participants.length}
+                detailsContent={
+                  <div className="space-y-12">
+                    {/* Description */}
+                    <section>
+                      <h2 className="text-2xl text-[#0b3d2e] font-light mb-6">
+                        {labels?.sectionLabels?.aboutTheEvent || 'About the'}{' '}
+                        <span className="font-serif italic font-medium">Event</span>
+                      </h2>
+                      <GlassCard className="p-6">
+                        {event.description ? (
+                          <div className="prose prose-lg max-w-none prose-p:text-[#636364] prose-p:leading-relaxed">
+                            <RichText data={event.description} />
                           </div>
-                        </div>
-                        <div className="flex flex-wrap gap-2">
-                          {pairing.players?.map((player, playerIndex) => (
-                            <div
-                              key={playerIndex}
-                              className="flex items-center gap-2 rounded-full bg-[#0b3d2e]/10 px-3 py-1"
-                            >
-                              <Users className="w-3 h-3 text-[#0b3d2e]" />
-                              <span className="text-sm text-[#0b3d2e]">{player.name}</span>
-                            </div>
+                        ) : (
+                          <p className="text-[#636364] text-lg leading-relaxed">
+                            More details coming soon.
+                          </p>
+                        )}
+                      </GlassCard>
+                    </section>
+
+                    {/* Schedule */}
+                    {event.schedule && event.schedule.length > 0 && (
+                      <section>
+                        <h2 className="text-2xl text-[#0b3d2e] font-light mb-6">
+                          {labels?.sectionLabels?.eventSchedule || 'Event'}{' '}
+                          <span className="font-serif italic font-medium">Schedule</span>
+                        </h2>
+                        <div className="space-y-6">
+                          {event.schedule.map((day, dayIndex) => (
+                            <GlassCard key={dayIndex} className="p-6">
+                              <h3 className="text-[#0b3d2e] font-bold uppercase tracking-widest text-sm mb-4 pb-2 border-b border-[#0b3d2e]/10">
+                                {day.day}
+                              </h3>
+                              <div className="space-y-3">
+                                {day.items?.map((item, itemIndex) => (
+                                  <div
+                                    key={itemIndex}
+                                    className="flex items-center gap-4 p-3 rounded-lg bg-white/40 border border-[#0b3d2e]/5"
+                                  >
+                                    <div className="flex items-center gap-2 text-sm text-[#636364]">
+                                      <Clock className="w-4 h-4" />
+                                      <span className="font-mono">{item.time}</span>
+                                    </div>
+                                    <div className="flex-1">
+                                      <p className="text-[#0b3d2e] font-medium">{item.activity}</p>
+                                      {item.location && (
+                                        <p className="text-sm text-[#636364]">{item.location}</p>
+                                      )}
+                                    </div>
+                                  </div>
+                                ))}
+                              </div>
+                            </GlassCard>
                           ))}
                         </div>
-                      </GlassCard>
-                    ))}
-                  </div>
-                </section>
-              )}
+                      </section>
+                    )}
 
-              {/* Gallery */}
-              {event.gallery && event.gallery.length > 0 && (
-                <section>
-                  <h2 className="text-2xl text-[#0b3d2e] font-light mb-6 flex items-center gap-2">
-                    <Camera className="w-5 h-5" />
-                    {labels?.sectionLabels?.eventGallery || 'Event'}{' '}
-                    <span className="font-serif italic font-medium">Gallery</span>
-                  </h2>
-                  <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
-                    {event.gallery.map((item, index) => {
-                      const imgUrl =
-                        typeof item.image === 'object' && item.image?.url ? item.image.url : null
-                      if (!imgUrl) return null
-                      return (
-                        <div
-                          key={index}
-                          className="relative aspect-video rounded-xl overflow-hidden border border-[#0b3d2e]/10 shadow-sm hover:shadow-md transition-shadow"
-                        >
-                          <Image
-                            src={imgUrl}
-                            alt={`Gallery image ${index + 1}`}
-                            fill
-                            className="object-cover"
-                          />
+                    {/* Pairings */}
+                    {event.pairings && event.pairings.length > 0 && (
+                      <section>
+                        <h2 className="text-2xl text-[#0b3d2e] font-light mb-6">
+                          {labels?.sectionLabels?.teeTimesAndPairings || 'Tee Times &'}{' '}
+                          <span className="font-serif italic font-medium">Pairings</span>
+                        </h2>
+                        <div className="space-y-4">
+                          {event.pairings.map((pairing, index) => (
+                            <GlassCard key={index} className="p-4">
+                              <div className="flex items-center justify-between mb-3">
+                                <span className="font-bold text-[#0b3d2e]">
+                                  {labels?.miscLabels?.group || 'Group'} {pairing.group}
+                                </span>
+                                <div className="flex items-center gap-4 text-sm text-[#636364]">
+                                  <span>
+                                    {labels?.miscLabels?.tee || 'Tee'} {pairing.tee}
+                                  </span>
+                                  <span className="font-mono">{pairing.time}</span>
+                                </div>
+                              </div>
+                              <div className="flex flex-wrap gap-2">
+                                {pairing.players?.map((player, playerIndex) => (
+                                  <div
+                                    key={playerIndex}
+                                    className="flex items-center gap-2 rounded-full bg-[#0b3d2e]/10 px-3 py-1"
+                                  >
+                                    <Users className="w-3 h-3 text-[#0b3d2e]" />
+                                    <span className="text-sm text-[#0b3d2e]">{player.name}</span>
+                                  </div>
+                                ))}
+                              </div>
+                            </GlassCard>
+                          ))}
                         </div>
-                      )
-                    })}
+                      </section>
+                    )}
+
+                    {/* Gallery */}
+                    {event.gallery && event.gallery.length > 0 && (
+                      <section>
+                        <h2 className="text-2xl text-[#0b3d2e] font-light mb-6 flex items-center gap-2">
+                          <Camera className="w-5 h-5" />
+                          {labels?.sectionLabels?.eventGallery || 'Event'}{' '}
+                          <span className="font-serif italic font-medium">Gallery</span>
+                        </h2>
+                        <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
+                          {event.gallery.map((item, index) => {
+                            const imgUrl =
+                              typeof item.image === 'object' && item.image?.url
+                                ? item.image.url
+                                : null
+                            if (!imgUrl) return null
+                            return (
+                              <div
+                                key={index}
+                                className="relative aspect-video rounded-xl overflow-hidden border border-[#0b3d2e]/10 shadow-sm hover:shadow-md transition-shadow"
+                              >
+                                <Image
+                                  src={imgUrl}
+                                  alt={`Gallery image ${index + 1}`}
+                                  fill
+                                  className="object-cover"
+                                />
+                              </div>
+                            )
+                          })}
+                        </div>
+                      </section>
+                    )}
                   </div>
-                </section>
-              )}
+                }
+                participantsContent={
+                  participants.length > 0 ? (
+                    <GlassCard className="p-6 bg-gradient-to-br from-white/80 via-white/60 to-white/40">
+                      <ParticipantsList participants={participants} />
+                    </GlassCard>
+                  ) : (
+                    <GlassCard className="p-8 bg-gradient-to-br from-white/80 via-white/60 to-white/40">
+                      <div className="flex flex-col items-center justify-center py-12 text-center">
+                        <div className="w-16 h-16 rounded-full bg-gradient-to-br from-[#0b3d2e]/10 to-[#0b3d2e]/5 flex items-center justify-center mb-4">
+                          <Users className="w-8 h-8 text-[#0b3d2e]/40" />
+                        </div>
+                        <h3 className="text-lg font-semibold text-[#0b3d2e]/80 mb-2">
+                          Belum Ada Peserta
+                        </h3>
+                        <p className="text-[#636364] text-sm max-w-xs">
+                          Jadilah yang pertama mendaftar untuk event ini dan amankan tempatmu!
+                        </p>
+                      </div>
+                    </GlassCard>
+                  )
+                }
+              />
             </div>
 
             {/* Right Sidebar */}
