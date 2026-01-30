@@ -46,14 +46,12 @@ export async function sendTicketEmail(
   const attachments: Array<{
     filename: string
     content: Buffer | string
-    content_type?: string
-    cid?: string
+    contentId?: string
   }> = [
     {
       filename: 'qrcode.png',
       content: qrCodeBuffer,
-      content_type: 'image/png',
-      cid: 'qrcode',
+      contentId: 'qrcode',
     },
   ]
 
@@ -70,7 +68,7 @@ export async function sendTicketEmail(
     const { data, error } = await resend.emails.send({
       from: `APGC Golf <${fromEmail}>`,
       to: [to],
-      subject: `Your Ticket for ${eventName}`,
+      subject: `Tiket Anda untuk ${eventName}`,
       html: generateEmailHtml({
         playerName,
         eventName,
@@ -110,7 +108,7 @@ function generateEmailHtml(params: {
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Your Ticket for ${eventName}</title>
+  <title>Tiket Anda untuk ${eventName}</title>
 </head>
 <body style="margin: 0; padding: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif; background-color: #f4f4f5;">
   <table role="presentation" style="width: 100%; border-collapse: collapse;">
@@ -121,15 +119,15 @@ function generateEmailHtml(params: {
           <tr>
             <td style="padding: 40px 40px 20px; text-align: center; background-color: #059669; border-radius: 12px 12px 0 0;">
               <h1 style="margin: 0; color: #ffffff; font-size: 28px; font-weight: 700;">APGC Golf</h1>
-              <p style="margin: 10px 0 0; color: #d1fae5; font-size: 16px;">Event Ticket Confirmation</p>
+              <p style="margin: 10px 0 0; color: #d1fae5; font-size: 16px;">Konfirmasi Tiket Acara</p>
             </td>
           </tr>
 
           <!-- Content -->
           <tr>
             <td style="padding: 40px;">
-              <p style="margin: 0 0 20px; color: #374151; font-size: 16px;">Dear <strong>${playerName}</strong>,</p>
-              <p style="margin: 0 0 30px; color: #374151; font-size: 16px;">Your payment has been confirmed! Here is your ticket for the event.</p>
+              <p style="margin: 0 0 20px; color: #374151; font-size: 16px;">Yth. <strong>${playerName}</strong>,</p>
+              <p style="margin: 0 0 30px; color: #374151; font-size: 16px;">Pembayaran Anda telah dikonfirmasi! Berikut adalah tiket Anda untuk acara ini.</p>
 
               <!-- Event Details -->
               <table role="presentation" style="width: 100%; border-collapse: collapse; background-color: #f9fafb; border-radius: 8px; margin-bottom: 30px;">
@@ -137,10 +135,10 @@ function generateEmailHtml(params: {
                   <td style="padding: 24px;">
                     <h2 style="margin: 0 0 16px; color: #111827; font-size: 20px; font-weight: 600;">${eventName}</h2>
                     <p style="margin: 0 0 8px; color: #6b7280; font-size: 14px;">
-                      <strong>Date:</strong> ${eventDate}
+                      <strong>Tanggal:</strong> ${eventDate}
                     </p>
                     <p style="margin: 0; color: #6b7280; font-size: 14px;">
-                      <strong>Location:</strong> ${eventLocation}
+                      <strong>Lokasi:</strong> ${eventLocation}
                     </p>
                   </td>
                 </tr>
@@ -148,21 +146,21 @@ function generateEmailHtml(params: {
 
               <!-- QR Code -->
               <div style="text-align: center; margin-bottom: 30px;">
-                <p style="margin: 0 0 16px; color: #374151; font-size: 14px; font-weight: 600;">Scan this QR code at check-in:</p>
-                <img src="cid:qrcode" alt="Ticket QR Code" style="width: 200px; height: 200px; border: 1px solid #e5e7eb; border-radius: 8px;">
+                <p style="margin: 0 0 16px; color: #374151; font-size: 14px; font-weight: 600;">Pindai kode QR ini saat check-in:</p>
+                <img src="cid:qrcode" alt="Kode QR Tiket" style="width: 200px; height: 200px; border: 1px solid #e5e7eb; border-radius: 8px;">
                 <p style="margin: 16px 0 0; color: #6b7280; font-size: 12px; font-family: monospace;">${ticketCode}</p>
               </div>
 
               <!-- Instructions -->
               <div style="background-color: #fef3c7; border-radius: 8px; padding: 16px; margin-bottom: 30px;">
                 <p style="margin: 0; color: #92400e; font-size: 14px;">
-                  <strong>Check-in Instructions:</strong><br>
-                  Please present this QR code (from your phone or printed) at the event entrance. Each ticket can only be scanned once.
+                  <strong>Petunjuk Check-in:</strong><br>
+                  Silakan tunjukkan kode QR ini (dari ponsel atau hasil cetak) di pintu masuk acara. Setiap tiket hanya dapat dipindai satu kali.
                 </p>
               </div>
 
               <p style="margin: 0; color: #6b7280; font-size: 14px;">
-                If you have any questions, please contact us at <a href="mailto:info@apgc-golf.com" style="color: #059669;">info@apgc-golf.com</a>
+                Jika Anda memiliki pertanyaan, silakan hubungi kami di <a href="mailto:admin@polinemagolf.com" style="color: #059669;">admin@polinemagolf.com</a>
               </p>
             </td>
           </tr>
@@ -171,7 +169,7 @@ function generateEmailHtml(params: {
           <tr>
             <td style="padding: 24px 40px; text-align: center; background-color: #f9fafb; border-radius: 0 0 12px 12px;">
               <p style="margin: 0; color: #9ca3af; font-size: 12px;">
-                &copy; ${new Date().getFullYear()} APGC Golf. All rights reserved.
+                &copy; ${new Date().getFullYear()} APGC Golf. Hak cipta dilindungi.
               </p>
             </td>
           </tr>
