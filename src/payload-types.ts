@@ -1352,7 +1352,7 @@ export interface EventRegistration {
   event: number | Event;
   playerName: string;
   email: string;
-  category: 'alumni' | 'guest' | 'member' | 'vip';
+  category: 'general' | 'alumni';
   paymentMethod?: ('bank-transfer' | 'credit-card' | 'cash') | null;
   status?: ('pending' | 'confirmed' | 'cancelled' | 'waitlist') | null;
   phone?: string | null;

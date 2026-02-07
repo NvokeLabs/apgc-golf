@@ -5,20 +5,17 @@ import { renderToBuffer } from '@react-pdf/renderer'
 import { TicketPDF } from '@/components/TicketPDF/TicketPDF'
 import type { Event, Ticket, EventRegistration } from '@/payload-types'
 
-export async function GET(
-  request: NextRequest,
-  { params }: { params: Promise<{ id: string }> },
-) {
+export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
   try {
     const { id } = await params
     const payload = await getPayload({ config })
 
     // Fetch the ticket with related data
-    const ticket = await payload.findByID({
+    const ticket = (await payload.findByID({
       collection: 'tickets',
       id,
       depth: 2,
-    }) as Ticket & {
+    })) as Ticket & {
       registration: EventRegistration
       event: Event
     }
@@ -49,7 +46,7 @@ export async function GET(
       TicketPDF({
         playerName: registration.playerName,
         playerEmail: registration.email,
-        category: registration.category || 'Guest',
+        category: registration.category || 'General',
         eventName: event.title,
         eventDate,
         eventLocation: event.location || 'TBD',
@@ -68,9 +65,6 @@ export async function GET(
     })
   } catch (error) {
     console.error('Error generating ticket PDF:', error)
-    return NextResponse.json(
-      { error: 'Failed to generate ticket PDF' },
-      { status: 500 },
-    )
+    return NextResponse.json({ error: 'Failed to generate ticket PDF' }, { status: 500 })
   }
 }

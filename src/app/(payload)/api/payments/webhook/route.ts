@@ -5,6 +5,7 @@ import { verifyXenditWebhook, parseWebhookPayload } from '@/utilities/xendit/ver
 import { generateTicketCode } from '@/utilities/ticketing/generateTicketCode'
 import { generateQRCode } from '@/utilities/ticketing/generateQRCode'
 import { sendTicketEmail } from '@/utilities/email/sendTicketEmail'
+import { revalidatePath } from 'next/cache'
 import type { Event, EventRegistration } from '@/payload-types'
 
 export async function POST(request: NextRequest) {
@@ -117,6 +118,11 @@ export async function POST(request: NextRequest) {
         // Continue processing - ticket was created, just email failed
       } else {
         console.log(`Ticket email sent successfully to ${registration.email}`)
+      }
+
+      // Revalidate event page so participant list updates immediately
+      if (typeof event === 'object' && event.slug) {
+        revalidatePath(`/events/${event.slug}`)
       }
 
       console.log(`Ticket generated for registration ${registrationId}`)

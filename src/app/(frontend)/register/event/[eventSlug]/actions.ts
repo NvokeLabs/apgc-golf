@@ -10,7 +10,7 @@ export type RegistrationFormData = {
   playerName: string
   email: string
   phone?: string
-  category: 'alumni' | 'guest' | 'member' | 'vip'
+  category: 'general' | 'alumni'
   notes?: string
 }
 

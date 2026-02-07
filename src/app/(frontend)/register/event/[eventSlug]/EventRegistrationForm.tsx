@@ -134,20 +134,19 @@ export function EventRegistrationForm({
               required
               className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
             >
-              <option value="">{formContent?.categoryPlaceholder || 'Select category'}</option>
+              <option value="general">
+                {categoryOptions?.find((c) => c.value === 'general')?.label || 'General'}
+              </option>
               {categoryOptions && categoryOptions.length > 0 ? (
-                categoryOptions.map((cat) => (
-                  <option key={cat.id || cat.value} value={cat.value || ''}>
-                    {cat.label}
-                  </option>
-                ))
+                categoryOptions
+                  .filter((cat) => cat.value !== 'general')
+                  .map((cat) => (
+                    <option key={cat.id || cat.value} value={cat.value || ''}>
+                      {cat.label}
+                    </option>
+                  ))
               ) : (
-                <>
-                  <option value="alumni">Alumni</option>
-                  <option value="member">Member</option>
-                  <option value="guest">Guest</option>
-                  <option value="vip">VIP</option>
-                </>
+                <option value="alumni">Alumni</option>
               )}
             </select>
           </div>

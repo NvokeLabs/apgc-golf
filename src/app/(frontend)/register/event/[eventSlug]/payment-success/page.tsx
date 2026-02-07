@@ -9,7 +9,12 @@ export const metadata: Metadata = {
   description: 'Your payment has been processed successfully.',
 }
 
-export default async function PaymentSuccessPage() {
+type Args = {
+  params: Promise<{ eventSlug: string }>
+}
+
+export default async function PaymentSuccessPage({ params }: Args) {
+  const { eventSlug } = await params
   const [formContent, labels] = await Promise.all([getFormContent(), getSiteLabels()])
   const successContent = formContent?.successMessages
 
@@ -44,10 +49,10 @@ export default async function PaymentSuccessPage() {
 
         <div className="space-y-3">
           <Link
-            href="/events"
+            href={`/events/${eventSlug}`}
             className="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-emerald-700"
           >
-            {labels?.buttonLabels?.browseMoreEvents || 'Browse More Events'}
+            {labels?.buttonLabels?.browseMoreEvents || 'View Event Details'}
             <ArrowRight className="h-4 w-4" />
           </Link>
 

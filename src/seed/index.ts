@@ -1025,10 +1025,8 @@ async function seedCMSContent(payload: Payload) {
       },
       categoryOptions: {
         categories: [
+          { value: 'general', label: 'Umum' },
           { value: 'alumni', label: 'Alumni' },
-          { value: 'member', label: 'Member' },
-          { value: 'guest', label: 'Tamu' },
-          { value: 'vip', label: 'VIP' },
         ],
       },
     },

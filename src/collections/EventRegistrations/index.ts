@@ -52,10 +52,8 @@ export const EventRegistrations: CollectionConfig = {
           type: 'select',
           required: true,
           options: [
+            { label: 'General', value: 'general' },
             { label: 'Alumni', value: 'alumni' },
-            { label: 'Guest', value: 'guest' },
-            { label: 'Member', value: 'member' },
-            { label: 'VIP', value: 'vip' },
           ],
           admin: {
             width: '33%',
