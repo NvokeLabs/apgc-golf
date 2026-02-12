@@ -14,6 +14,15 @@ export const Players: CollectionConfig = {
     read: anyone,
     update: authenticated,
   },
+  defaultPopulate: {
+    name: true,
+    slug: true,
+    rank: true,
+    country: true,
+    status: true,
+    image: true,
+    isFeatured: true,
+  },
   admin: {
     defaultColumns: ['name', 'rank', 'country', 'status', 'isFeatured'],
     useAsTitle: 'name',

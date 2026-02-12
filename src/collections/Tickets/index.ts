@@ -10,6 +10,13 @@ export const Tickets: CollectionConfig = {
     read: authenticated,
     update: authenticated,
   },
+  defaultPopulate: {
+    ticketCode: true,
+    status: true,
+    event: true,
+    registration: true,
+    checkedInAt: true,
+  },
   admin: {
     defaultColumns: ['ticketCode', 'registration', 'event', 'status', 'checkedInAt'],
     useAsTitle: 'ticketCode',

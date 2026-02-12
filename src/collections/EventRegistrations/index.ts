@@ -11,6 +11,14 @@ export const EventRegistrations: CollectionConfig = {
     read: authenticated,
     update: authenticated,
   },
+  defaultPopulate: {
+    playerName: true,
+    email: true,
+    event: true,
+    category: true,
+    status: true,
+    paymentStatus: true,
+  },
   admin: {
     defaultColumns: ['playerName', 'event', 'category', 'paymentStatus', 'status', 'createdAt'],
     useAsTitle: 'playerName',

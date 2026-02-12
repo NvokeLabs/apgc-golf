@@ -14,6 +14,15 @@ export const Events: CollectionConfig = {
     read: anyone,
     update: authenticated,
   },
+  defaultPopulate: {
+    title: true,
+    slug: true,
+    date: true,
+    location: true,
+    status: true,
+    tier: true,
+    image: true,
+  },
   admin: {
     defaultColumns: ['title', 'date', 'tier', 'status'],
     useAsTitle: 'title',

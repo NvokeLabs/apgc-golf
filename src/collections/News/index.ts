@@ -15,6 +15,16 @@ export const News: CollectionConfig = {
     read: authenticatedOrPublished,
     update: authenticated,
   },
+  defaultPopulate: {
+    title: true,
+    slug: true,
+    subtitle: true,
+    category: true,
+    publishedDate: true,
+    readTime: true,
+    image: true,
+    author: true,
+  },
   admin: {
     defaultColumns: ['title', 'category', 'publishedDate', '_status'],
     useAsTitle: 'title',

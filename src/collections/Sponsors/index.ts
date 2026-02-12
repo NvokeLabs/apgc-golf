@@ -17,6 +17,15 @@ export const Sponsors: CollectionConfig = {
     read: anyone,
     update: authenticated,
   },
+  defaultPopulate: {
+    name: true,
+    slug: true,
+    logo: true,
+    tier: true,
+    isActive: true,
+    website: true,
+    order: true,
+  },
   admin: {
     defaultColumns: ['name', 'tier', 'isActive', 'order'],
     useAsTitle: 'name',

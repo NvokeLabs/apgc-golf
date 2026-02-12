@@ -23,6 +23,15 @@ export const Media: CollectionConfig = {
     read: anyone,
     update: authenticated,
   },
+  defaultPopulate: {
+    alt: true,
+    url: true,
+    filename: true,
+    width: true,
+    height: true,
+    mimeType: true,
+    sizes: true,
+  },
   fields: [
     {
       name: 'alt',
