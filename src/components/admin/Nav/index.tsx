@@ -44,7 +44,6 @@ const menuGroups: MenuGroup[] = [
     defaultOpen: true,
     items: [
       { name: 'Pages', href: '/admin/collections/pages', icon: FileText },
-      { name: 'Posts', href: '/admin/collections/posts', icon: FileText },
       { name: 'News', href: '/admin/collections/news', icon: Newspaper },
       { name: 'Events', href: '/admin/collections/events', icon: Calendar },
       { name: 'Players', href: '/admin/collections/players', icon: Users },

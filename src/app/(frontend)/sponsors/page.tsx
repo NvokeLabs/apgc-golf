@@ -133,87 +133,123 @@ export default async function SponsorsPage() {
         </div>
 
         {/* Pyramid Layout */}
-        <div className="mb-24 flex flex-col items-center gap-4">
-          {/* Row 1: Title (2 items) */}
-          {titleSponsors.length > 0 && (
-            <div className="flex justify-center gap-4 md:gap-8 w-full">
-              {titleSponsors.map((sponsor) => (
-                <GlassCard
-                  key={sponsor.id}
-                  className="w-40 h-32 md:w-64 md:h-48 flex items-center justify-center p-6 bg-white/60 border-[#0b3d2e]/20 hover:border-[#0b3d2e]/50 transition-colors"
-                  hoverEffect
-                >
-                  {typeof sponsor.logo === 'object' && sponsor.logo?.url ? (
-                    <Image
-                      src={sponsor.logo.url}
-                      alt={sponsor.name}
-                      width={200}
-                      height={100}
-                      className="max-w-full max-h-full object-contain grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-500"
-                    />
-                  ) : (
-                    <span className="text-[#0b3d2e] font-serif italic text-xl md:text-2xl text-center">
-                      {sponsor.name}
-                    </span>
-                  )}
-                </GlassCard>
-              ))}
-            </div>
-          )}
+        {sponsors.length > 0 && (
+          <div className="mb-24 flex flex-col items-center gap-4">
+            {/* Row 1: Title (2 items) */}
+            {titleSponsors.length > 0 && (
+              <div className="flex justify-center gap-4 md:gap-8 w-full">
+                {titleSponsors.map((sponsor) => (
+                  <GlassCard
+                    key={sponsor.id}
+                    className="w-40 h-32 md:w-64 md:h-48 flex items-center justify-center p-6 bg-white/60 border-[#0b3d2e]/20 hover:border-[#0b3d2e]/50 transition-colors"
+                    hoverEffect
+                  >
+                    {typeof sponsor.logo === 'object' && sponsor.logo?.url ? (
+                      <Image
+                        src={sponsor.logo.url}
+                        alt={sponsor.name}
+                        width={200}
+                        height={100}
+                        className="max-w-full max-h-full object-contain grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-500"
+                      />
+                    ) : (
+                      <span className="text-[#0b3d2e] font-serif italic text-xl md:text-2xl text-center">
+                        {sponsor.name}
+                      </span>
+                    )}
+                  </GlassCard>
+                ))}
+              </div>
+            )}
 
-          {/* Row 2: Platinum (6 items) */}
-          {platinumSponsors.length > 0 && (
-            <div className="flex flex-wrap justify-center gap-3 md:gap-6 max-w-6xl">
-              {platinumSponsors.map((sponsor) => (
-                <GlassCard
-                  key={sponsor.id}
-                  className="w-28 h-20 md:w-40 md:h-28 flex items-center justify-center p-4 bg-white/40 border-[#0b3d2e]/10 hover:border-[#0b3d2e]/30 transition-colors"
-                  hoverEffect
-                >
-                  {typeof sponsor.logo === 'object' && sponsor.logo?.url ? (
-                    <Image
-                      src={sponsor.logo.url}
-                      alt={sponsor.name}
-                      width={128}
-                      height={64}
-                      className="max-w-full max-h-full object-contain grayscale opacity-70 hover:opacity-100 hover:grayscale-0 transition-all duration-500"
-                    />
-                  ) : (
-                    <span className="text-[#0b3d2e] font-medium text-sm text-center">
-                      {sponsor.name}
-                    </span>
-                  )}
-                </GlassCard>
-              ))}
-            </div>
-          )}
+            {/* Row 2: Platinum (6 items) */}
+            {platinumSponsors.length > 0 && (
+              <div className="flex flex-wrap justify-center gap-3 md:gap-6 max-w-6xl">
+                {platinumSponsors.map((sponsor) => (
+                  <GlassCard
+                    key={sponsor.id}
+                    className="w-28 h-20 md:w-40 md:h-28 flex items-center justify-center p-4 bg-white/40 border-[#0b3d2e]/10 hover:border-[#0b3d2e]/30 transition-colors"
+                    hoverEffect
+                  >
+                    {typeof sponsor.logo === 'object' && sponsor.logo?.url ? (
+                      <Image
+                        src={sponsor.logo.url}
+                        alt={sponsor.name}
+                        width={128}
+                        height={64}
+                        className="max-w-full max-h-full object-contain grayscale opacity-70 hover:opacity-100 hover:grayscale-0 transition-all duration-500"
+                      />
+                    ) : (
+                      <span className="text-[#0b3d2e] font-medium text-sm text-center">
+                        {sponsor.name}
+                      </span>
+                    )}
+                  </GlassCard>
+                ))}
+              </div>
+            )}
 
-          {/* Row 3: Gold (5 items) */}
-          {goldSponsors.length > 0 && (
-            <div className="flex flex-wrap justify-center gap-3 md:gap-6 max-w-5xl">
-              {goldSponsors.map((sponsor) => (
-                <GlassCard
-                  key={sponsor.id}
-                  className="w-24 h-16 md:w-32 md:h-24 flex items-center justify-center p-4 bg-white/30 border-[#0b3d2e]/5 hover:border-[#0b3d2e]/20 transition-colors"
-                  hoverEffect
-                >
-                  {typeof sponsor.logo === 'object' && sponsor.logo?.url ? (
-                    <Image
-                      src={sponsor.logo.url}
-                      alt={sponsor.name}
-                      width={96}
-                      height={48}
-                      className="max-w-full max-h-full object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition-all duration-500"
-                    />
-                  ) : (
-                    <span className="text-[#0b3d2e]/80 font-medium text-xs text-center">
-                      {sponsor.name}
-                    </span>
-                  )}
-                </GlassCard>
-              ))}
-            </div>
-          )}
+            {/* Row 3: Gold (5 items) */}
+            {goldSponsors.length > 0 && (
+              <div className="flex flex-wrap justify-center gap-3 md:gap-6 max-w-5xl">
+                {goldSponsors.map((sponsor) => (
+                  <GlassCard
+                    key={sponsor.id}
+                    className="w-24 h-16 md:w-32 md:h-24 flex items-center justify-center p-4 bg-white/30 border-[#0b3d2e]/5 hover:border-[#0b3d2e]/20 transition-colors"
+                    hoverEffect
+                  >
+                    {typeof sponsor.logo === 'object' && sponsor.logo?.url ? (
+                      <Image
+                        src={sponsor.logo.url}
+                        alt={sponsor.name}
+                        width={96}
+                        height={48}
+                        className="max-w-full max-h-full object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition-all duration-500"
+                      />
+                    ) : (
+                      <span className="text-[#0b3d2e]/80 font-medium text-xs text-center">
+                        {sponsor.name}
+                      </span>
+                    )}
+                  </GlassCard>
+                ))}
+              </div>
+            )}
+          </div>
+        )}
+
+        {/* Partnership Proposal Embed */}
+        <div className="mb-24">
+          <div
+            style={{
+              position: 'relative',
+              width: '100%',
+              height: 0,
+              paddingTop: '56.25%',
+              paddingBottom: 0,
+              boxShadow: '0 2px 8px 0 rgba(63,69,81,0.16)',
+              overflow: 'hidden',
+              borderRadius: '8px',
+              willChange: 'transform',
+            }}
+          >
+            <iframe
+              loading="lazy"
+              style={{
+                position: 'absolute',
+                width: '100%',
+                height: '100%',
+                top: 0,
+                left: 0,
+                border: 'none',
+                padding: 0,
+                margin: 0,
+              }}
+              src="https://www.canva.com/design/DAHCCslr8V0/YK6-LNoqw2n1GULcjxBQGw/view?embed"
+              allowFullScreen
+              allow="fullscreen"
+            />
+          </div>
         </div>
 
         {/* Become a Sponsor Section */}
