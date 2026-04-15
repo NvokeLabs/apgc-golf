@@ -6,16 +6,20 @@ const NEXT_PUBLIC_SERVER_URL = process.env.VERCEL_PROJECT_PRODUCTION_URL
   ? `https://${process.env.VERCEL_PROJECT_PRODUCTION_URL}`
   : undefined || process.env.__NEXT_PRIVATE_ORIGIN || 'http://localhost:3000'
 
+const SUPABASE_STORAGE_ENDPOINT = process.env.SUPABASE_STORAGE_ENDPOINT
+const supabaseImagePatterns = SUPABASE_STORAGE_ENDPOINT
+  ? (() => {
+      const s3Host = new URL(SUPABASE_STORAGE_ENDPOINT).hostname
+      const publicHost = s3Host.replace('.storage.supabase.co', '.supabase.co')
+      return [
+        { hostname: publicHost, protocol: 'https' },
+        { hostname: s3Host, protocol: 'https' },
+      ]
+    })()
+  : []
+
 /** @type {import('next').NextConfig} */
 const nextConfig = {
-  async rewrites() {
-    return [
-      {
-        source: '/api/media/file/:path*',
-        destination: '/media/:path*',
-      },
-    ]
-  },
   images: {
     remotePatterns: [
       ...[NEXT_PUBLIC_SERVER_URL /* 'https://example.com' */].map((item) => {
@@ -30,6 +34,7 @@ const nextConfig = {
         hostname: 'images.unsplash.com',
         protocol: 'https',
       },
+      ...supabaseImagePatterns,
     ],
     // Image optimization settings
     formats: ['image/avif', 'image/webp'],

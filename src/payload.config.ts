@@ -1,6 +1,6 @@
-// storage-adapter-import-placeholder
 import { postgresAdapter } from '@payloadcms/db-postgres'
 import { resendAdapter } from '@payloadcms/email-resend'
+import { s3Storage } from '@payloadcms/storage-s3'
 
 import sharp from 'sharp' // sharp-import
 import path from 'path'
@@ -120,7 +120,33 @@ export default buildConfig({
   globals: [Header, Footer, SiteLabels, HomePage, SponsorsPage, FormContent],
   plugins: [
     ...plugins,
-    // storage-adapter-placeholder
+    s3Storage({
+      collections: {
+        media: {
+          disablePayloadAccessControl: true,
+          generateFileURL: ({ filename, prefix }) => {
+            const endpoint = process.env.SUPABASE_STORAGE_ENDPOINT || ''
+            const publicBase = endpoint.replace(
+              /\.storage\.supabase\.co\/storage\/v1\/s3\/?$/,
+              '.supabase.co/storage/v1/object/public',
+            )
+            const bucket = process.env.SUPABASE_STORAGE_BUCKET_NAME || ''
+            const key = prefix ? `${prefix}/${filename}` : filename
+            return `${publicBase}/${bucket}/${key}`
+          },
+        },
+      },
+      bucket: process.env.SUPABASE_STORAGE_BUCKET_NAME || '',
+      config: {
+        endpoint: process.env.SUPABASE_STORAGE_ENDPOINT,
+        region: process.env.SUPABASE_STORAGE_REGION,
+        forcePathStyle: true,
+        credentials: {
+          accessKeyId: process.env.SUPABASE_STORAGE_ACCESS_KEY || '',
+          secretAccessKey: process.env.SUPABASE_STORAGE_SECRET_ACCESS_KEY || '',
+        },
+      },
+    }),
   ],
   secret: process.env.PAYLOAD_SECRET,
   sharp,
