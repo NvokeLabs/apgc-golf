@@ -2,7 +2,7 @@ import type { Metadata } from 'next'
 
 import { GlassCard } from '@/components/golf'
 import Link from 'next/link'
-import { ArrowLeft, Award, Check, Star, Trophy } from 'lucide-react'
+import { ArrowLeft, Award, Check } from 'lucide-react'
 import { getFormContent, getSiteLabels, getSponsorshipTiers } from '@/utilities/getSiteContent'
 
 import { SponsorRegistrationForm } from './SponsorRegistrationForm'
@@ -10,14 +10,6 @@ import { SponsorRegistrationForm } from './SponsorRegistrationForm'
 export const metadata: Metadata = {
   title: 'Become a Sponsor | APGC Golf',
   description: 'Partner with APGC Golf and connect with our community of passionate golfers.',
-}
-
-const tierIcons: Record<string, typeof Trophy> = {
-  title: Trophy,
-  platinum: Star,
-  gold: Award,
-  silver: Award,
-  bronze: Award,
 }
 
 export default async function SponsorRegistrationPage() {
@@ -52,13 +44,12 @@ export default async function SponsorRegistrationPage() {
 
       {/* Sponsorship Tiers Overview */}
       {tiers && tiers.length > 0 && (
-        <div className="mb-12 grid gap-6 lg:grid-cols-3">
+        <div className="mb-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
           {tiers.map((tier) => {
-            const IconComponent = tierIcons[tier.tierKey || 'gold'] || Award
             return (
               <GlassCard key={tier.id} className="p-6">
                 <div className="mb-4 flex items-center gap-3">
-                  <IconComponent className="h-6 w-6 text-[#0b3d2e]" />
+                  <Award className="h-6 w-6 text-[#0b3d2e]" />
                   <h3 className="font-semibold text-[#0b3d2e]">{tier.name}</h3>
                 </div>
                 <p className="mb-4 text-xl font-bold text-[#0b3d2e]">{tier.price}</p>

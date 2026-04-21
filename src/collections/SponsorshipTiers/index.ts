@@ -13,7 +13,7 @@ export const SponsorshipTiers: CollectionConfig = {
     update: authenticated,
   },
   admin: {
-    defaultColumns: ['name', 'tierKey', 'price', 'order', 'isActive'],
+    defaultColumns: ['name', 'price', 'order', 'isActive'],
     useAsTitle: 'name',
     group: 'Golf Content',
   },
@@ -34,26 +34,11 @@ export const SponsorshipTiers: CollectionConfig = {
       type: 'row',
       fields: [
         {
-          name: 'tierKey',
-          type: 'select',
-          required: true,
-          options: [
-            { label: 'Title Sponsor', value: 'title' },
-            { label: 'Platinum Partner', value: 'platinum' },
-            { label: 'Gold Partner', value: 'gold' },
-            { label: 'Custom', value: 'custom' },
-          ],
-          admin: {
-            width: '33%',
-            description: 'Tier level for sorting',
-          },
-        },
-        {
           name: 'order',
           type: 'number',
           defaultValue: 0,
           admin: {
-            width: '33%',
+            width: '50%',
             description: 'Display order (lower = first)',
           },
         },
@@ -62,7 +47,7 @@ export const SponsorshipTiers: CollectionConfig = {
           type: 'checkbox',
           defaultValue: true,
           admin: {
-            width: '33%',
+            width: '50%',
             description: 'Show on website',
           },
         },

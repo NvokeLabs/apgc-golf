@@ -1214,7 +1214,7 @@ export interface Sponsor {
   generateSlug?: boolean | null;
   slug: string;
   logo?: (number | null) | Media;
-  tier: 'title' | 'platinum' | 'gold';
+  tier: number | SponsorshipTier;
   /**
    * Display order within tier (lower = first)
    */
@@ -1240,6 +1240,52 @@ export interface Sponsor {
         id?: string | null;
       }[]
     | null;
+  updatedAt: string;
+  createdAt: string;
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "sponsorship-tiers".
+ */
+export interface SponsorshipTier {
+  id: number;
+  /**
+   * Display name (e.g., "Title Sponsor", "Platinum Partner")
+   */
+  name: string;
+  /**
+   * Display order (lower = first)
+   */
+  order?: number | null;
+  /**
+   * Show on website
+   */
+  isActive?: boolean | null;
+  /**
+   * Display price (e.g., "Rp 500,000,000")
+   */
+  price: string;
+  /**
+   * Numeric value for sorting/comparison
+   */
+  priceNumeric?: number | null;
+  /**
+   * Brief tier description
+   */
+  description?: string | null;
+  /**
+   * List of benefits included in this tier
+   */
+  benefits?:
+    | {
+        benefit: string;
+        id?: string | null;
+      }[]
+    | null;
+  /**
+   * Show "Most Popular" badge
+   */
+  isHighlighted?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1292,56 +1338,6 @@ export interface News {
   updatedAt: string;
   createdAt: string;
   _status?: ('draft' | 'published') | null;
-}
-/**
- * This interface was referenced by `Config`'s JSON-Schema
- * via the `definition` "sponsorship-tiers".
- */
-export interface SponsorshipTier {
-  id: number;
-  /**
-   * Display name (e.g., "Title Sponsor", "Platinum Partner")
-   */
-  name: string;
-  /**
-   * Tier level for sorting
-   */
-  tierKey: 'title' | 'platinum' | 'gold' | 'custom';
-  /**
-   * Display order (lower = first)
-   */
-  order?: number | null;
-  /**
-   * Show on website
-   */
-  isActive?: boolean | null;
-  /**
-   * Display price (e.g., "Rp 500,000,000")
-   */
-  price: string;
-  /**
-   * Numeric value for sorting/comparison
-   */
-  priceNumeric?: number | null;
-  /**
-   * Brief tier description
-   */
-  description?: string | null;
-  /**
-   * List of benefits included in this tier
-   */
-  benefits?:
-    | {
-        benefit: string;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Show "Most Popular" badge
-   */
-  isHighlighted?: boolean | null;
-  updatedAt: string;
-  createdAt: string;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -1419,7 +1415,10 @@ export interface SponsorRegistration {
   contactName: string;
   email: string;
   phone?: string | null;
-  selectedTier: 'title' | 'platinum' | 'gold';
+  /**
+   * Tier key from SponsorshipTiers, or "custom"
+   */
+  selectedTier: string;
   status?: ('pending' | 'contacted' | 'approved' | 'declined') | null;
   /**
    * Additional information or questions
@@ -2194,7 +2193,6 @@ export interface SponsorsSelect<T extends boolean = true> {
  */
 export interface SponsorshipTiersSelect<T extends boolean = true> {
   name?: T;
-  tierKey?: T;
   order?: T;
   isActive?: T;
   price?: T;

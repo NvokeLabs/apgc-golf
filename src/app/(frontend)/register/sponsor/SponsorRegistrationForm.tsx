@@ -38,9 +38,8 @@ export function SponsorRegistrationForm({
           email: formData.get('email'),
           phone: formData.get('phone'),
           website: formData.get('website'),
-          interestedTier: formData.get('interestedTier'),
+          selectedTier: formData.get('selectedTier'),
           message: formData.get('message'),
-          status: 'new',
         }),
       })
 
@@ -153,12 +152,12 @@ export function SponsorRegistrationForm({
           {formContent?.sponsorshipInterestHeading || 'Sponsorship Interest'}
         </h3>
         <div>
-          <label htmlFor="interestedTier" className="mb-2 block text-sm text-[#636364]">
+          <label htmlFor="selectedTier" className="mb-2 block text-sm text-[#636364]">
             {formContent?.tierLabel || 'Interested Tier *'}
           </label>
           <select
-            id="interestedTier"
-            name="interestedTier"
+            id="selectedTier"
+            name="selectedTier"
             required
             className="w-full rounded-lg border border-[#0b3d2e]/20 bg-white px-4 py-3 text-[#0b3d2e] focus:border-[#0b3d2e] focus:outline-none focus:ring-1 focus:ring-[#0b3d2e]"
           >
@@ -166,18 +165,19 @@ export function SponsorRegistrationForm({
             {sponsorshipTiers && sponsorshipTiers.length > 0 ? (
               <>
                 {sponsorshipTiers.map((tier) => (
-                  <option key={tier.id} value={tier.tierKey || ''}>
+                  <option key={tier.id} value={tier.name}>
                     {tier.name} ({tier.price})
                   </option>
                 ))}
-                <option value="custom">Custom Package</option>
+                <option value="Custom">Custom Package</option>
               </>
             ) : (
               <>
-                <option value="title">Title Sponsor (Rp 500,000,000+)</option>
-                <option value="platinum">Platinum Partner (Rp 250,000,000+)</option>
-                <option value="gold">Gold Partner (Rp 100,000,000+)</option>
-                <option value="custom">Custom Package</option>
+                <option value="ALBATROS">ALBATROS (Rp 100.000.000)</option>
+                <option value="EAGLE">EAGLE (Rp 75.000.000)</option>
+                <option value="BIRDIE">BIRDIE (Rp 50.000.000)</option>
+                <option value="PAR">PAR (Rp 25.000.000)</option>
+                <option value="Custom">Custom Package</option>
               </>
             )}
           </select>

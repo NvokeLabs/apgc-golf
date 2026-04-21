@@ -1039,54 +1039,73 @@ async function seedCMSContent(payload: Payload) {
   })
 
   if (existingTiers.totalDocs === 0) {
+    const websiteBenefit =
+      'Logo Perusahaan tampil pada website Alumni Polinema Golf Club di www.polinemagolf.com'
+    const welcomeBannerBenefit =
+      'Penempatan logo perusahaan pada banner selamat datang & selamat bertanding'
+    const logoBenefit = 'Pemasangan logo perusahaan di semua material promosi & venue'
+    const mcBenefit = 'Penyebutan oleh MC selama acara berlangsung'
+
     const tiers = [
       {
-        name: 'Title Sponsor',
-        tierKey: 'title' as const,
+        name: 'ALBATROS',
         order: 1,
         isActive: true,
-        price: 'Rp 500.000.000+',
-        priceNumeric: 500000000,
-        description: 'Kemitraan premier dengan hak penamaan eksklusif dan eksposur brand maksimal.',
+        price: 'Rp 100.000.000',
+        priceNumeric: 100000000,
         benefits: [
-          { benefit: 'Hak penamaan untuk Kejuaraan Tahunan' },
-          { benefit: 'Branding eksklusif di semua materi event' },
-          { benefit: 'Suite hospitality VIP di semua event besar' },
-          { benefit: 'Kesempatan berbicara di upacara penghargaan' },
-          { benefit: 'Penempatan logo premium di semua channel' },
-        ],
-        isHighlighted: false,
-      },
-      {
-        name: 'Platinum Partner',
-        tierKey: 'platinum' as const,
-        order: 2,
-        isActive: true,
-        price: 'Rp 250.000.000+',
-        priceNumeric: 250000000,
-        description: 'Kemitraan visibilitas tinggi dengan manfaat premium dan akses VIP.',
-        benefits: [
-          { benefit: 'Penempatan logo premium di materi event' },
-          { benefit: 'Akses VIP ke semua event' },
-          { benefit: 'Kampanye fitur media sosial' },
-          { benefit: 'Penempatan banner di semua turnamen' },
-          { benefit: 'Manajer kemitraan khusus' },
+          { benefit: logoBenefit },
+          { benefit: mcBenefit },
+          { benefit: 'Mendapatkan 10 banner/spanduk/umbul-umbul' },
+          { benefit: welcomeBannerBenefit },
+          { benefit: 'Mendapatkan 4 undangan untuk mengikuti turnamen' },
+          { benefit: websiteBenefit },
         ],
         isHighlighted: true,
       },
       {
-        name: 'Gold Partner',
-        tierKey: 'gold' as const,
+        name: 'EAGLE',
+        order: 2,
+        isActive: true,
+        price: 'Rp 75.000.000',
+        priceNumeric: 75000000,
+        benefits: [
+          { benefit: logoBenefit },
+          { benefit: mcBenefit },
+          { benefit: 'Mendapatkan 8 banner/spanduk/umbul-umbul' },
+          { benefit: welcomeBannerBenefit },
+          { benefit: 'Mendapatkan 3 undangan untuk mengikuti turnamen' },
+          { benefit: websiteBenefit },
+        ],
+        isHighlighted: false,
+      },
+      {
+        name: 'BIRDIE',
         order: 3,
         isActive: true,
-        price: 'Rp 100.000.000+',
-        priceNumeric: 100000000,
-        description: 'Kemitraan solid dengan visibilitas dan peluang engagement yang sangat baik.',
+        price: 'Rp 50.000.000',
+        priceNumeric: 50000000,
         benefits: [
-          { benefit: 'Logo di halaman sponsor website' },
-          { benefit: 'Mention di media sosial' },
-          { benefit: 'Penempatan signage event' },
-          { benefit: 'Tiket event gratis' },
+          { benefit: logoBenefit },
+          { benefit: mcBenefit },
+          { benefit: 'Mendapatkan 6 banner/spanduk/umbul-umbul' },
+          { benefit: 'Mendapatkan 2 undangan untuk mengikuti turnamen' },
+          { benefit: websiteBenefit },
+        ],
+        isHighlighted: false,
+      },
+      {
+        name: 'PAR',
+        order: 4,
+        isActive: true,
+        price: 'Rp 25.000.000',
+        priceNumeric: 25000000,
+        benefits: [
+          { benefit: logoBenefit },
+          { benefit: mcBenefit },
+          { benefit: 'Mendapatkan 4 banner/spanduk/umbul-umbul' },
+          { benefit: 'Mendapatkan 1 undangan untuk mengikuti turnamen' },
+          { benefit: websiteBenefit },
         ],
         isHighlighted: false,
       },

@@ -41,7 +41,7 @@ export const Sponsors: CollectionConfig = {
       type: 'text',
       required: true,
     },
-    slugField(),
+    slugField({ fieldToUse: 'name' }),
     {
       name: 'logo',
       type: 'upload',
@@ -52,13 +52,9 @@ export const Sponsors: CollectionConfig = {
       fields: [
         {
           name: 'tier',
-          type: 'select',
+          type: 'relationship',
+          relationTo: 'sponsorship-tiers',
           required: true,
-          options: [
-            { label: 'Title Sponsor', value: 'title' },
-            { label: 'Platinum Partner', value: 'platinum' },
-            { label: 'Gold Partner', value: 'gold' },
-          ],
           admin: {
             width: '33%',
           },

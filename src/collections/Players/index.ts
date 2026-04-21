@@ -38,7 +38,7 @@ export const Players: CollectionConfig = {
       type: 'text',
       required: true,
     },
-    slugField(),
+    slugField({ fieldToUse: 'name' }),
     {
       type: 'row',
       fields: [

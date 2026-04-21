@@ -63,15 +63,11 @@ export const SponsorRegistrations: CollectionConfig = {
       fields: [
         {
           name: 'selectedTier',
-          type: 'select',
+          type: 'text',
           required: true,
-          options: [
-            { label: 'Title Sponsor - $2,000,000', value: 'title' },
-            { label: 'Platinum Partner - $750,000', value: 'platinum' },
-            { label: 'Gold Partner - $250,000', value: 'gold' },
-          ],
           admin: {
             width: '50%',
+            description: 'Tier key from SponsorshipTiers, or "custom"',
           },
         },
         {
