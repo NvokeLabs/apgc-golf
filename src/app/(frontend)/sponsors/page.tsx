@@ -6,7 +6,12 @@ import configPromise from '@payload-config'
 import Link from 'next/link'
 import Image from 'next/image'
 import { cache } from 'react'
-import { Check, ArrowRight, Star, Trophy, Shield, Globe, Users, Handshake } from 'lucide-react'
+import { Check, ArrowRight, Award, Globe, Users, Handshake, Trophy, Star } from 'lucide-react'
+import {
+  LOGO_SIZE_CLASSES,
+  LOGO_SIZE_IMAGE_DIMS,
+  resolveLogoSize,
+} from '@/utilities/sponsorTierSize'
 import {
   getSponsorsPageContent,
   getSponsorshipTiers,
@@ -41,61 +46,72 @@ const getSponsors = cache(async () => {
 // Default sponsorship tiers (fallback if CMS data is empty)
 const defaultSponsorshipTiers = [
   {
-    name: 'Gold Partner',
-    price: 'Rp 100,000,000',
-    tierKey: 'gold' as const,
+    name: 'ALBATROS',
+    price: 'Rp 100.000.000',
     benefits: [
-      { benefit: 'Official Partner Status' },
-      { benefit: 'Logo on Tournament Website' },
-      { benefit: 'Hospitality Passes for 10 Guests' },
-      { benefit: 'Invitation to Sponsor Lunch' },
-      { benefit: 'On-site Activation Space' },
-      { benefit: 'Program Guide Advertisement' },
-    ],
-    isHighlighted: false,
-  },
-  {
-    name: 'Platinum Partner',
-    price: 'Rp 250,000,000',
-    tierKey: 'platinum' as const,
-    benefits: [
-      { benefit: 'Official Category Exclusivity' },
-      { benefit: 'Major Logo Placement on Course' },
-      { benefit: 'VIP Hospitality for 20 Guests' },
-      { benefit: 'Pro-Am Spots for 2 Executives' },
-      { benefit: 'Access to Awards Gala' },
-      { benefit: 'Digital Media Campaign Inclusion' },
-    ],
-    isHighlighted: false,
-  },
-  {
-    name: 'Title Sponsor',
-    price: 'Rp 500,000,000',
-    tierKey: 'title' as const,
-    benefits: [
-      { benefit: 'Exclusive Title Naming Rights' },
-      { benefit: 'Premium Logo Placement on All Media' },
-      { benefit: 'VIP Hospitality for 50 Guests' },
-      { benefit: 'Pro-Am Spots for 4 Executives' },
-      { benefit: 'Private Meet & Greet with Players' },
-      { benefit: 'Course Branding (1st & 18th Tees)' },
+      { benefit: 'Pemasangan logo perusahaan di semua material promosi & venue' },
+      { benefit: 'Penyebutan oleh MC selama acara berlangsung' },
+      { benefit: 'Mendapatkan 10 banner/spanduk/umbul-umbul' },
+      {
+        benefit: 'Penempatan logo perusahaan pada banner selamat datang & selamat bertanding',
+      },
+      { benefit: 'Mendapatkan 4 undangan untuk mengikuti turnamen' },
+      {
+        benefit:
+          'Logo Perusahaan tampil pada website Alumni Polinema Golf Club di www.polinemagolf.com',
+      },
     ],
     isHighlighted: true,
   },
+  {
+    name: 'EAGLE',
+    price: 'Rp 75.000.000',
+    benefits: [
+      { benefit: 'Pemasangan logo perusahaan di semua material promosi & venue' },
+      { benefit: 'Penyebutan oleh MC selama acara berlangsung' },
+      { benefit: 'Mendapatkan 8 banner/spanduk/umbul-umbul' },
+      {
+        benefit: 'Penempatan logo perusahaan pada banner selamat datang & selamat bertanding',
+      },
+      { benefit: 'Mendapatkan 3 undangan untuk mengikuti turnamen' },
+      {
+        benefit:
+          'Logo Perusahaan tampil pada website Alumni Polinema Golf Club di www.polinemagolf.com',
+      },
+    ],
+    isHighlighted: false,
+  },
+  {
+    name: 'BIRDIE',
+    price: 'Rp 50.000.000',
+    benefits: [
+      { benefit: 'Pemasangan logo perusahaan di semua material promosi & venue' },
+      { benefit: 'Penyebutan oleh MC selama acara berlangsung' },
+      { benefit: 'Mendapatkan 6 banner/spanduk/umbul-umbul' },
+      { benefit: 'Mendapatkan 2 undangan untuk mengikuti turnamen' },
+      {
+        benefit:
+          'Logo Perusahaan tampil pada website Alumni Polinema Golf Club di www.polinemagolf.com',
+      },
+    ],
+    isHighlighted: false,
+  },
+  {
+    name: 'PAR',
+    price: 'Rp 25.000.000',
+    benefits: [
+      { benefit: 'Pemasangan logo perusahaan di semua material promosi & venue' },
+      { benefit: 'Penyebutan oleh MC selama acara berlangsung' },
+      { benefit: 'Mendapatkan 4 banner/spanduk/umbul-umbul' },
+      { benefit: 'Mendapatkan 1 undangan untuk mengikuti turnamen' },
+      {
+        benefit:
+          'Logo Perusahaan tampil pada website Alumni Polinema Golf Club di www.polinemagolf.com',
+      },
+    ],
+    isHighlighted: false,
+  },
 ]
-
-// Helper to get icon based on tier
-const getTierIcon = (tierKey: string) => {
-  switch (tierKey) {
-    case 'title':
-      return <Trophy className="w-8 h-8 text-[#0b3d2e]" />
-    case 'platinum':
-      return <Star className="w-8 h-8 text-[#0b3d2e]/80" />
-    case 'gold':
-    default:
-      return <Shield className="w-8 h-8 text-[#636364]" />
-  }
-}
 
 export default async function SponsorsPage() {
   const [sponsors, cmsTiers, pageContent, labels] = await Promise.all([
@@ -108,9 +124,15 @@ export default async function SponsorsPage() {
   // Use CMS tiers if available, otherwise use defaults
   const sponsorshipTiers = cmsTiers.length > 0 ? cmsTiers : defaultSponsorshipTiers
 
-  const titleSponsors = sponsors.filter((s) => s.tier === 'title')
-  const platinumSponsors = sponsors.filter((s) => s.tier === 'platinum')
-  const goldSponsors = sponsors.filter((s) => s.tier === 'gold')
+  // Group sponsors by tier id (falls back to tier name) so tier order drives the layout.
+  const sponsorsByTierId = new Map<string | number, typeof sponsors>()
+  for (const sponsor of sponsors) {
+    const tierId = typeof sponsor.tier === 'object' && sponsor.tier ? sponsor.tier.id : sponsor.tier
+    if (tierId == null) continue
+    const bucket = sponsorsByTierId.get(tierId) ?? []
+    bucket.push(sponsor)
+    sponsorsByTierId.set(tierId, bucket)
+  }
 
   return (
     <div className="pt-24 pb-20 min-h-screen">
@@ -133,88 +155,46 @@ export default async function SponsorsPage() {
         </div>
 
         {/* Pyramid Layout */}
-        {sponsors.length > 0 && (
+        {sponsors.length > 0 && cmsTiers.length > 0 && (
           <div className="mb-24 flex flex-col items-center gap-4">
-            {/* Row 1: Title (2 items) */}
-            {titleSponsors.length > 0 && (
-              <div className="flex justify-center gap-4 md:gap-8 w-full">
-                {titleSponsors.map((sponsor) => (
-                  <GlassCard
-                    key={sponsor.id}
-                    className="w-40 h-32 md:w-64 md:h-48 flex items-center justify-center p-6 bg-white/60 border-[#0b3d2e]/20 hover:border-[#0b3d2e]/50 transition-colors"
-                    hoverEffect
-                  >
-                    {typeof sponsor.logo === 'object' && sponsor.logo?.url ? (
-                      <Image
-                        src={sponsor.logo.url}
-                        alt={sponsor.name}
-                        width={200}
-                        height={100}
-                        className="max-w-full max-h-full object-contain grayscale opacity-80 hover:opacity-100 hover:grayscale-0 transition-all duration-500"
-                      />
-                    ) : (
-                      <span className="text-[#0b3d2e] font-serif italic text-xl md:text-2xl text-center">
-                        {sponsor.name}
-                      </span>
-                    )}
-                  </GlassCard>
-                ))}
-              </div>
-            )}
+            {cmsTiers.map((tier) => {
+              const tierSponsors = (sponsorsByTierId.get(tier.id) ?? [])
+                .slice()
+                .sort((a, b) => (a.order ?? 0) - (b.order ?? 0))
+              if (tierSponsors.length === 0) return null
 
-            {/* Row 2: Platinum (6 items) */}
-            {platinumSponsors.length > 0 && (
-              <div className="flex flex-wrap justify-center gap-3 md:gap-6 max-w-6xl">
-                {platinumSponsors.map((sponsor) => (
-                  <GlassCard
-                    key={sponsor.id}
-                    className="w-28 h-20 md:w-40 md:h-28 flex items-center justify-center p-4 bg-white/40 border-[#0b3d2e]/10 hover:border-[#0b3d2e]/30 transition-colors"
-                    hoverEffect
-                  >
-                    {typeof sponsor.logo === 'object' && sponsor.logo?.url ? (
-                      <Image
-                        src={sponsor.logo.url}
-                        alt={sponsor.name}
-                        width={128}
-                        height={64}
-                        className="max-w-full max-h-full object-contain grayscale opacity-70 hover:opacity-100 hover:grayscale-0 transition-all duration-500"
-                      />
-                    ) : (
-                      <span className="text-[#0b3d2e] font-medium text-sm text-center">
-                        {sponsor.name}
-                      </span>
-                    )}
-                  </GlassCard>
-                ))}
-              </div>
-            )}
+              const size = resolveLogoSize(tier.logoSize)
+              const dims = LOGO_SIZE_IMAGE_DIMS[size]
 
-            {/* Row 3: Gold (5 items) */}
-            {goldSponsors.length > 0 && (
-              <div className="flex flex-wrap justify-center gap-3 md:gap-6 max-w-5xl">
-                {goldSponsors.map((sponsor) => (
-                  <GlassCard
-                    key={sponsor.id}
-                    className="w-24 h-16 md:w-32 md:h-24 flex items-center justify-center p-4 bg-white/30 border-[#0b3d2e]/5 hover:border-[#0b3d2e]/20 transition-colors"
-                    hoverEffect
-                  >
-                    {typeof sponsor.logo === 'object' && sponsor.logo?.url ? (
-                      <Image
-                        src={sponsor.logo.url}
-                        alt={sponsor.name}
-                        width={96}
-                        height={48}
-                        className="max-w-full max-h-full object-contain grayscale opacity-60 hover:opacity-100 hover:grayscale-0 transition-all duration-500"
-                      />
-                    ) : (
-                      <span className="text-[#0b3d2e]/80 font-medium text-xs text-center">
-                        {sponsor.name}
-                      </span>
-                    )}
-                  </GlassCard>
-                ))}
-              </div>
-            )}
+              return (
+                <div
+                  key={tier.id}
+                  className="flex flex-wrap justify-center gap-3 md:gap-6 max-w-6xl w-full"
+                >
+                  {tierSponsors.map((sponsor) => (
+                    <GlassCard
+                      key={sponsor.id}
+                      className={`${LOGO_SIZE_CLASSES[size]} flex items-center justify-center p-4 bg-white/50 border-[#0b3d2e]/10 hover:border-[#0b3d2e]/30 transition-colors`}
+                      hoverEffect
+                    >
+                      {typeof sponsor.logo === 'object' && sponsor.logo?.url ? (
+                        <Image
+                          src={sponsor.logo.url}
+                          alt={sponsor.name}
+                          width={dims.width}
+                          height={dims.height}
+                          className="max-w-full max-h-full object-contain grayscale opacity-70 hover:opacity-100 hover:grayscale-0 transition-all duration-500"
+                        />
+                      ) : (
+                        <span className="text-[#0b3d2e] font-medium text-center">
+                          {sponsor.name}
+                        </span>
+                      )}
+                    </GlassCard>
+                  ))}
+                </div>
+              )
+            })}
           </div>
         )}
 
@@ -267,7 +247,7 @@ export default async function SponsorsPage() {
             </p>
           </div>
 
-          <div className="grid lg:grid-cols-3 gap-8">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-8">
             {sponsorshipTiers.map((tier, idx) => (
               <GlassCard
                 key={idx}
@@ -281,7 +261,7 @@ export default async function SponsorsPage() {
 
                 <div className="mb-6">
                   <div className="inline-flex p-3 rounded-xl bg-[#D66232]/10 mb-4 text-[#D66232]">
-                    {getTierIcon(tier.tierKey)}
+                    <Award className="w-8 h-8" />
                   </div>
                   <h3 className="text-2xl font-bold text-[#0b3d2e] mb-2">{tier.name}</h3>
                   <p className="text-3xl text-[#0b3d2e] font-light">{tier.price}</p>
