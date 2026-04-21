@@ -1051,6 +1051,7 @@ async function seedCMSContent(payload: Payload) {
         name: 'ALBATROS',
         order: 1,
         isActive: true,
+        logoSize: 'xl',
         price: 'Rp 100.000.000',
         priceNumeric: 100000000,
         benefits: [
@@ -1067,6 +1068,7 @@ async function seedCMSContent(payload: Payload) {
         name: 'EAGLE',
         order: 2,
         isActive: true,
+        logoSize: 'lg',
         price: 'Rp 75.000.000',
         priceNumeric: 75000000,
         benefits: [
@@ -1083,6 +1085,7 @@ async function seedCMSContent(payload: Payload) {
         name: 'BIRDIE',
         order: 3,
         isActive: true,
+        logoSize: 'md',
         price: 'Rp 50.000.000',
         priceNumeric: 50000000,
         benefits: [
@@ -1098,6 +1101,7 @@ async function seedCMSContent(payload: Payload) {
         name: 'PAR',
         order: 4,
         isActive: true,
+        logoSize: 'sm',
         price: 'Rp 25.000.000',
         priceNumeric: 25000000,
         benefits: [
