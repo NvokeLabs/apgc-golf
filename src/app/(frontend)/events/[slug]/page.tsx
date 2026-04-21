@@ -503,7 +503,11 @@ export default async function EventPage({ params }: Args) {
                           )}
                           <div>
                             <p className="text-[#0b3d2e] font-medium text-sm">{sponsor.name}</p>
-                            <p className="text-[#636364] text-xs capitalize">{sponsor.tier}</p>
+                            <p className="text-[#636364] text-xs capitalize">
+                              {typeof sponsor.tier === 'object' && sponsor.tier
+                                ? sponsor.tier.name
+                                : ''}
+                            </p>
                           </div>
                         </div>
                       )
