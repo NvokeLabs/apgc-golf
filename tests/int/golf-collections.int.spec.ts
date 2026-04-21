@@ -1,4 +1,6 @@
-import { describe, it, expect } from 'vitest'
+import { describe, it, expect, beforeAll, afterAll } from 'vitest'
+import { getPayload, type Payload } from 'payload'
+import config from '@/payload.config'
 
 import {
   LOGO_SIZE_CLASSES,
@@ -44,5 +46,62 @@ describe('LOGO_SIZE_IMAGE_DIMS', () => {
         LOGO_SIZE_IMAGE_DIMS[order[i + 1]].width,
       )
     }
+  })
+})
+
+describe('SponsorshipTiers.logoSize round-trip', () => {
+  let payload: Payload
+  const createdIds: number[] = []
+
+  beforeAll(async () => {
+    const payloadConfig = await config
+    payload = await getPayload({ config: payloadConfig })
+  })
+
+  afterAll(async () => {
+    for (const id of createdIds) {
+      try {
+        await payload.delete({ collection: 'sponsorship-tiers', id })
+      } catch {
+        // already deleted or never created; ignore
+      }
+    }
+  })
+
+  it('persists and reads back a logoSize value', async () => {
+    const created = await payload.create({
+      collection: 'sponsorship-tiers',
+      data: {
+        name: `test-tier-${Date.now()}`,
+        price: 'Rp 0',
+        order: 999,
+        isActive: false,
+        logoSize: 'lg',
+      },
+    })
+    createdIds.push(created.id)
+
+    const fetched = await payload.findByID({
+      collection: 'sponsorship-tiers',
+      id: created.id,
+    })
+
+    expect(fetched.logoSize).toBe('lg')
+  })
+
+  it('applies the sm default when logoSize is omitted on create', async () => {
+    const created = await payload.create({
+      collection: 'sponsorship-tiers',
+      // @ts-expect-error intentionally omitting required logoSize to verify runtime default
+      data: {
+        name: `test-default-${Date.now()}`,
+        price: 'Rp 0',
+        order: 998,
+        isActive: false,
+      },
+    })
+    createdIds.push(created.id)
+
+    expect(created.logoSize).toBe('sm')
   })
 })
