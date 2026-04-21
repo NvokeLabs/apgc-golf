@@ -13,7 +13,7 @@ export const SponsorshipTiers: CollectionConfig = {
     update: authenticated,
   },
   admin: {
-    defaultColumns: ['name', 'price', 'order', 'isActive'],
+    defaultColumns: ['name', 'price', 'logoSize', 'order', 'isActive'],
     useAsTitle: 'name',
     group: 'Golf Content',
   },
@@ -103,6 +103,22 @@ export const SponsorshipTiers: CollectionConfig = {
       defaultValue: false,
       admin: {
         description: 'Show "Most Popular" badge',
+      },
+    },
+    {
+      name: 'logoSize',
+      type: 'select',
+      required: true,
+      defaultValue: 'sm',
+      options: [
+        { label: 'Extra Large (top/hero row)', value: 'xl' },
+        { label: 'Large', value: 'lg' },
+        { label: 'Medium', value: 'md' },
+        { label: 'Small', value: 'sm' },
+      ],
+      admin: {
+        description:
+          'Controls how big sponsor logos are displayed on the public Sponsors page. Bigger = more prominent.',
       },
     },
   ],

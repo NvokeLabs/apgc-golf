@@ -1286,6 +1286,10 @@ export interface SponsorshipTier {
    * Show "Most Popular" badge
    */
   isHighlighted?: boolean | null;
+  /**
+   * Controls how big sponsor logos are displayed on the public Sponsors page. Bigger = more prominent.
+   */
+  logoSize: 'xl' | 'lg' | 'md' | 'sm';
   updatedAt: string;
   createdAt: string;
 }
@@ -2205,6 +2209,7 @@ export interface SponsorshipTiersSelect<T extends boolean = true> {
         id?: T;
       };
   isHighlighted?: T;
+  logoSize?: T;
   updatedAt?: T;
   createdAt?: T;
 }
