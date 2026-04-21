@@ -10,6 +10,7 @@ import { Check, ArrowRight, Award, Globe, Users, Handshake, Trophy, Star } from 
 import {
   LOGO_SIZE_CLASSES,
   LOGO_SIZE_IMAGE_DIMS,
+  type LogoSize,
   resolveLogoSize,
 } from '@/utilities/sponsorTierSize'
 import {
@@ -124,7 +125,7 @@ export default async function SponsorsPage() {
   // Use CMS tiers if available, otherwise use defaults
   const sponsorshipTiers = cmsTiers.length > 0 ? cmsTiers : defaultSponsorshipTiers
 
-  // Group sponsors by tier id (falls back to tier name) so tier order drives the layout.
+  // Group sponsors by tier id so tier.order drives the pyramid row order.
   const sponsorsByTierId = new Map<string | number, typeof sponsors>()
   for (const sponsor of sponsors) {
     const tierId = typeof sponsor.tier === 'object' && sponsor.tier ? sponsor.tier.id : sponsor.tier
@@ -132,6 +133,13 @@ export default async function SponsorsPage() {
     const bucket = sponsorsByTierId.get(tierId) ?? []
     bucket.push(sponsor)
     sponsorsByTierId.set(tierId, bucket)
+  }
+
+  const FALLBACK_TEXT_CLASSES: Record<LogoSize, string> = {
+    xl: 'font-serif italic text-xl md:text-2xl text-[#0b3d2e]',
+    lg: 'font-medium text-sm text-[#0b3d2e]',
+    md: 'font-medium text-xs text-[#0b3d2e]/80',
+    sm: 'font-medium text-xs text-[#0b3d2e]/80',
   }
 
   return (
@@ -186,7 +194,7 @@ export default async function SponsorsPage() {
                           className="max-w-full max-h-full object-contain grayscale opacity-70 hover:opacity-100 hover:grayscale-0 transition-all duration-500"
                         />
                       ) : (
-                        <span className="text-[#0b3d2e] font-medium text-center">
+                        <span className={`${FALLBACK_TEXT_CLASSES[size]} text-center`}>
                           {sponsor.name}
                         </span>
                       )}
