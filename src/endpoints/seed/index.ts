@@ -12,7 +12,6 @@ import { post3 } from './post-3'
 import { golfPlayers } from './golf-players'
 import { golfEvents } from './golf-events'
 import { golfNews } from './golf-news'
-import { golfSponsors } from './golf-sponsors'
 
 const collections: CollectionSlug[] = [
   'categories',
@@ -333,37 +332,6 @@ export const seed = async ({
     }
   }
 
-  payload.logger.info(`— Seeding golf sponsors...`)
-
-  // Resolve tier names from golfSponsors to real sponsorship-tiers IDs
-  const tierDocs = await payload.find({
-    collection: 'sponsorship-tiers',
-    limit: 100,
-    pagination: false,
-  })
-  const tierIdByName = new Map<string, number>()
-  for (const tier of tierDocs.docs) {
-    tierIdByName.set(tier.name, tier.id)
-  }
-
-  const sponsorDocs = await Promise.all(
-    golfSponsors.map((sponsor) => {
-      const tierId = tierIdByName.get(sponsor.tier)
-      if (tierId == null) {
-        throw new Error(
-          `Seed error: tier "${sponsor.tier}" not found. Make sure sponsorship-tiers are seeded first (ALBATROS/EAGLE/BIRDIE/PAR).`,
-        )
-      }
-      const { tier: _tierName, ...rest } = sponsor
-      return payload.create({
-        collection: 'sponsors',
-        depth: 0,
-        context: { skipRevalidate: true },
-        data: { ...rest, tier: tierId },
-      })
-    }),
-  )
-
   payload.logger.info(`— Seeding golf players...`)
 
   const _playerDocs = await Promise.all(
@@ -379,19 +347,15 @@ export const seed = async ({
 
   payload.logger.info(`— Seeding golf events...`)
 
-  // Link sponsors to events
   const _eventDocs = await Promise.all(
-    golfEvents.map((event, index) =>
+    golfEvents.map((event) =>
       payload.create({
         collection: 'events',
         depth: 0,
         context: { skipRevalidate: true },
         data: {
           ...event,
-          sponsors:
-            index === 0
-              ? sponsorDocs.slice(0, 5).map((s) => s.id)
-              : sponsorDocs.slice(0, 3).map((s) => s.id),
+          sponsors: [],
         },
       }),
     ),
