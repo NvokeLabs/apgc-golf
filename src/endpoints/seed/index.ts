@@ -227,17 +227,141 @@ export const seed = async ({
   ])
 
   // ========== GOLF CONTENT SEEDING ==========
+
+  // Seed sponsorship-tiers first so sponsor relationships can be resolved
+  payload.logger.info(`— Seeding sponsorship tiers...`)
+
+  const existingTiers = await payload.find({
+    collection: 'sponsorship-tiers',
+    limit: 1,
+    pagination: false,
+  })
+
+  if (existingTiers.totalDocs === 0) {
+    const websiteBenefit =
+      'Logo Perusahaan tampil pada website Alumni Polinema Golf Club di www.polinemagolf.com'
+    const welcomeBannerBenefit =
+      'Penempatan logo perusahaan pada banner selamat datang & selamat bertanding'
+    const logoBenefit = 'Pemasangan logo perusahaan di semua material promosi & venue'
+    const mcBenefit = 'Penyebutan oleh MC selama acara berlangsung'
+
+    const tiersToCreate: {
+      name: string
+      order: number
+      isActive: boolean
+      logoSize: 'xl' | 'lg' | 'md' | 'sm'
+      price: string
+      priceNumeric: number
+      benefits: { benefit: string }[]
+      isHighlighted: boolean
+    }[] = [
+      {
+        name: 'ALBATROS',
+        order: 1,
+        isActive: true,
+        logoSize: 'xl',
+        price: 'Rp 100.000.000',
+        priceNumeric: 100000000,
+        benefits: [
+          { benefit: logoBenefit },
+          { benefit: mcBenefit },
+          { benefit: 'Mendapatkan 10 banner/spanduk/umbul-umbul' },
+          { benefit: welcomeBannerBenefit },
+          { benefit: 'Mendapatkan 4 undangan untuk mengikuti turnamen' },
+          { benefit: websiteBenefit },
+        ],
+        isHighlighted: true,
+      },
+      {
+        name: 'EAGLE',
+        order: 2,
+        isActive: true,
+        logoSize: 'lg',
+        price: 'Rp 75.000.000',
+        priceNumeric: 75000000,
+        benefits: [
+          { benefit: logoBenefit },
+          { benefit: mcBenefit },
+          { benefit: 'Mendapatkan 8 banner/spanduk/umbul-umbul' },
+          { benefit: welcomeBannerBenefit },
+          { benefit: 'Mendapatkan 3 undangan untuk mengikuti turnamen' },
+          { benefit: websiteBenefit },
+        ],
+        isHighlighted: false,
+      },
+      {
+        name: 'BIRDIE',
+        order: 3,
+        isActive: true,
+        logoSize: 'md',
+        price: 'Rp 50.000.000',
+        priceNumeric: 50000000,
+        benefits: [
+          { benefit: logoBenefit },
+          { benefit: mcBenefit },
+          { benefit: 'Mendapatkan 6 banner/spanduk/umbul-umbul' },
+          { benefit: 'Mendapatkan 2 undangan untuk mengikuti turnamen' },
+          { benefit: websiteBenefit },
+        ],
+        isHighlighted: false,
+      },
+      {
+        name: 'PAR',
+        order: 4,
+        isActive: true,
+        logoSize: 'sm',
+        price: 'Rp 25.000.000',
+        priceNumeric: 25000000,
+        benefits: [
+          { benefit: logoBenefit },
+          { benefit: mcBenefit },
+          { benefit: 'Mendapatkan 4 banner/spanduk/umbul-umbul' },
+          { benefit: 'Mendapatkan 1 undangan untuk mengikuti turnamen' },
+          { benefit: websiteBenefit },
+        ],
+        isHighlighted: false,
+      },
+    ]
+
+    for (const tier of tiersToCreate) {
+      await payload.create({
+        collection: 'sponsorship-tiers',
+        depth: 0,
+        context: { skipRevalidate: true },
+        data: tier,
+      })
+    }
+  }
+
   payload.logger.info(`— Seeding golf sponsors...`)
 
+  // Resolve tier names from golfSponsors to real sponsorship-tiers IDs
+  const tierDocs = await payload.find({
+    collection: 'sponsorship-tiers',
+    limit: 100,
+    pagination: false,
+  })
+  const tierIdByName = new Map<string, number>()
+  for (const tier of tierDocs.docs) {
+    tierIdByName.set(tier.name, tier.id)
+  }
+
   const sponsorDocs = await Promise.all(
-    golfSponsors.map((sponsor) =>
-      payload.create({
+    golfSponsors.map((sponsor) => {
+      const tierId = tierIdByName.get(sponsor.tier)
+      if (tierId == null) {
+        throw new Error(
+          `Seed error: tier "${sponsor.tier}" not found. Make sure sponsorship-tiers are seeded first (ALBATROS/EAGLE/BIRDIE/PAR).`,
+        )
+      }
+      const { tier: _tierName, ...rest } = sponsor
+      return payload.create({
         collection: 'sponsors',
         depth: 0,
         context: { skipRevalidate: true },
-        data: sponsor as any, // Seed data without logo - logo is optional for seeding
-      }),
-    ),
+        data: { ...rest, tier: tierId },
+      })
+    }),
   )
 
   payload.logger.info(`— Seeding golf players...`)

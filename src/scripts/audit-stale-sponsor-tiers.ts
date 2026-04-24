@@ -19,8 +19,8 @@ async function main() {
     const tier = sponsor.tier
     // A valid tier is either a number (ID reference) or an object (populated relation).
     // A string here means a pre-refactor hardcoded key like 'title' / 'gold' / 'platinum'.
-    // @ts-expect-error runtime check for legacy string values not in the current type
-    if (typeof tier === 'string') {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    if (typeof (tier as any) === 'string') {
       stale.push({ id: sponsor.id, name: sponsor.name, tier })
     }
   }

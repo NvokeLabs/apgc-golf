@@ -1,16 +1,24 @@
 import type { RequiredDataFromCollectionSlug } from 'payload'
 
-type SponsorSeedData = Omit<RequiredDataFromCollectionSlug<'sponsors'>, 'logo'>
+/**
+ * Seed shape — `tier` is the NAME of a sponsorship-tiers row
+ * ('ALBATROS' | 'EAGLE' | 'BIRDIE' | 'PAR'). The seed endpoint
+ * resolves this to a real tier ID before calling payload.create.
+ */
+export type SponsorSeedData = Omit<RequiredDataFromCollectionSlug<'sponsors'>, 'logo' | 'tier'> & {
+  tier: 'ALBATROS' | 'EAGLE' | 'BIRDIE' | 'PAR'
+}
 
 export const golfSponsors: SponsorSeedData[] = [
   {
     name: 'Bank Jatim',
     slug: 'bank-jatim',
-    tier: 'title',
+    tier: 'ALBATROS',
     order: 1,
     isActive: true,
     website: 'https://www.bankjatim.co.id',
-    description: 'Regional development bank serving East Java with comprehensive financial services.',
+    description:
+      'Regional development bank serving East Java with comprehensive financial services.',
     benefits: [
       { benefit: 'Title naming rights for Annual Championship' },
       { benefit: 'Exclusive branding on all event materials' },
@@ -22,7 +30,7 @@ export const golfSponsors: SponsorSeedData[] = [
   {
     name: 'Semen Indonesia',
     slug: 'semen-indonesia',
-    tier: 'platinum',
+    tier: 'EAGLE',
     order: 1,
     isActive: true,
     website: 'https://www.semenindonesia.com',
@@ -37,7 +45,7 @@ export const golfSponsors: SponsorSeedData[] = [
   {
     name: 'Telkom Indonesia',
     slug: 'telkom-indonesia',
-    tier: 'platinum',
+    tier: 'EAGLE',
     order: 2,
     isActive: true,
     website: 'https://www.telkom.co.id',
@@ -52,7 +60,7 @@ export const golfSponsors: SponsorSeedData[] = [
   {
     name: 'Gudang Garam',
     slug: 'gudang-garam',
-    tier: 'gold',
+    tier: 'BIRDIE',
     order: 1,
     isActive: true,
     website: 'https://www.gudanggaramtbk.com',
@@ -66,7 +74,7 @@ export const golfSponsors: SponsorSeedData[] = [
   {
     name: 'BCA',
     slug: 'bca',
-    tier: 'gold',
+    tier: 'BIRDIE',
     order: 2,
     isActive: true,
     website: 'https://www.bca.co.id',
@@ -80,7 +88,7 @@ export const golfSponsors: SponsorSeedData[] = [
   {
     name: 'Petrokimia Gresik',
     slug: 'petrokimia-gresik',
-    tier: 'gold',
+    tier: 'BIRDIE',
     order: 3,
     isActive: true,
     website: 'https://www.petrokimia-gresik.com',
@@ -94,7 +102,7 @@ export const golfSponsors: SponsorSeedData[] = [
   {
     name: 'Sinarmas',
     slug: 'sinarmas',
-    tier: 'gold',
+    tier: 'BIRDIE',
     order: 4,
     isActive: true,
     website: 'https://www.sinarmas.com',
@@ -108,11 +116,12 @@ export const golfSponsors: SponsorSeedData[] = [
   {
     name: 'Astra International',
     slug: 'astra-international',
-    tier: 'gold',
+    tier: 'BIRDIE',
     order: 5,
     isActive: true,
     website: 'https://www.astra.co.id',
-    description: 'Indonesia largest diversified conglomerate with automotive, financial, and infrastructure businesses.',
+    description:
+      'Indonesia largest diversified conglomerate with automotive, financial, and infrastructure businesses.',
     benefits: [
       { benefit: 'Logo on website sponsor page' },
       { benefit: 'Social media mentions' },
@@ -122,7 +131,7 @@ export const golfSponsors: SponsorSeedData[] = [
   {
     name: 'Pertamina',
     slug: 'pertamina',
-    tier: 'platinum',
+    tier: 'EAGLE',
     order: 3,
     isActive: true,
     website: 'https://www.pertamina.com',
@@ -137,7 +146,7 @@ export const golfSponsors: SponsorSeedData[] = [
   {
     name: 'Indofood',
     slug: 'indofood',
-    tier: 'gold',
+    tier: 'BIRDIE',
     order: 6,
     isActive: true,
     website: 'https://www.indofood.com',

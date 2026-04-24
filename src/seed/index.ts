@@ -562,7 +562,7 @@ async function seedSponsors(payload: Payload) {
     {
       name: 'Bank Central Asia',
       slug: 'bank-central-asia',
-      tier: 'title' as const,
+      tier: 'ALBATROS' as const,
       website: 'https://www.bca.co.id',
       description: "Indonesia's largest private bank and proud title sponsor of APGC.",
       isActive: true,
@@ -576,7 +576,7 @@ async function seedSponsors(payload: Payload) {
     {
       name: 'Pertamina',
       slug: 'pertamina',
-      tier: 'platinum' as const,
+      tier: 'EAGLE' as const,
       website: 'https://www.pertamina.com',
       description: "Indonesia's national oil company supporting Indonesian sports.",
       isActive: true,
@@ -586,7 +586,7 @@ async function seedSponsors(payload: Payload) {
     {
       name: 'Telkomsel',
       slug: 'telkomsel',
-      tier: 'platinum' as const,
+      tier: 'EAGLE' as const,
       website: 'https://www.telkomsel.com',
       description: 'Leading mobile network provider in Indonesia.',
       isActive: true,
@@ -596,7 +596,7 @@ async function seedSponsors(payload: Payload) {
     {
       name: 'Garuda Indonesia',
       slug: 'garuda-indonesia',
-      tier: 'gold' as const,
+      tier: 'BIRDIE' as const,
       website: 'https://www.garuda-indonesia.com',
       description: 'The national airline of Indonesia.',
       isActive: true,
@@ -606,7 +606,7 @@ async function seedSponsors(payload: Payload) {
     {
       name: 'Tokopedia',
       slug: 'tokopedia',
-      tier: 'gold' as const,
+      tier: 'BIRDIE' as const,
       website: 'https://www.tokopedia.com',
       description: "Indonesia's leading e-commerce platform.",
       isActive: true,
@@ -616,7 +616,7 @@ async function seedSponsors(payload: Payload) {
     {
       name: 'Indofood',
       slug: 'indofood',
-      tier: 'gold' as const,
+      tier: 'BIRDIE' as const,
       website: 'https://www.indofood.com',
       description: "One of Indonesia's largest food processing companies.",
       isActive: true,
@@ -626,7 +626,7 @@ async function seedSponsors(payload: Payload) {
     {
       name: 'Astra International',
       slug: 'astra-international',
-      tier: 'platinum' as const,
+      tier: 'EAGLE' as const,
       website: 'https://www.astra.co.id',
       description: "Indonesia's largest diversified conglomerate.",
       isActive: true,
@@ -636,7 +636,7 @@ async function seedSponsors(payload: Payload) {
     {
       name: 'Semen Indonesia',
       slug: 'semen-indonesia',
-      tier: 'gold' as const,
+      tier: 'BIRDIE' as const,
       website: 'https://www.semenindonesia.com',
       description: "Indonesia's largest cement producer.",
       isActive: true,
@@ -646,7 +646,7 @@ async function seedSponsors(payload: Payload) {
     {
       name: 'Bank Mandiri',
       slug: 'bank-mandiri',
-      tier: 'platinum' as const,
+      tier: 'EAGLE' as const,
       website: 'https://www.bankmandiri.co.id',
       description: "One of Indonesia's largest banks.",
       isActive: true,
@@ -656,7 +656,7 @@ async function seedSponsors(payload: Payload) {
     {
       name: 'Unilever Indonesia',
       slug: 'unilever-indonesia',
-      tier: 'gold' as const,
+      tier: 'BIRDIE' as const,
       website: 'https://www.unilever.co.id',
       description: 'Global consumer goods company with strong Indonesian presence.',
       isActive: true,
@@ -666,7 +666,7 @@ async function seedSponsors(payload: Payload) {
     {
       name: 'TaylorMade Golf',
       slug: 'taylormade-golf',
-      tier: 'gold' as const,
+      tier: 'BIRDIE' as const,
       website: 'https://www.taylormadegolf.com',
       description: 'Official equipment partner of APGC.',
       isActive: true,
@@ -676,7 +676,7 @@ async function seedSponsors(payload: Payload) {
     {
       name: 'Titleist',
       slug: 'titleist',
-      tier: 'gold' as const,
+      tier: 'BIRDIE' as const,
       website: 'https://www.titleist.com',
       description: 'Premium golf ball and equipment manufacturer.',
       isActive: true,
@@ -684,6 +684,17 @@ async function seedSponsors(payload: Payload) {
       benefits: [{ benefit: 'Ball sponsorship' }, { benefit: 'Fitting days' }],
     },
   ]
+
+  // Resolve tier names to real sponsorship-tiers IDs
+  const tierDocs = await payload.find({
+    collection: 'sponsorship-tiers',
+    limit: 100,
+    pagination: false,
+  })
+  const tierIdByName = new Map<string, number>()
+  for (const tier of tierDocs.docs) {
+    tierIdByName.set(tier.name, tier.id)
+  }
 
   const created = []
   for (const sponsor of sponsorsData) {
@@ -694,9 +705,15 @@ async function seedSponsors(payload: Payload) {
         limit: 1,
       })
       if (existing.docs.length === 0) {
+        const { tier: tierName, ...rest } = sponsor
+        const tierId = tierIdByName.get(tierName)
+        if (tierId == null) {
+          console.error(`Tier "${tierName}" not found; skipping sponsor "${sponsor.name}"`)
+          continue
+        }
         const doc = await payload.create({
           collection: 'sponsors',
-          data: sponsor as any,
+          data: { ...rest, tier: tierId } as any,
         })
         created.push(doc)
       }
@@ -1046,7 +1063,16 @@ async function seedCMSContent(payload: Payload) {
     const logoBenefit = 'Pemasangan logo perusahaan di semua material promosi & venue'
     const mcBenefit = 'Penyebutan oleh MC selama acara berlangsung'
 
-    const tiers = [
+    const tiers: {
+      name: string
+      order: number
+      isActive: boolean
+      logoSize: 'xl' | 'lg' | 'md' | 'sm'
+      price: string
+      priceNumeric: number
+      benefits: { benefit: string }[]
+      isHighlighted: boolean
+    }[] = [
       {
         name: 'ALBATROS',
         order: 1,
