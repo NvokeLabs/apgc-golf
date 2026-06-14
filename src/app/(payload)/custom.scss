@@ -136,9 +136,12 @@
    Cards and Panels
    ======================================== */
 
+/* NOTE: `.document-fields` (the two-column main+sidebar flex wrapper) is
+   intentionally NOT a card here — its inner `__edit` and `__sidebar` columns
+   are the cards. Bordering the wrapper too produces a border-inside-a-border
+   ("too tight") look. */
 .card,
-.collection-list,
-.document-fields {
+.collection-list {
   background-color: var(--apgc-card-bg) !important;
   border: 1px solid var(--apgc-border) !important;
   border-radius: 12px !important;
@@ -793,7 +796,7 @@ button[class*='tab']--active {
 }
 
 /* --- Inputs / textareas / native selects: rounded, bordered, comfortable --- */
-.field-type input:not([type='checkbox']):not([type='radio']),
+.field-type input:not([type='checkbox']):not([type='radio']):not(.rs__input),
 .field-type textarea,
 .field-type select {
   border-radius: 8px !important;
@@ -839,13 +842,26 @@ button[class*='tab']--active {
 }
 
 /* Brand focus ring (consistent with existing input:focus rules above) */
-.field-type input:not([type='checkbox']):not([type='radio']):focus,
+.field-type input:not([type='checkbox']):not([type='radio']):not(.rs__input):focus,
 .field-type textarea:focus,
 .field-type select:focus,
 .field-type .rs__control--is-focused {
   border-color: var(--apgc-primary) !important;
   box-shadow: 0 0 0 3px var(--apgc-primary-light) !important;
   outline: none !important;
+}
+
+/* Belt-and-suspenders: fully neutralize react-select's internal search input
+   so it never renders as a bordered box inside the control. */
+.field-type .rs__control input {
+  border: 0 !important;
+  border-radius: 0 !important;
+  min-height: 0 !important;
+  height: auto !important;
+  padding: 0 !important;
+  width: auto !important;
+  background: transparent !important;
+  box-shadow: none !important;
 }
 
 /* --- Field labels: clear hierarchy --- */
@@ -988,6 +1004,21 @@ button[class*='tab']--active {
   font-weight: 600 !important;
 }
 
+/* Payload full-bleeds the tabs with negative horizontal margins (+ re-pads via
+   __content-wrap) for its un-padded layout. Inside our padded card that breaks
+   the tab bar out past the card edge (the Stats/Profile/Contact underline
+   overflowing). Keep the tabs within the card padding instead. */
+.document-fields__edit .tabs-field {
+  margin-top: 8px !important;
+  margin-left: 0 !important;
+  margin-right: 0 !important;
+}
+
+.document-fields__edit .tabs-field__content-wrap {
+  padding-left: 0 !important;
+  padding-right: 0 !important;
+}
+
 /* --- Collapsibles: card-like with rounded borders + hover --- */
 .collapsible {
   border: 1px solid var(--apgc-border) !important;
@@ -996,7 +1027,6 @@ button[class*='tab']--active {
   background-color: var(--apgc-card-bg) !important;
 }
 
-.collapsible__toggle,
 .collapsible__toggle-wrap {
   padding: 12px 14px !important;
   font-weight: 600 !important;
@@ -1004,7 +1034,14 @@ button[class*='tab']--active {
   transition: background-color 0.18s ease !important;
 }
 
-.collapsible__toggle:hover,
+/* Payload's .collapsible__toggle is an invisible full-cover button with
+   `color: transparent` (its hidden "Toggle block" label must stay invisible,
+   otherwise it paints over the visible row label, e.g. "Benefit 01"). Never
+   give it a visible color. */
+.collapsible__toggle {
+  color: transparent !important;
+}
+
 .collapsible__toggle-wrap:hover {
   background-color: var(--apgc-bg) !important;
 }
@@ -1179,13 +1216,16 @@ button[class*='tab']--active {
   box-shadow: 0 1px 2px rgba(23, 16, 70, 0.08) !important;
 }
 
-/* --- Doc controls / save bar: card surface + tidy spacing --- */
-.doc-controls,
-.doc-controls__content {
+/* --- Doc controls / save bar: card surface + tidy spacing ---
+ * Only the OUTER `.doc-controls` is a card. Do NOT border `.doc-controls__content`
+ * — on global edit pages it's empty and renders as a stray rounded box ("oval")
+ * next to the Save button. */
+.doc-controls {
   background-color: var(--apgc-card-bg) !important;
   border: 1px solid var(--apgc-border) !important;
   border-radius: 12px !important;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  margin-bottom: 20px !important;
 }
 
 .doc-controls__wrapper,

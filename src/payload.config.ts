@@ -49,6 +49,7 @@ export default buildConfig({
     },
     components: {
       providers: ['@/components/admin/Provider'],
+      header: ['@/components/admin/BackButton'],
       Nav: '@/components/admin/Nav',
       beforeLogin: ['@/components/BeforeLogin'],
       beforeDashboard: ['@/components/BeforeDashboard'],
