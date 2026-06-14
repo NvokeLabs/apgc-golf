@@ -17,6 +17,7 @@ export const Players: CollectionConfig = {
   defaultPopulate: {
     name: true,
     slug: true,
+    role: true,
     rank: true,
     country: true,
     status: true,
@@ -27,6 +28,13 @@ export const Players: CollectionConfig = {
     defaultColumns: ['name', 'rank', 'country', 'status', 'isFeatured'],
     useAsTitle: 'name',
     group: 'Golf Content',
+    components: {
+      views: {
+        list: {
+          Component: '@/components/admin/lists/PlayersListView',
+        },
+      },
+    },
   },
   hooks: {
     afterChange: [revalidatePlayerAfterChange],
@@ -37,8 +45,24 @@ export const Players: CollectionConfig = {
       name: 'name',
       type: 'text',
       required: true,
+      admin: {
+        components: {
+          Field: '@/components/admin/fields/ShadcnTextField',
+        },
+      },
     },
     slugField({ fieldToUse: 'name' }),
+    {
+      name: 'role',
+      type: 'text',
+      admin: {
+        description:
+          'Role/title shown on the Alumni & Professional Network card (e.g. Vice Chairman APGC)',
+        components: {
+          Field: '@/components/admin/fields/ShadcnTextField',
+        },
+      },
+    },
     {
       type: 'row',
       fields: [
@@ -46,15 +70,21 @@ export const Players: CollectionConfig = {
           name: 'rank',
           type: 'number',
           admin: {
-            width: '25%',
+            width: '33%',
             description: 'Current ranking position',
+            components: {
+              Field: '@/components/admin/fields/ShadcnNumberField',
+            },
           },
         },
         {
           name: 'country',
           type: 'text',
           admin: {
-            width: '25%',
+            width: '33%',
+            components: {
+              Field: '@/components/admin/fields/ShadcnTextField',
+            },
           },
         },
         {
@@ -65,19 +95,10 @@ export const Players: CollectionConfig = {
             { label: 'Female', value: 'female' },
           ],
           admin: {
-            width: '25%',
-          },
-        },
-        {
-          name: 'status',
-          type: 'select',
-          defaultValue: 'active',
-          options: [
-            { label: 'Active', value: 'active' },
-            { label: 'Inactive', value: 'inactive' },
-          ],
-          admin: {
-            width: '25%',
+            width: '33%',
+            components: {
+              Field: '@/components/admin/fields/ShadcnSelectField',
+            },
           },
         },
       ],
@@ -86,6 +107,9 @@ export const Players: CollectionConfig = {
       name: 'image',
       type: 'upload',
       relationTo: 'media',
+      admin: {
+        description: 'Player photo',
+      },
     },
     {
       type: 'tabs',
@@ -102,6 +126,9 @@ export const Players: CollectionConfig = {
                   defaultValue: 0,
                   admin: {
                     width: '25%',
+                    components: {
+                      Field: '@/components/admin/fields/ShadcnNumberField',
+                    },
                   },
                 },
                 {
@@ -110,6 +137,9 @@ export const Players: CollectionConfig = {
                   defaultValue: 0,
                   admin: {
                     width: '25%',
+                    components: {
+                      Field: '@/components/admin/fields/ShadcnNumberField',
+                    },
                   },
                 },
                 {
@@ -118,6 +148,9 @@ export const Players: CollectionConfig = {
                   admin: {
                     width: '25%',
                     description: 'Golf handicap',
+                    components: {
+                      Field: '@/components/admin/fields/ShadcnNumberField',
+                    },
                   },
                 },
                 {
@@ -125,6 +158,9 @@ export const Players: CollectionConfig = {
                   type: 'number',
                   admin: {
                     width: '25%',
+                    components: {
+                      Field: '@/components/admin/fields/ShadcnNumberField',
+                    },
                   },
                 },
               ],
@@ -135,6 +171,9 @@ export const Players: CollectionConfig = {
               defaultValue: 0,
               admin: {
                 description: 'Number of major championships won',
+                components: {
+                  Field: '@/components/admin/fields/ShadcnNumberField',
+                },
               },
             },
             {
@@ -173,6 +212,9 @@ export const Players: CollectionConfig = {
                   type: 'number',
                   admin: {
                     width: '33%',
+                    components: {
+                      Field: '@/components/admin/fields/ShadcnNumberField',
+                    },
                   },
                 },
                 {
@@ -181,6 +223,9 @@ export const Players: CollectionConfig = {
                   admin: {
                     width: '33%',
                     description: 'Year turned professional',
+                    components: {
+                      Field: '@/components/admin/fields/ShadcnNumberField',
+                    },
                   },
                 },
                 {
@@ -189,6 +234,9 @@ export const Players: CollectionConfig = {
                   admin: {
                     width: '33%',
                     description: 'Club membership ID',
+                    components: {
+                      Field: '@/components/admin/fields/ShadcnTextField',
+                    },
                   },
                 },
               ],
@@ -205,6 +253,9 @@ export const Players: CollectionConfig = {
               type: 'textarea',
               admin: {
                 description: 'Short description for member listings',
+                components: {
+                  Field: '@/components/admin/fields/ShadcnTextareaField',
+                },
               },
             },
           ],
@@ -215,6 +266,11 @@ export const Players: CollectionConfig = {
             {
               name: 'email',
               type: 'email',
+              admin: {
+                components: {
+                  Field: '@/components/admin/fields/ShadcnTextField',
+                },
+              },
             },
             {
               name: 'matchPlayAvailable',
@@ -222,11 +278,30 @@ export const Players: CollectionConfig = {
               defaultValue: true,
               admin: {
                 description: 'Available for match play',
+                components: {
+                  Field: '@/components/admin/fields/ShadcnCheckboxField',
+                },
               },
             },
           ],
         },
       ],
+    },
+    {
+      name: 'status',
+      type: 'select',
+      defaultValue: 'active',
+      options: [
+        { label: 'Active', value: 'active' },
+        { label: 'Inactive', value: 'inactive' },
+      ],
+      admin: {
+        position: 'sidebar',
+        description: 'Active players are shown publicly',
+        components: {
+          Field: '@/components/admin/fields/ShadcnSelectField',
+        },
+      },
     },
     {
       name: 'isFeatured',

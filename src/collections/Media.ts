@@ -17,6 +17,15 @@ const dirname = path.dirname(filename)
 export const Media: CollectionConfig = {
   slug: 'media',
   folders: true,
+  admin: {
+    components: {
+      views: {
+        list: {
+          Component: '@/components/admin/lists/MediaListView',
+        },
+      },
+    },
+  },
   access: {
     create: authenticated,
     delete: authenticated,

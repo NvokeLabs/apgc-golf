@@ -30,12 +30,49 @@ export const Sponsors: CollectionConfig = {
     defaultColumns: ['name', 'tier', 'isActive', 'order'],
     useAsTitle: 'name',
     group: 'Golf Content',
+    components: {
+      views: {
+        list: {
+          Component: '@/components/admin/lists/SponsorsListView',
+        },
+      },
+    },
   },
   hooks: {
     afterChange: [revalidateSponsorAfterChange],
     afterDelete: [revalidateSponsorAfterDelete],
   },
   fields: [
+    // Sidebar — placement and visibility controls
+    {
+      name: 'tier',
+      type: 'relationship',
+      relationTo: 'sponsorship-tiers',
+      required: true,
+      admin: {
+        position: 'sidebar',
+        description: 'Sponsorship tier this sponsor belongs to',
+      },
+    },
+    {
+      name: 'order',
+      type: 'number',
+      defaultValue: 0,
+      admin: {
+        position: 'sidebar',
+        description: 'Display order within tier (lower = first)',
+      },
+    },
+    {
+      name: 'isActive',
+      type: 'checkbox',
+      defaultValue: true,
+      admin: {
+        position: 'sidebar',
+        description: 'Show on website',
+      },
+    },
+    // Main body
     {
       name: 'name',
       type: 'text',
@@ -43,67 +80,55 @@ export const Sponsors: CollectionConfig = {
     },
     slugField({ fieldToUse: 'name' }),
     {
-      name: 'logo',
-      type: 'upload',
-      relationTo: 'media',
-    },
-    {
-      type: 'row',
-      fields: [
+      type: 'tabs',
+      tabs: [
         {
-          name: 'tier',
-          type: 'relationship',
-          relationTo: 'sponsorship-tiers',
-          required: true,
-          admin: {
-            width: '33%',
-          },
+          label: 'Details',
+          description: 'Sponsor profile shown on the public Sponsors page.',
+          fields: [
+            {
+              name: 'logo',
+              type: 'upload',
+              relationTo: 'media',
+              admin: {
+                description: 'Sponsor logo',
+              },
+            },
+            {
+              name: 'website',
+              type: 'text',
+              admin: {
+                description: 'Company website URL',
+              },
+            },
+            {
+              name: 'description',
+              type: 'textarea',
+              admin: {
+                description: 'Brief company description',
+              },
+            },
+          ],
         },
         {
-          name: 'order',
-          type: 'number',
-          defaultValue: 0,
-          admin: {
-            width: '33%',
-            description: 'Display order within tier (lower = first)',
-          },
-        },
-        {
-          name: 'isActive',
-          type: 'checkbox',
-          defaultValue: true,
-          admin: {
-            width: '33%',
-            description: 'Show on website',
-          },
-        },
-      ],
-    },
-    {
-      name: 'website',
-      type: 'text',
-      admin: {
-        description: 'Company website URL',
-      },
-    },
-    {
-      name: 'description',
-      type: 'textarea',
-      admin: {
-        description: 'Brief company description',
-      },
-    },
-    {
-      name: 'benefits',
-      type: 'array',
-      admin: {
-        description: 'Sponsorship benefits received',
-      },
-      fields: [
-        {
-          name: 'benefit',
-          type: 'text',
-          required: true,
+          label: 'Benefits',
+          description: 'Sponsorship benefits this sponsor receives.',
+          fields: [
+            {
+              name: 'benefits',
+              type: 'array',
+              admin: {
+                description: 'Sponsorship benefits received',
+              },
+              fields: [
+                {
+                  name: 'benefit',
+                  type: 'text',
+                  required: true,
+                },
+              ],
+            },
+          ],
         },
       ],
     },

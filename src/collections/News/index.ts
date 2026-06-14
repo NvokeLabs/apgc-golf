@@ -29,6 +29,13 @@ export const News: CollectionConfig = {
     defaultColumns: ['title', 'category', 'publishedDate', '_status'],
     useAsTitle: 'title',
     group: 'Golf Content',
+    components: {
+      views: {
+        list: {
+          Component: '@/components/admin/lists/NewsListView',
+        },
+      },
+    },
   },
   versions: {
     drafts: {
@@ -44,70 +51,42 @@ export const News: CollectionConfig = {
     afterDelete: [revalidateNewsAfterDelete],
   },
   fields: [
+    // Sidebar — classification and publishing metadata
     {
-      name: 'title',
-      type: 'text',
+      name: 'category',
+      type: 'select',
       required: true,
-    },
-    slugField(),
-    {
-      name: 'subtitle',
-      type: 'text',
-      admin: {
-        description: 'Article subheading',
-      },
-    },
-    {
-      type: 'row',
-      fields: [
-        {
-          name: 'category',
-          type: 'select',
-          required: true,
-          options: [
-            { label: 'Tournament Recap', value: 'tournament-recap' },
-            { label: 'Course Design', value: 'course-design' },
-            { label: 'Instruction', value: 'instruction' },
-            { label: 'Club News', value: 'club-news' },
-            { label: 'Member Spotlight', value: 'member-spotlight' },
-          ],
-          admin: {
-            width: '33%',
-          },
-        },
-        {
-          name: 'publishedDate',
-          type: 'date',
-          required: true,
-          admin: {
-            width: '33%',
-            date: {
-              pickerAppearance: 'dayAndTime',
-            },
-          },
-        },
-        {
-          name: 'readTime',
-          type: 'text',
-          admin: {
-            width: '33%',
-            description: 'e.g., "5 min read"',
-          },
-        },
+      options: [
+        { label: 'Tournament Recap', value: 'tournament-recap' },
+        { label: 'Course Design', value: 'course-design' },
+        { label: 'Instruction', value: 'instruction' },
+        { label: 'Club News', value: 'club-news' },
+        { label: 'Member Spotlight', value: 'member-spotlight' },
       ],
-    },
-    {
-      name: 'image',
-      type: 'upload',
-      relationTo: 'media',
       admin: {
-        description: 'Featured image',
+        position: 'sidebar',
+        description: 'Article category',
       },
     },
     {
-      name: 'content',
-      type: 'richText',
+      name: 'publishedDate',
+      type: 'date',
       required: true,
+      admin: {
+        position: 'sidebar',
+        description: 'Date shown to readers',
+        date: {
+          pickerAppearance: 'dayAndTime',
+        },
+      },
+    },
+    {
+      name: 'readTime',
+      type: 'text',
+      admin: {
+        position: 'sidebar',
+        description: 'e.g., "5 min read"',
+      },
     },
     {
       name: 'author',
@@ -116,6 +95,44 @@ export const News: CollectionConfig = {
       admin: {
         position: 'sidebar',
       },
+    },
+    // Main body
+    {
+      name: 'title',
+      type: 'text',
+      required: true,
+    },
+    slugField(),
+    {
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Content',
+          description: 'Headline, hero image, and article body.',
+          fields: [
+            {
+              name: 'subtitle',
+              type: 'text',
+              admin: {
+                description: 'Article subheading',
+              },
+            },
+            {
+              name: 'image',
+              type: 'upload',
+              relationTo: 'media',
+              admin: {
+                description: 'Featured image',
+              },
+            },
+            {
+              name: 'content',
+              type: 'richText',
+              required: true,
+            },
+          ],
+        },
+      ],
     },
     {
       name: 'relatedArticles',

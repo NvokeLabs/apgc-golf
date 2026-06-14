@@ -167,24 +167,20 @@ export function TicketsList() {
       {/* Header */}
       <div className="flex items-center justify-between gap-4">
         <div>
-          <h1 className="text-2xl font-bold tracking-tight" style={{ color: 'var(--apgc-text)' }}>
-            Tickets
-          </h1>
-          <p className="text-sm" style={{ color: 'var(--apgc-text-muted)' }}>
-            Manage event tickets and check-in status
-          </p>
+          <h1 className="text-2xl font-bold tracking-tight text-primary">Tickets</h1>
+          <p className="text-sm text-muted-foreground">Manage event tickets and check-in status</p>
         </div>
         <div className="flex items-center gap-2">
-          <Link href="/admin/check-in">
-            <Button
-              size="sm"
-              style={{ backgroundColor: 'var(--apgc-primary)', color: 'white' }}
-              className="gap-2"
-            >
+          <Button
+            asChild
+            size="sm"
+            className="gap-2 bg-accent text-accent-foreground hover:bg-accent/90"
+          >
+            <Link href="/admin/check-in">
               <QrCode className="h-4 w-4" />
               Open Scanner
-            </Button>
-          </Link>
+            </Link>
+          </Button>
           <Button variant="outline" size="sm" onClick={() => fetchTickets()} className="gap-2">
             <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
             Refresh
@@ -193,33 +189,22 @@ export function TicketsList() {
       </div>
 
       {/* Filters */}
-      <div
-        className="flex items-center justify-between gap-4 p-3 rounded-lg border"
-        style={{ backgroundColor: 'var(--apgc-card-bg)', borderColor: 'var(--apgc-border)' }}
-      >
-        <div className="relative flex-1 max-w-sm">
-          <Search
-            className="absolute left-3 top-1/2 -translate-y-1/2 h-4 w-4"
-            style={{ color: 'var(--apgc-text-muted)' }}
-          />
+      <div className="flex items-center justify-between gap-4 rounded-lg border bg-card p-3">
+        <div className="relative max-w-sm flex-1">
+          <Search className="absolute left-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <Input
             type="search"
             placeholder="Search by ticket code..."
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
-            className="pl-10 border-none bg-transparent shadow-none focus-visible:ring-0"
+            className="border-none bg-transparent pl-10 shadow-none focus-visible:ring-0"
           />
         </div>
         <div className="flex items-center gap-2">
           <select
             value={statusFilter}
             onChange={(e) => setStatusFilter(e.target.value)}
-            className="h-8 px-3 rounded-md text-sm border"
-            style={{
-              backgroundColor: 'var(--apgc-bg)',
-              borderColor: 'var(--apgc-border)',
-              color: 'var(--apgc-text)',
-            }}
+            className="h-8 rounded-md border border-border bg-background px-3 text-sm text-foreground"
           >
             <option value="">All Status</option>
             <option value="pending">Pending</option>
@@ -230,16 +215,10 @@ export function TicketsList() {
       </div>
 
       {/* Table */}
-      <div
-        className="rounded-lg border overflow-hidden"
-        style={{ backgroundColor: 'var(--apgc-card-bg)', borderColor: 'var(--apgc-border)' }}
-      >
+      <div className="overflow-hidden rounded-lg border bg-card">
         <Table>
           <TableHeader>
-            <TableRow
-              className="hover:bg-transparent"
-              style={{ backgroundColor: 'var(--apgc-bg)' }}
-            >
+            <TableRow className="bg-muted/50 hover:bg-muted/50">
               <TableHead className="w-[50px]">
                 <Checkbox
                   checked={data?.docs.length ? selectedTickets.size === data.docs.length : false}
@@ -273,11 +252,7 @@ export function TicketsList() {
               </TableRow>
             ) : !data?.docs.length ? (
               <TableRow>
-                <TableCell
-                  colSpan={7}
-                  className="h-24 text-center"
-                  style={{ color: 'var(--apgc-text-muted)' }}
-                >
+                <TableCell colSpan={7} className="h-24 text-center text-muted-foreground">
                   No tickets found.
                 </TableCell>
               </TableRow>
@@ -293,8 +268,7 @@ export function TicketsList() {
                   <TableCell>
                     <Link
                       href={`/admin/collections/tickets/${ticket.id}`}
-                      className="font-mono text-sm underline decoration-1 underline-offset-4"
-                      style={{ color: 'var(--apgc-primary)' }}
+                      className="font-mono text-sm text-primary underline decoration-1 underline-offset-4"
                     >
                       {ticket.ticketCode}
                     </Link>
@@ -302,7 +276,7 @@ export function TicketsList() {
                   <TableCell>
                     <div>
                       <div className="font-medium">{ticket.registration?.playerName || '-'}</div>
-                      <div className="text-xs" style={{ color: 'var(--apgc-text-muted)' }}>
+                      <div className="text-xs text-muted-foreground">
                         {ticket.registration?.email || '-'}
                       </div>
                     </div>
@@ -316,7 +290,7 @@ export function TicketsList() {
                     </Link>
                   </TableCell>
                   <TableCell>{getStatusBadge(ticket.status)}</TableCell>
-                  <TableCell style={{ color: 'var(--apgc-text-muted)' }}>
+                  <TableCell className="text-muted-foreground">
                     {formatDate(ticket.checkedInAt)}
                   </TableCell>
                   <TableCell>
@@ -336,10 +310,7 @@ export function TicketsList() {
       </div>
 
       {/* Pagination */}
-      <div
-        className="flex items-center justify-between text-sm"
-        style={{ color: 'var(--apgc-text-muted)' }}
-      >
+      <div className="flex items-center justify-between text-sm text-muted-foreground">
         <div>
           {data
             ? `${(page - 1) * 10 + 1}-${Math.min(page * 10, data.totalDocs)} of ${data.totalDocs}`

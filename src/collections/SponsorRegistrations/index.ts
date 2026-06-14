@@ -15,97 +15,119 @@ export const SponsorRegistrations: CollectionConfig = {
     defaultColumns: ['companyName', 'contactName', 'selectedTier', 'status', 'createdAt'],
     useAsTitle: 'companyName',
     group: 'Registrations',
+    components: {
+      views: {
+        list: {
+          Component: '@/components/admin/lists/SponsorRegistrationsListView',
+        },
+      },
+    },
   },
   fields: [
+    // Sidebar — tier selection and review status
     {
-      type: 'row',
-      fields: [
-        {
-          name: 'companyName',
-          type: 'text',
-          required: true,
-          admin: {
-            width: '50%',
-          },
-        },
-        {
-          name: 'contactName',
-          type: 'text',
-          required: true,
-          admin: {
-            width: '50%',
-          },
-        },
-      ],
-    },
-    {
-      type: 'row',
-      fields: [
-        {
-          name: 'email',
-          type: 'email',
-          required: true,
-          admin: {
-            width: '50%',
-          },
-        },
-        {
-          name: 'phone',
-          type: 'text',
-          admin: {
-            width: '50%',
-          },
-        },
-      ],
-    },
-    {
-      type: 'row',
-      fields: [
-        {
-          name: 'selectedTier',
-          type: 'text',
-          required: true,
-          admin: {
-            width: '50%',
-            description: 'Tier key from SponsorshipTiers, or "custom"',
-          },
-        },
-        {
-          name: 'status',
-          type: 'select',
-          defaultValue: 'pending',
-          options: [
-            { label: 'Pending', value: 'pending' },
-            { label: 'Contacted', value: 'contacted' },
-            { label: 'Approved', value: 'approved' },
-            { label: 'Declined', value: 'declined' },
-          ],
-          admin: {
-            width: '50%',
-          },
-        },
-      ],
-    },
-    {
-      name: 'message',
-      type: 'textarea',
-      admin: {
-        description: 'Additional information or questions',
-      },
-    },
-    {
-      name: 'website',
+      name: 'selectedTier',
       type: 'text',
+      required: true,
       admin: {
-        description: 'Company website',
+        position: 'sidebar',
+        description: 'Tier key from SponsorshipTiers, or "custom"',
       },
     },
     {
-      name: 'adminNotes',
-      type: 'textarea',
+      name: 'status',
+      type: 'select',
+      defaultValue: 'pending',
+      options: [
+        { label: 'Pending', value: 'pending' },
+        { label: 'Contacted', value: 'contacted' },
+        { label: 'Approved', value: 'approved' },
+        { label: 'Declined', value: 'declined' },
+      ],
       admin: {
-        description: 'Internal notes (not visible to applicant)',
+        position: 'sidebar',
+        description: 'Review status',
       },
+    },
+    // Main body
+    {
+      type: 'tabs',
+      tabs: [
+        {
+          label: 'Applicant',
+          description: 'Company and contact details submitted by the applicant.',
+          fields: [
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'companyName',
+                  type: 'text',
+                  required: true,
+                  admin: {
+                    width: '50%',
+                  },
+                },
+                {
+                  name: 'contactName',
+                  type: 'text',
+                  required: true,
+                  admin: {
+                    width: '50%',
+                  },
+                },
+              ],
+            },
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'email',
+                  type: 'email',
+                  required: true,
+                  admin: {
+                    width: '50%',
+                  },
+                },
+                {
+                  name: 'phone',
+                  type: 'text',
+                  admin: {
+                    width: '50%',
+                  },
+                },
+              ],
+            },
+            {
+              name: 'website',
+              type: 'text',
+              admin: {
+                description: 'Company website',
+              },
+            },
+            {
+              name: 'message',
+              type: 'textarea',
+              admin: {
+                description: 'Additional information or questions',
+              },
+            },
+          ],
+        },
+        {
+          label: 'Admin',
+          description: 'Internal review notes.',
+          fields: [
+            {
+              name: 'adminNotes',
+              type: 'textarea',
+              admin: {
+                description: 'Internal notes (not visible to applicant)',
+              },
+            },
+          ],
+        },
+      ],
     },
   ],
 }

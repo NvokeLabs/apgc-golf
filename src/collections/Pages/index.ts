@@ -46,6 +46,13 @@ export const Pages: CollectionConfig<'pages'> = {
   },
   admin: {
     defaultColumns: ['title', 'slug', 'updatedAt'],
+    components: {
+      views: {
+        list: {
+          Component: '@/components/admin/lists/PagesListView',
+        },
+      },
+    },
     livePreview: {
       url: ({ data, req }) =>
         generatePreviewPath({

@@ -25,6 +25,9 @@ export const Tickets: CollectionConfig = {
     components: {
       beforeList: ['@/components/admin/TicketsBeforeList'],
       views: {
+        list: {
+          Component: '@/components/admin/views/TicketsListView',
+        },
         edit: {
           default: {
             Component: '@/components/admin/views/TicketEditView',

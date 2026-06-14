@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import Link from 'next/link'
 import { XCircle, ArrowLeft, RefreshCw } from 'lucide-react'
 import { GlassCard } from '@/components/golf'
+import { Button } from '@/components/ui/button'
 import { getFormContent, getSiteLabels } from '@/utilities/getSiteContent'
 
 export const metadata: Metadata = {
@@ -25,11 +26,11 @@ export default async function PaymentFailedPage({ params }: Props) {
           <XCircle className="h-10 w-10 text-red-600" />
         </div>
 
-        <h1 className="mb-4 text-2xl font-bold text-gray-900">
+        <h1 className="mb-4 text-3xl font-bold text-[#0b3d2e] md:text-4xl">
           {errorContent?.paymentFailedTitle || 'Payment Failed'}
         </h1>
 
-        <p className="mb-6 text-gray-600">
+        <p className="mb-6 text-[#636364] text-lg">
           {errorContent?.paymentFailedDescription ||
             'Unfortunately, your payment could not be processed. This may be due to insufficient funds, an expired card, or a temporary issue with the payment provider.'}
         </p>
@@ -42,27 +43,25 @@ export default async function PaymentFailedPage({ params }: Props) {
         </div>
 
         <div className="space-y-3">
-          <Link
-            href={`/register/event/${eventSlug}`}
-            className="flex w-full items-center justify-center gap-2 rounded-lg bg-emerald-600 px-6 py-3 font-semibold text-white transition-colors hover:bg-emerald-700"
-          >
-            <RefreshCw className="h-4 w-4" />
-            {labels?.buttonLabels?.tryAgain || 'Try Again'}
-          </Link>
+          <Button asChild variant="brand" size="cta" className="w-full gap-2 font-semibold">
+            <Link href={`/register/event/${eventSlug}`}>
+              <RefreshCw className="h-4 w-4" />
+              {labels?.buttonLabels?.tryAgain || 'Try Again'}
+            </Link>
+          </Button>
 
-          <Link
-            href="/events"
-            className="flex w-full items-center justify-center gap-2 rounded-lg border border-gray-300 px-6 py-3 font-medium text-gray-700 transition-colors hover:bg-gray-50"
-          >
-            <ArrowLeft className="h-4 w-4" />
-            {labels?.navigationLabels?.backToEvents || 'Back to Events'}
-          </Link>
+          <Button asChild variant="brandOutline" size="cta" className="w-full gap-2 font-medium">
+            <Link href="/events">
+              <ArrowLeft className="h-4 w-4" />
+              {labels?.navigationLabels?.backToEvents || 'Back to Events'}
+            </Link>
+          </Button>
 
-          <p className="text-sm text-gray-500">
+          <p className="text-sm text-[#636364]">
             {errorContent?.needHelpText || 'Need help?'}{' '}
             <a
               href={`mailto:${errorContent?.contactEmail || 'info@apgc-golf.com'}`}
-              className="text-emerald-600 hover:underline"
+              className="text-[#0b3d2e] hover:underline"
             >
               {errorContent?.contactUsText || 'Contact us'}
             </a>

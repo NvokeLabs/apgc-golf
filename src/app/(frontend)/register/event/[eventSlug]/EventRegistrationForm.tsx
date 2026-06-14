@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { createRegistrationWithPayment, type RegistrationFormData } from './actions'
 import type { FormContent } from '@/payload-types'
+import { Button } from '@/components/ui/button'
 
 type EventFormContent = FormContent['eventRegistration']
 type CategoryOption = { value?: string | null; label?: string | null; id?: string | null }
@@ -81,7 +82,7 @@ export function EventRegistrationForm({
               id="playerName"
               name="playerName"
               required
-              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-[#0b3d2e] focus:outline-none focus:ring-1 focus:ring-[#0b3d2e]"
               placeholder={formContent?.fullNamePlaceholder || 'Enter your full name'}
             />
           </div>
@@ -94,7 +95,7 @@ export function EventRegistrationForm({
               id="email"
               name="email"
               required
-              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-[#0b3d2e] focus:outline-none focus:ring-1 focus:ring-[#0b3d2e]"
               placeholder={formContent?.emailPlaceholder || 'your@email.com'}
             />
           </div>
@@ -110,7 +111,7 @@ export function EventRegistrationForm({
                 type="tel"
                 id="phone"
                 name="phone"
-                className="w-full rounded-r-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+                className="w-full rounded-r-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-[#0b3d2e] focus:outline-none focus:ring-1 focus:ring-[#0b3d2e]"
                 placeholder={formContent?.phonePlaceholder || '8xx xxxx xxxx'}
               />
             </div>
@@ -132,7 +133,7 @@ export function EventRegistrationForm({
               id="category"
               name="category"
               required
-              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-[#0b3d2e] focus:outline-none focus:ring-1 focus:ring-[#0b3d2e]"
             >
               <option value="general">
                 {categoryOptions?.find((c) => c.value === 'general')?.label || 'General'}
@@ -162,21 +163,23 @@ export function EventRegistrationForm({
           id="notes"
           name="notes"
           rows={3}
-          className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-emerald-500 focus:outline-none focus:ring-1 focus:ring-emerald-500"
+          className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-[#0b3d2e] focus:outline-none focus:ring-1 focus:ring-[#0b3d2e]"
           placeholder={formContent?.notesPlaceholder || 'Any special requirements or notes...'}
         />
       </div>
 
       {/* Submit */}
-      <button
+      <Button
         type="submit"
+        variant="brand"
+        size="cta"
         disabled={isSubmitting}
-        className="w-full rounded-lg bg-emerald-600 py-4 font-semibold text-white transition-colors hover:bg-emerald-700 disabled:cursor-not-allowed disabled:opacity-50"
+        className="w-full font-semibold disabled:cursor-not-allowed disabled:opacity-50"
       >
         {isSubmitting
           ? formContent?.processingText || 'Processing...'
           : formContent?.submitButtonText || 'Continue to Payment'}
-      </button>
+      </Button>
 
       <p className="text-center text-xs text-gray-500">
         {formContent?.termsText ||

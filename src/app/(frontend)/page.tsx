@@ -1,6 +1,8 @@
 import type { Metadata } from 'next'
 
 import { GlassCard } from '@/components/golf'
+import { TextLink } from '@/components/golf/TextLink'
+import { Button } from '@/components/ui/button'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import Image from 'next/image'
@@ -13,10 +15,10 @@ import {
   Trophy,
   Users,
   Star,
-  Tv,
-  Award,
-  TrendingUp,
   ArrowUpRight,
+  Sparkles,
+  HeartHandshake,
+  Megaphone,
 } from 'lucide-react'
 import { getHomePageContent, getSiteLabels } from '@/utilities/getSiteContent'
 
@@ -77,39 +79,13 @@ export default async function HomePage() {
   const [{ players, events, featuredEvent, news, sponsors }, homeContent, labels] =
     await Promise.all([getFeaturedData(), getHomePageContent(), getSiteLabels()])
 
-  // Get broadcast rounds from CMS or use defaults
-  const broadcastRounds = homeContent?.broadcastSection?.rounds?.length
-    ? homeContent.broadcastSection.rounds
-    : [
-        {
-          round: 'Round 1',
-          day: 'Thursday',
-          time: '1:00 PM - 6:00 PM',
-          network: 'Golf Channel',
-          highlight: 'Opening Tee Shots',
-        },
-        {
-          round: 'Round 2',
-          day: 'Friday',
-          time: '1:00 PM - 6:00 PM',
-          network: 'Golf Channel',
-          highlight: 'Cut Day',
-        },
-        {
-          round: 'Round 3',
-          day: 'Saturday',
-          time: '12:00 PM - 6:00 PM',
-          network: 'CBS Sports',
-          highlight: 'Moving Day',
-        },
-        {
-          round: 'Final Round',
-          day: 'Sunday',
-          time: '12:00 PM - 6:00 PM',
-          network: 'CBS Sports',
-          highlight: 'Championship Trophy',
-        },
-      ]
+  // Map a why-sponsor benefit icon value to its lucide component
+  const benefitIconMap = {
+    exposure: Sparkles,
+    network: Users,
+    impact: HeartHandshake,
+    visibility: Megaphone,
+  } as const
 
   return (
     <div className="-mt-[50px]">
@@ -138,12 +114,12 @@ export default async function HomePage() {
             <div className="max-w-xl">
               <div className="flex items-center gap-4 mb-8">
                 <div className="h-[1px] w-12 bg-white" />
-                <span className="text-white font-serif italic tracking-wider text-lg">
+                <span className="text-white font-serif italic tracking-wider text-sm">
                   {homeContent?.hero?.tagline || 'The 2025 Season Finale'}
                 </span>
               </div>
 
-              <h1 className="text-5xl lg:text-7xl text-white leading-[1.1] mb-8 font-light">
+              <h1 className="text-4xl lg:text-5xl text-white leading-[1.1] mb-8 font-light">
                 {homeContent?.hero?.titleLine1 || 'Legacy'} <br />
                 <span className="font-serif italic font-medium text-white/90">
                   {homeContent?.hero?.titleLine2 || 'In The Making'}
@@ -203,7 +179,7 @@ export default async function HomePage() {
                   {/* Card Content */}
                   <div className="p-8 flex-1 flex flex-col justify-between">
                     <div>
-                      <h2 className="text-[#0b3d2e] mb-6 font-bold text-xl">
+                      <h2 className="text-xl font-semibold text-[#0b3d2e] mb-6">
                         {featuredEvent.title}
                       </h2>
 
@@ -257,13 +233,12 @@ export default async function HomePage() {
                     </div>
 
                     <div>
-                      <Link
-                        href={`/register/event/${featuredEvent.slug}`}
-                        className="w-full bg-[#0b3d2e] hover:bg-[#0b3d2e]/90 text-white border-none rounded-sm px-6 py-4 text-sm tracking-[0.15em] uppercase transition-all duration-300 shadow-md hover:shadow-lg flex items-center justify-center gap-2"
-                      >
-                        <span>{labels?.buttonLabels?.registerNow || 'Register Now'}</span>
-                        <ArrowRight className="w-4 h-4" />
-                      </Link>
+                      <Button asChild variant="brand" size="cta" className="w-full gap-2">
+                        <Link href={`/register/event/${featuredEvent.slug}`}>
+                          <span>{labels?.buttonLabels?.registerNow || 'Register Now'}</span>
+                          <ArrowRight className="w-4 h-4" />
+                        </Link>
+                      </Button>
                       <p className="text-center text-[#0b3d2e]/50 text-xs mt-4">
                         {labels?.miscLabels?.limitedSpots || 'Limited spots available'}
                       </p>
@@ -275,6 +250,37 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
+
+      {/* Stats / Impact Band */}
+      {homeContent?.statsSection?.items?.length ? (
+        <section className="py-24 relative overflow-hidden">
+          <div className="container mx-auto px-6 relative z-10">
+            <div className="text-center max-w-2xl mx-auto mb-12">
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <span className="w-2 h-2 rounded-full bg-[#0b3d2e] animate-pulse" />
+                <span className="text-[#0b3d2e] text-xs font-bold tracking-[0.2em] uppercase">
+                  {homeContent?.statsSection?.label || 'Dampak APGC'}
+                </span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-[#0b3d2e] mb-4">
+                {homeContent?.statsSection?.title || 'Dampak APGC'}
+              </h2>
+              {homeContent?.statsSection?.description && (
+                <p className="text-[#636364] text-lg">{homeContent.statsSection.description}</p>
+              )}
+            </div>
+
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-8">
+              {homeContent.statsSection.items.map((item, idx) => (
+                <div key={idx} className="text-center">
+                  <p className="text-4xl md:text-5xl font-bold text-[#0b3d2e] mb-2">{item.value}</p>
+                  <p className="text-[#636364] text-xs uppercase tracking-wider">{item.label}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       {/* Event Schedule Section */}
       <section id="event" className="py-24 relative overflow-hidden">
@@ -289,7 +295,7 @@ export default async function HomePage() {
                   {homeContent?.upcomingEventsSection?.label || 'Upcoming Events'}
                 </span>
               </div>
-              <h2 className="text-4xl md:text-5xl font-bold text-[#0b3d2e] mb-2">
+              <h2 className="text-3xl md:text-4xl font-bold text-[#0b3d2e] mb-4">
                 {homeContent?.upcomingEventsSection?.title || 'Tournament Schedule'}
               </h2>
               <p className="text-[#636364] text-lg">
@@ -298,13 +304,9 @@ export default async function HomePage() {
               </p>
             </div>
 
-            <Link
-              href="/events"
-              className="bg-[#0b3d2e] text-white hover:bg-[#091f18] shadow-lg shadow-emerald-900/20 border-none px-6 py-3 rounded-lg flex items-center gap-2"
-            >
+            <TextLink href="/events">
               {labels?.buttonLabels?.viewAllEvents || 'View All Events'}
-              <ArrowRight className="w-4 h-4" />
-            </Link>
+            </TextLink>
           </div>
 
           {/* Featured Events Cards */}
@@ -350,7 +352,7 @@ export default async function HomePage() {
                   </div>
 
                   <div className="p-6 bg-gradient-to-br from-[#0b3d2e]/5 to-white">
-                    <h3 className="text-[#0b3d2e] text-xl mb-4 font-semibold">{event.title}</h3>
+                    <h3 className="text-xl font-semibold text-[#0b3d2e] mb-4">{event.title}</h3>
 
                     <div className="space-y-3 mb-6">
                       <div className="flex items-center gap-3 text-[#636364]">
@@ -386,72 +388,75 @@ export default async function HomePage() {
                           {event.status === 'open' ? 'Open Now' : 'Coming Soon'}
                         </p>
                       </div>
-                      <Link
-                        href={`/events/${event.slug}`}
-                        className="bg-[#c2ecdb] hover:bg-[#a8e0c8] text-[#0b3d2e] border border-[#0b3d2e]/20 rounded-sm px-4 py-2 text-xs tracking-[0.15em] uppercase"
-                      >
-                        Details
-                      </Link>
+                      <Button asChild variant="brandSecondary" size="ctaSm">
+                        <Link href={`/events/${event.slug}`}>Details</Link>
+                      </Button>
                     </div>
                   </div>
                 </GlassCard>
               ))}
             </div>
           )}
-
-          {/* Broadcast Schedule */}
-          <div>
-            <h3 className="text-2xl font-semibold text-[#0b3d2e] mb-6 flex items-center gap-2">
-              <CalendarDays className="w-5 h-5 text-[#0b3d2e]" />
-              {homeContent?.broadcastSection?.title || 'Broadcast Schedule'}
-            </h3>
-
-            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-4">
-              {broadcastRounds.map((day, idx) => (
-                <GlassCard
-                  key={idx}
-                  className="p-6 relative overflow-hidden border-[#0b3d2e]/5 bg-white/40"
-                  hoverEffect
-                >
-                  <div className="absolute top-0 right-0 p-4 opacity-10">
-                    <span className="text-6xl font-bold text-[#0b3d2e]">{idx + 1}</span>
-                  </div>
-
-                  <div className="relative z-10">
-                    <span className="text-[#0b3d2e] text-xs font-bold tracking-wider uppercase mb-2 block">
-                      {day.round}
-                    </span>
-                    <h4 className="text-lg font-semibold text-[#0b3d2e] mb-4">{day.day}</h4>
-
-                    <div className="space-y-3">
-                      <div className="flex items-start gap-3">
-                        <Tv className="w-4 h-4 text-[#636364] mt-0.5 shrink-0" />
-                        <div>
-                          <p className="text-[#0b3d2e] text-sm font-medium">{day.network}</p>
-                          <p className="text-[#636364] text-xs">{day.time}</p>
-                        </div>
-                      </div>
-
-                      {day.highlight && (
-                        <div className="flex items-start gap-3">
-                          <Star className="w-4 h-4 text-[#0b3d2e]/60 mt-0.5 shrink-0" />
-                          <p className="text-[#636364] text-sm">{day.highlight}</p>
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                </GlassCard>
-              ))}
-            </div>
-          </div>
         </div>
       </section>
+
+      {/* Why Sponsor Section */}
+      {homeContent?.whySponsorSection?.benefits?.length ? (
+        <section id="why-sponsor" className="py-24 relative overflow-hidden">
+          <div className="absolute top-0 left-0 w-[500px] h-[500px] bg-[#0b3d2e]/5 rounded-full blur-[120px] pointer-events-none" />
+
+          <div className="container mx-auto px-6 relative z-10">
+            <div className="text-center max-w-2xl mx-auto mb-12">
+              <div className="flex items-center justify-center gap-2 mb-4">
+                <span className="w-2 h-2 rounded-full bg-[#0b3d2e] animate-pulse" />
+                <span className="text-[#0b3d2e] text-xs font-bold tracking-[0.2em] uppercase">
+                  {homeContent?.whySponsorSection?.label || 'Mengapa Menjadi Sponsor'}
+                </span>
+              </div>
+              <h2 className="text-3xl md:text-4xl font-bold text-[#0b3d2e] mb-4">
+                {homeContent?.whySponsorSection?.title || 'Mengapa Menjadi Sponsor'}
+              </h2>
+              {homeContent?.whySponsorSection?.description && (
+                <p className="text-[#636364] text-lg">
+                  {homeContent.whySponsorSection.description}
+                </p>
+              )}
+            </div>
+
+            <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
+              {homeContent.whySponsorSection.benefits.map((benefit, idx) => {
+                const Icon = benefitIconMap[benefit.icon ?? 'exposure'] || Sparkles
+                return (
+                  <GlassCard key={idx} className="p-6 bg-white/40" hoverEffect>
+                    <div className="w-10 h-10 bg-[#0b3d2e]/5 rounded-full flex items-center justify-center mb-4">
+                      <Icon className="w-5 h-5 text-[#0b3d2e]" />
+                    </div>
+                    <h3 className="text-lg font-semibold text-[#0b3d2e] mb-2">{benefit.title}</h3>
+                    <p className="text-[#636364] text-sm">{benefit.description}</p>
+                  </GlassCard>
+                )
+              })}
+            </div>
+
+            <div className="flex justify-center">
+              <Button asChild variant="brand" size="ctaLg" className="gap-2">
+                <Link href={homeContent?.whySponsorSection?.ctaLink || '/sponsors'}>
+                  <span>
+                    {homeContent?.whySponsorSection?.ctaLabel || 'Unduh Proposal Sponsorship'}
+                  </span>
+                  <ArrowRight className="w-4 h-4" />
+                </Link>
+              </Button>
+            </div>
+          </div>
+        </section>
+      ) : null}
 
       {/* Sponsors Section */}
       {sponsors.length > 0 && (
         <section id="sponsors" className="py-12 relative overflow-hidden">
           <div className="container mx-auto px-6 mb-8">
-            <span className="text-[#0b3d2e] text-xs font-bold tracking-widest uppercase block text-center opacity-80">
+            <span className="text-[#0b3d2e] text-xs font-bold tracking-[0.2em] uppercase block text-center opacity-80">
               {homeContent?.partnersSection?.label || 'Official Partners'}
             </span>
           </div>
@@ -472,10 +477,10 @@ export default async function HomePage() {
                       alt={sponsor.name}
                       width={160}
                       height={64}
-                      className="object-contain max-h-16 w-auto opacity-50 hover:opacity-80 transition-opacity duration-300 cursor-pointer"
+                      className="object-contain max-h-16 w-auto opacity-100 transition-opacity duration-300 cursor-pointer"
                     />
                   ) : (
-                    <span className="text-3xl md:text-4xl font-bold text-[#0b3d2e]/20 hover:text-[#0b3d2e]/50 transition-colors duration-300 cursor-pointer font-serif tracking-tight">
+                    <span className="text-3xl md:text-4xl font-bold text-[#0b3d2e] transition-colors duration-300 cursor-pointer font-serif tracking-tight">
                       {sponsor.name}
                     </span>
                   )}
@@ -494,10 +499,10 @@ export default async function HomePage() {
                       alt={sponsor.name}
                       width={160}
                       height={64}
-                      className="object-contain max-h-16 w-auto opacity-50 hover:opacity-80 transition-opacity duration-300 cursor-pointer"
+                      className="object-contain max-h-16 w-auto opacity-100 transition-opacity duration-300 cursor-pointer"
                     />
                   ) : (
-                    <span className="text-3xl md:text-4xl font-bold text-[#0b3d2e]/20 hover:text-[#0b3d2e]/50 transition-colors duration-300 cursor-pointer font-serif tracking-tight">
+                    <span className="text-3xl md:text-4xl font-bold text-[#0b3d2e] transition-colors duration-300 cursor-pointer font-serif tracking-tight">
                       {sponsor.name}
                     </span>
                   )}
@@ -515,20 +520,16 @@ export default async function HomePage() {
             <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
               <div>
                 <h2 className="text-3xl md:text-4xl font-bold text-[#0b3d2e] mb-4">
-                  {homeContent?.featuredPlayersSection?.title || 'Featured Players'}
+                  {homeContent?.featuredPlayersSection?.title || 'Anggota APGC'}
                 </h2>
-                <p className="text-[#636364]">
+                <p className="text-[#636364] text-lg">
                   {homeContent?.featuredPlayersSection?.description ||
-                    'Top contenders fighting for the championship title.'}
+                    'Mengenal lebih dekat anggota dan pemain komunitas APGC.'}
                 </p>
               </div>
-              <Link
-                href="/players"
-                className="text-[#0b3d2e] hover:text-[#091f18] font-medium transition-colors flex items-center gap-2"
-              >
+              <TextLink href="/players">
                 {labels?.buttonLabels?.viewAllPlayers || 'View All Players'}
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+              </TextLink>
             </div>
 
             <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -553,34 +554,8 @@ export default async function HomePage() {
                       )}
                       <div className="absolute inset-0 bg-gradient-to-t from-[#0b3d2e]/90 to-transparent" />
                       <div className="absolute bottom-4 left-4">
-                        {player.rank && (
-                          <span className="bg-[#0b3d2e] text-white text-xs font-bold px-2 py-1 rounded mb-2 inline-block">
-                            #{player.rank} Rank
-                          </span>
-                        )}
                         <h3 className="text-white text-xl font-semibold">{player.name}</h3>
-                        <p className="text-white/80 text-sm">{player.country}</p>
-                      </div>
-                    </div>
-
-                    <div className="p-4 grid grid-cols-2 gap-4 border-t border-[#0b3d2e]/10">
-                      <div className="text-center">
-                        <div className="flex items-center justify-center gap-1 text-[#0b3d2e] mb-1">
-                          <Award className="w-4 h-4 text-[#0b3d2e]" />
-                          <span className="font-bold">{player.wins ?? 0}</span>
-                        </div>
-                        <p className="text-xs text-[#636364] uppercase tracking-wider">
-                          {labels?.fieldLabels?.careerWins || 'Career Wins'}
-                        </p>
-                      </div>
-                      <div className="text-center border-l border-[#0b3d2e]/10">
-                        <div className="flex items-center justify-center gap-1 text-[#0b3d2e] mb-1">
-                          <TrendingUp className="w-4 h-4 text-[#0b3d2e]" />
-                          <span className="font-bold">{player.points ?? 0}</span>
-                        </div>
-                        <p className="text-xs text-[#636364] uppercase tracking-wider">
-                          {labels?.fieldLabels?.points || 'Points'}
-                        </p>
+                        <p className="text-white/80 text-sm">{player.role}</p>
                       </div>
                     </div>
                   </Link>
@@ -600,18 +575,14 @@ export default async function HomePage() {
                 <h2 className="text-3xl md:text-4xl font-bold text-[#0b3d2e] mb-4">
                   {homeContent?.newsSection?.title || 'Latest News'}
                 </h2>
-                <p className="text-[#636364]">
+                <p className="text-[#636364] text-lg">
                   {homeContent?.newsSection?.description ||
                     'Updates from the green and behind the scenes.'}
                 </p>
               </div>
-              <Link
-                href="/news"
-                className="text-[#0b3d2e] hover:text-[#091f18] font-medium transition-colors flex items-center gap-2"
-              >
+              <TextLink href="/news">
                 {labels?.buttonLabels?.viewAllNews || 'View News Archive'}
-                <ArrowRight className="w-4 h-4" />
-              </Link>
+              </TextLink>
             </div>
 
             <div className="grid md:grid-cols-3 gap-8">

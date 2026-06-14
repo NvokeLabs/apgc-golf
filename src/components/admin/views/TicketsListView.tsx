@@ -5,8 +5,10 @@ import { TicketsList } from '../collections/TicketsList'
 
 const TicketsListView: React.FC = () => {
   return (
-    <div style={{ padding: '24px', maxWidth: '1200px', margin: '0 auto' }}>
-      <TicketsList />
+    <div className="apgc-admin">
+      <div className="mx-auto max-w-[1200px] p-6">
+        <TicketsList />
+      </div>
     </div>
   )
 }

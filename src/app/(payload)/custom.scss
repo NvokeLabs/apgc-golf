@@ -314,8 +314,12 @@ button[class*='btn--style-primary']:hover {
   flex-shrink: 0 !important;
 }
 
-/* Hide default dashboard collections/globals section */
-.dashboard__wrap > .dashboard__card-list {
+/* Hide default dashboard collections/globals section (the auto-generated
+   card grid grouped by admin.group). The custom BeforeDashboard + sidebar nav
+   cover this, so hide every default dashboard group + its cards + labels. */
+.dashboard__group,
+.dashboard__card-list,
+.dashboard__label {
   display: none !important;
 }
 
@@ -619,4 +623,773 @@ button[class*='btn--style-primary']:hover {
   font-size: 14px;
   color: var(--apgc-text-muted);
   margin: 0;
+}
+
+/* ========================================
+   Brand Accent Overrides (redirect remaining
+   stock Payload-purple to APGC orange/navy)
+   ======================================== */
+
+/* --- Links --- */
+.payload a:not(.btn):not(.nav__link):not(.card):not([class*='pill']) {
+  color: var(--apgc-primary) !important;
+}
+
+.payload a:not(.btn):not(.nav__link):not(.card):not([class*='pill']):hover {
+  color: var(--apgc-primary-hover) !important;
+}
+
+/* --- Native checkboxes / radios checked state --- */
+.checkbox-input__input:checked + .checkbox-input__icon,
+.checkbox-input--checked .checkbox-input__icon,
+input[type='checkbox']:checked,
+input[type='radio']:checked {
+  background-color: var(--apgc-primary) !important;
+  border-color: var(--apgc-primary) !important;
+}
+
+.checkbox-input--checked .checkbox-input__icon {
+  color: #ffffff !important;
+}
+
+input[type='checkbox']:focus,
+input[type='radio']:focus {
+  box-shadow: 0 0 0 3px var(--apgc-primary-light) !important;
+  border-color: var(--apgc-primary) !important;
+}
+
+/* --- React-Select (relationship / select dropdowns) --- */
+.rs__control--is-focused,
+.rs__control:hover {
+  border-color: var(--apgc-primary) !important;
+  box-shadow: 0 0 0 1px var(--apgc-primary) !important;
+}
+
+.rs__option--is-focused {
+  background-color: var(--apgc-primary-light) !important;
+  color: var(--apgc-text) !important;
+}
+
+.rs__option--is-selected {
+  background-color: var(--apgc-primary) !important;
+  color: #ffffff !important;
+}
+
+.rs__multi-value {
+  background-color: var(--apgc-primary-light) !important;
+}
+
+.rs__multi-value__label {
+  color: var(--apgc-text) !important;
+}
+
+.rs__multi-value__remove:hover {
+  background-color: var(--apgc-primary) !important;
+  color: #ffffff !important;
+}
+
+/* --- Date picker selected day --- */
+.react-datepicker__day--selected,
+.react-datepicker__day--keyboard-selected,
+.react-datepicker__day--in-range,
+.react-datepicker__day--in-selecting-range {
+  background-color: var(--apgc-primary) !important;
+  color: #ffffff !important;
+}
+
+.react-datepicker__day--selected:hover,
+.react-datepicker__day--keyboard-selected:hover {
+  background-color: var(--apgc-primary-hover) !important;
+}
+
+.react-datepicker__day:hover {
+  background-color: var(--apgc-primary-light) !important;
+}
+
+.react-datepicker__header,
+.react-datepicker__current-month {
+  color: var(--apgc-text) !important;
+}
+
+/* --- Tabs underline / active state --- */
+.tabs-field__tab--active,
+.tabs__tab-button--active,
+button[class*='tab']--active {
+  color: var(--apgc-primary) !important;
+  border-bottom-color: var(--apgc-primary) !important;
+}
+
+.tabs-field__tab--active::after {
+  background-color: var(--apgc-primary) !important;
+}
+
+/* --- Lexical rich-text editor toolbar active buttons --- */
+.rich-text-lexical .toolbar-popup__button--active,
+.rich-text-lexical .toolbar-popup__button:hover,
+.rich-text .leaf-button--active,
+.lexical-toolbar__button--active {
+  background-color: var(--apgc-primary-light) !important;
+  color: var(--apgc-primary) !important;
+}
+
+.rich-text-lexical .toolbar-popup__button--active svg,
+.lexical-toolbar__button--active svg {
+  color: var(--apgc-primary) !important;
+}
+
+/* --- Generic focus rings on any focusable control --- */
+.payload :focus-visible {
+  outline-color: var(--apgc-primary) !important;
+}
+
+/* --- Code field / misc inputs focus border --- */
+.code-editor:focus-within,
+.field-type.textarea textarea:focus,
+.field-type.text input:focus {
+  border-color: var(--apgc-primary) !important;
+  box-shadow: 0 0 0 3px var(--apgc-primary-light) !important;
+}
+
+/* ========================================
+   Native Edit / Create Document Form Views
+   (Payload v3 document edit pages — additive,
+   light mode only, brand-aligned)
+   ======================================== */
+
+/* --- Edit layout: comfortable width + breathing room --- */
+.collection-edit,
+.collection-edit__main,
+.document-fields__main {
+  max-width: 1100px !important;
+  margin: 0 auto !important;
+}
+
+.collection-edit,
+.global-edit {
+  padding: 24px 32px 48px !important;
+}
+
+/* Two-column document layout: main fields + sidebar gutter */
+.document-fields {
+  gap: 28px !important;
+}
+
+/* Main editable field column sits on a clean card surface */
+.document-fields__edit {
+  background-color: var(--apgc-card-bg) !important;
+  border: 1px solid var(--apgc-border) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+  padding: 28px 28px 32px !important;
+}
+
+/* --- Vertical rhythm between fields --- */
+.document-fields__edit .field-type {
+  margin-bottom: 22px !important;
+}
+
+.document-fields__edit .field-type:last-child {
+  margin-bottom: 0 !important;
+}
+
+/* --- Inputs / textareas / native selects: rounded, bordered, comfortable --- */
+.field-type input:not([type='checkbox']):not([type='radio']),
+.field-type textarea,
+.field-type select {
+  border-radius: 8px !important;
+  border: 1px solid var(--apgc-border) !important;
+  background-color: var(--apgc-card-bg) !important;
+  color: var(--apgc-text) !important;
+  padding: 10px 12px !important;
+  min-height: 42px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease !important;
+}
+
+.field-type textarea {
+  min-height: 96px !important;
+  line-height: 1.5 !important;
+}
+
+/* React-select: style the control shell ONLY — let react-select manage its
+   internal flex layout (value container + indicators). Applying padding/height
+   directly to the inner value container clips the value and overflows the
+   clear/chevron, which broke narrow row columns (e.g. the Gender select). */
+.field-type .rs__control {
+  border-radius: 8px !important;
+  border: 1px solid var(--apgc-border) !important;
+  background-color: var(--apgc-card-bg) !important;
+  min-height: 42px !important;
+  width: 100% !important;
+  box-sizing: border-box !important;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease !important;
+}
+
+.field-type .rs__value-container {
+  padding: 2px 10px !important;
+}
+
+.field-type .rs__indicators {
+  flex-shrink: 0 !important;
+}
+
+/* Brand focus ring (consistent with existing input:focus rules above) */
+.field-type input:not([type='checkbox']):not([type='radio']):focus,
+.field-type textarea:focus,
+.field-type select:focus,
+.field-type .rs__control--is-focused {
+  border-color: var(--apgc-primary) !important;
+  box-shadow: 0 0 0 3px var(--apgc-primary-light) !important;
+  outline: none !important;
+}
+
+/* --- Field labels: clear hierarchy --- */
+.field-type .field-label,
+.field-label {
+  display: block !important;
+  font-size: 13px !important;
+  font-weight: 600 !important;
+  color: var(--apgc-text) !important;
+  margin-bottom: 6px !important;
+  letter-spacing: 0.01em !important;
+}
+
+/* Required asterisk in brand color */
+.field-label .required {
+  color: var(--apgc-primary) !important;
+}
+
+/* --- Field descriptions: muted + smaller --- */
+.field-type .field-description,
+.field-description {
+  font-size: 12px !important;
+  color: var(--apgc-text-muted) !important;
+  line-height: 1.5 !important;
+  margin-top: 6px !important;
+}
+
+/* --- Error states --- */
+.field-type.error input:not([type='checkbox']):not([type='radio']),
+.field-type.error textarea,
+.field-type.error select,
+.field-type.error .rs__control {
+  border-color: var(--apgc-error) !important;
+}
+
+.field-type.error input:focus,
+.field-type.error textarea:focus,
+.field-type.error select:focus,
+.field-type.error .rs__control--is-focused {
+  box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.12) !important;
+}
+
+.field-type .tooltip--position-top.tooltip--show-error,
+.field-error {
+  color: var(--apgc-error) !important;
+}
+
+/* --- Document header / sticky controls --- */
+.doc-header {
+  padding-bottom: 16px !important;
+  margin-bottom: 8px !important;
+  border-bottom: 1px solid var(--apgc-border) !important;
+}
+
+.doc-header__title,
+.render-title {
+  color: var(--apgc-text) !important;
+  font-weight: 700 !important;
+  font-size: 22px !important;
+  line-height: 1.3 !important;
+}
+
+/* --- Right sidebar / document controls: card style --- */
+.document-fields__sidebar,
+.doc-controls {
+  background-color: var(--apgc-card-bg) !important;
+  border: 1px solid var(--apgc-border) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+.document-fields__sidebar {
+  padding: 20px !important;
+}
+
+.document-fields__sidebar-fields .field-type {
+  margin-bottom: 18px !important;
+}
+
+/* Sidebar / controls section headings */
+.doc-controls__content-header,
+.document-fields__sidebar-title {
+  font-size: 11px !important;
+  font-weight: 700 !important;
+  text-transform: uppercase !important;
+  letter-spacing: 0.05em !important;
+  color: var(--apgc-text-muted) !important;
+}
+
+/* Sticky save/publish area within doc controls */
+.doc-controls__controls {
+  position: sticky !important;
+  top: 16px !important;
+}
+
+/* Primary action (Save / Publish) — clear brand button */
+.doc-controls__controls .btn--style-primary,
+.doc-header__controls .btn--style-primary {
+  background-color: var(--apgc-primary) !important;
+  border-color: var(--apgc-primary) !important;
+  color: #ffffff !important;
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  width: 100% !important;
+  justify-content: center !important;
+  padding: 10px 16px !important;
+}
+
+.doc-controls__controls .btn--style-primary:hover,
+.doc-header__controls .btn--style-primary:hover {
+  background-color: var(--apgc-primary-hover) !important;
+  border-color: var(--apgc-primary-hover) !important;
+}
+
+/* --- Tabs: clean underline + brand active state --- */
+.tabs-field__tabs {
+  border-bottom: 1px solid var(--apgc-border) !important;
+  gap: 4px !important;
+  margin-bottom: 20px !important;
+}
+
+.tabs-field__tab {
+  color: var(--apgc-text-muted) !important;
+  font-weight: 500 !important;
+  padding: 10px 14px !important;
+  border-bottom: 2px solid transparent !important;
+  transition:
+    color 0.18s ease,
+    border-color 0.18s ease !important;
+}
+
+.tabs-field__tab:hover {
+  color: var(--apgc-text) !important;
+}
+
+.tabs-field__tab.tabs-field__tab--active,
+.tabs-field__tab--active {
+  color: var(--apgc-primary) !important;
+  border-bottom-color: var(--apgc-primary) !important;
+  font-weight: 600 !important;
+}
+
+/* --- Collapsibles: card-like with rounded borders + hover --- */
+.collapsible {
+  border: 1px solid var(--apgc-border) !important;
+  border-radius: 10px !important;
+  overflow: hidden !important;
+  background-color: var(--apgc-card-bg) !important;
+}
+
+.collapsible__toggle,
+.collapsible__toggle-wrap {
+  padding: 12px 14px !important;
+  font-weight: 600 !important;
+  color: var(--apgc-text) !important;
+  transition: background-color 0.18s ease !important;
+}
+
+.collapsible__toggle:hover,
+.collapsible__toggle-wrap:hover {
+  background-color: var(--apgc-bg) !important;
+}
+
+.collapsible__content {
+  padding: 16px 14px !important;
+}
+
+/* --- Array / Blocks rows: card-like with rounded borders + hover --- */
+.array-field__row,
+.blocks-field__row {
+  border: 1px solid var(--apgc-border) !important;
+  border-radius: 10px !important;
+  background-color: var(--apgc-card-bg) !important;
+  margin-bottom: 14px !important;
+  transition: box-shadow 0.18s ease !important;
+}
+
+.array-field__row:hover,
+.blocks-field__row:hover {
+  box-shadow: 0 2px 8px rgba(23, 16, 70, 0.06) !important;
+}
+
+.array-field__row-header,
+.blocks-field__row-header {
+  padding: 12px 14px !important;
+  font-weight: 600 !important;
+  color: var(--apgc-text) !important;
+}
+
+.array-field__draggable-rows,
+.blocks-field__rows {
+  margin-bottom: 12px !important;
+}
+
+/* --- Rich text (Lexical) editor shell --- */
+.rich-text-lexical {
+  border: 1px solid var(--apgc-border) !important;
+  border-radius: 8px !important;
+  background-color: var(--apgc-card-bg) !important;
+  overflow: hidden !important;
+}
+
+.rich-text-lexical:focus-within {
+  border-color: var(--apgc-primary) !important;
+  box-shadow: 0 0 0 3px var(--apgc-primary-light) !important;
+}
+
+.rich-text-lexical .toolbar-popup,
+.rich-text-lexical .fixed-toolbar {
+  border-bottom: 1px solid var(--apgc-border) !important;
+  background-color: var(--apgc-bg) !important;
+}
+
+/* --- Section / group headings: readable hierarchy --- */
+.group-field__title,
+.render-fields__title,
+.field-type.group-field > .group-field__wrap > h3 {
+  font-size: 15px !important;
+  font-weight: 700 !important;
+  color: var(--apgc-text) !important;
+  margin-bottom: 12px !important;
+}
+
+/* Group wrapper gets a subtle divider for visual grouping */
+.group-field__wrap {
+  border-top: 1px solid var(--apgc-border) !important;
+  padding-top: 18px !important;
+  margin-top: 6px !important;
+}
+
+/* ========================================
+   Admin Shell / Chrome
+   (Payload v3 document + list chrome — additive,
+   light mode only, shadcn-like polish. Reuses the
+   --apgc-* vars + the file's !important convention.
+   The .app-header stays hidden — do not unhide.)
+   ======================================== */
+
+/* --- Comfortable page content gutter for native views --- */
+.collection-list,
+.list-view,
+.global-edit,
+.collection-edit {
+  padding-left: 32px !important;
+  padding-right: 32px !important;
+}
+
+/* --- Document header: clean type + subtle divider + spacing --- */
+.doc-header,
+.collection-edit__header {
+  padding-top: 4px !important;
+  padding-bottom: 16px !important;
+  margin-bottom: 20px !important;
+  border-bottom: 1px solid var(--apgc-border) !important;
+}
+
+.doc-header__title,
+.collection-edit__header .render-title,
+.render-title {
+  color: var(--apgc-text) !important;
+  font-weight: 700 !important;
+  font-size: 22px !important;
+  line-height: 1.3 !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* Breadcrumbs / step nav: muted, compact, readable */
+.step-nav {
+  font-size: 13px !important;
+  color: var(--apgc-text-muted) !important;
+  margin-bottom: 10px !important;
+}
+
+.step-nav a {
+  color: var(--apgc-text-muted) !important;
+  transition: color 0.18s ease !important;
+}
+
+.step-nav a:hover {
+  color: var(--apgc-primary) !important;
+}
+
+.step-nav .step-nav__last,
+.step-nav span:last-child {
+  color: var(--apgc-text) !important;
+  font-weight: 600 !important;
+}
+
+/* --- Edit / API tabs: shadcn-like segmented pills --- */
+.doc-tabs,
+.doc-controls__tabs {
+  display: inline-flex !important;
+  gap: 2px !important;
+  padding: 3px !important;
+  background-color: var(--apgc-bg) !important;
+  border: 1px solid var(--apgc-border) !important;
+  border-radius: 10px !important;
+}
+
+.doc-tab,
+.doc-tab__link,
+.doc-controls__tabs a {
+  border-radius: 7px !important;
+  padding: 6px 14px !important;
+  font-size: 13px !important;
+  font-weight: 500 !important;
+  color: var(--apgc-text-muted) !important;
+  border: none !important;
+  background: transparent !important;
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
+    box-shadow 0.18s ease !important;
+}
+
+.doc-tab:hover,
+.doc-tab__link:hover,
+.doc-controls__tabs a:hover {
+  color: var(--apgc-text) !important;
+  background-color: var(--apgc-card-bg) !important;
+}
+
+/* Active tab = brand, raised on a white surface */
+.doc-tab--active,
+.doc-tab__link--active,
+.doc-tab--active .doc-tab__link,
+.doc-controls__tabs a.active,
+.doc-controls__tabs a[aria-current='page'] {
+  color: var(--apgc-primary) !important;
+  background-color: var(--apgc-card-bg) !important;
+  box-shadow: 0 1px 2px rgba(23, 16, 70, 0.08) !important;
+}
+
+/* --- Doc controls / save bar: card surface + tidy spacing --- */
+.doc-controls,
+.doc-controls__content {
+  background-color: var(--apgc-card-bg) !important;
+  border: 1px solid var(--apgc-border) !important;
+  border-radius: 12px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+.doc-controls__wrapper,
+.doc-controls__content {
+  padding: 14px 18px !important;
+}
+
+.doc-controls__controls {
+  display: flex !important;
+  align-items: center !important;
+  gap: 10px !important;
+}
+
+/* Save / Publish reads as a proper shadcn-like button */
+.doc-controls__controls .btn--style-primary {
+  border-radius: 8px !important;
+  font-weight: 600 !important;
+  padding: 9px 18px !important;
+}
+
+/* Kebab / more menu: tidy, bordered trigger */
+.doc-controls__dots {
+  border: 1px solid var(--apgc-border) !important;
+  border-radius: 8px !important;
+  background-color: var(--apgc-card-bg) !important;
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease !important;
+}
+
+.doc-controls__dots:hover {
+  background-color: var(--apgc-bg) !important;
+  border-color: var(--apgc-primary) !important;
+}
+
+.doc-controls__popup .popup-button-list__button,
+.popup__content .popup-button-list__button {
+  border-radius: 6px !important;
+  font-size: 13px !important;
+  transition: background-color 0.18s ease !important;
+}
+
+.doc-controls__popup .popup-button-list__button:hover,
+.popup__content .popup-button-list__button:hover {
+  background-color: var(--apgc-primary-light) !important;
+  color: var(--apgc-text) !important;
+}
+
+/* --- Native list view chrome --- */
+.list-header {
+  margin-bottom: 18px !important;
+}
+
+.list-header__title,
+.list-header h1 {
+  color: var(--apgc-text) !important;
+  font-weight: 700 !important;
+  font-size: 22px !important;
+  letter-spacing: -0.01em !important;
+}
+
+/* List controls bar: card surface holding search + filters */
+.list-controls {
+  background-color: var(--apgc-card-bg) !important;
+  border: 1px solid var(--apgc-border) !important;
+  border-radius: 12px !important;
+  padding: 12px 14px !important;
+  margin-bottom: 16px !important;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05) !important;
+}
+
+/* Search input: rounded, bordered, brand focus */
+.search-filter input,
+.search-filter__input,
+.list-controls input[type='text'],
+.list-controls input[type='search'] {
+  border-radius: 8px !important;
+  border: 1px solid var(--apgc-border) !important;
+  background-color: var(--apgc-card-bg) !important;
+  color: var(--apgc-text) !important;
+  padding: 9px 12px !important;
+  min-height: 40px !important;
+  transition:
+    border-color 0.18s ease,
+    box-shadow 0.18s ease !important;
+}
+
+.search-filter input:focus,
+.search-filter__input:focus,
+.list-controls input[type='text']:focus,
+.list-controls input[type='search']:focus {
+  border-color: var(--apgc-primary) !important;
+  box-shadow: 0 0 0 3px var(--apgc-primary-light) !important;
+  outline: none !important;
+}
+
+/* Per-page selector + paginator: clean, rounded, brand active */
+.per-page__base-button,
+.per-page .popup__trigger {
+  border-radius: 8px !important;
+  border: 1px solid var(--apgc-border) !important;
+  color: var(--apgc-text-muted) !important;
+  transition:
+    border-color 0.18s ease,
+    color 0.18s ease !important;
+}
+
+.per-page__base-button:hover {
+  border-color: var(--apgc-primary) !important;
+  color: var(--apgc-primary) !important;
+}
+
+.paginator button,
+.paginator__page {
+  border-radius: 8px !important;
+  min-width: 34px !important;
+  height: 34px !important;
+  color: var(--apgc-text-muted) !important;
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease,
+    border-color 0.18s ease !important;
+}
+
+.paginator button:hover,
+.paginator__page:hover {
+  background-color: var(--apgc-primary-light) !important;
+  color: var(--apgc-primary) !important;
+}
+
+.paginator__page--is-current,
+.paginator button.paginator__page--active {
+  background-color: var(--apgc-primary) !important;
+  border-color: var(--apgc-primary) !important;
+  color: #ffffff !important;
+}
+
+/* --- Buttons globally: consistent shadcn-like radius + weight + focus --- */
+.btn,
+.btn--style-primary,
+.btn--style-secondary,
+.btn--style-pill {
+  border-radius: 8px !important;
+  font-weight: 500 !important;
+  transition:
+    background-color 0.18s ease,
+    border-color 0.18s ease,
+    box-shadow 0.18s ease,
+    color 0.18s ease !important;
+}
+
+.btn:focus-visible,
+.btn--style-primary:focus-visible,
+.btn--style-secondary:focus-visible {
+  outline: none !important;
+  box-shadow: 0 0 0 3px var(--apgc-primary-light) !important;
+}
+
+/* Primary: refine (already orange — do not recolor) */
+.btn--style-primary {
+  font-weight: 600 !important;
+}
+
+.btn--style-primary:active {
+  background-color: var(--apgc-primary-hover) !important;
+  border-color: var(--apgc-primary-hover) !important;
+}
+
+/* Secondary: subtle bordered surface with brand hover */
+.btn--style-secondary {
+  border: 1px solid var(--apgc-border) !important;
+  background-color: var(--apgc-card-bg) !important;
+  color: var(--apgc-text) !important;
+}
+
+.btn--style-secondary:hover {
+  border-color: var(--apgc-primary) !important;
+  color: var(--apgc-primary) !important;
+  background-color: var(--apgc-primary-light) !important;
+}
+
+/* Pill buttons: keep rounded but consistent type */
+.btn--style-pill {
+  border-radius: 9999px !important;
+}
+
+/* Icon-only borderless buttons: square-ish, subtle hover */
+.btn--icon-style-without-border {
+  border-radius: 8px !important;
+  color: var(--apgc-text-muted) !important;
+  transition:
+    background-color 0.18s ease,
+    color 0.18s ease !important;
+}
+
+.btn--icon-style-without-border:hover {
+  background-color: var(--apgc-primary-light) !important;
+  color: var(--apgc-primary) !important;
+}
+
+/* --- General page: card surfaces share border/radius/shadow --- */
+.list-controls,
+.doc-controls,
+.collection-list,
+.card {
+  border-color: var(--apgc-border) !important;
 }

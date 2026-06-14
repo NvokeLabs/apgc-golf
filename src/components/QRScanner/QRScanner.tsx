@@ -13,50 +13,67 @@ type QRScannerProps = {
 export function QRScanner({ onScan, onError, isActive = true }: QRScannerProps) {
   const scannerRef = useRef<Html5Qrcode | null>(null)
   const containerRef = useRef<HTMLDivElement>(null)
-  const [isStarted, setIsStarted] = useState(false)
   const [error, setError] = useState<string | null>(null)
 
+  // Keep the latest callbacks in refs so the start effect doesn't re-run when
+  // they change identity (re-running would spin up a second camera stream and
+  // stack a duplicate <video>).
+  const onScanRef = useRef(onScan)
+  const onErrorRef = useRef(onError)
   useEffect(() => {
-    if (!isActive || !containerRef.current) return
+    onScanRef.current = onScan
+    onErrorRef.current = onError
+  })
 
-    const containerId = 'qr-reader'
+  useEffect(() => {
+    if (!isActive) return
 
-    // Create scanner instance
-    const html5QrCode = new Html5Qrcode(containerId)
+    let cancelled = false
+    const html5QrCode = new Html5Qrcode('qr-reader')
     scannerRef.current = html5QrCode
 
-    const startScanner = async () => {
-      try {
-        await html5QrCode.start(
-          { facingMode: 'environment' },
-          {
-            fps: 10,
-            qrbox: { width: 250, height: 250 },
-          },
-          (decodedText) => {
-            onScan(decodedText)
-          },
-          () => {
-            // QR code not found, ignore
-          },
-        )
-        setIsStarted(true)
+    const stopAndClear = () =>
+      html5QrCode
+        .stop()
+        .then(() => html5QrCode.clear())
+        .catch(() => {
+          try {
+            html5QrCode.clear()
+          } catch {
+            // already stopped/cleared
+          }
+        })
+
+    html5QrCode
+      .start(
+        { facingMode: 'environment' },
+        { fps: 10, qrbox: { width: 250, height: 250 } },
+        (decodedText) => onScanRef.current(decodedText),
+        () => {
+          // QR code not found in this frame, ignore
+        },
+      )
+      .then(() => {
+        // If the effect was torn down before the camera finished starting
+        // (e.g. React StrictMode double-mount), stop it immediately.
+        if (cancelled) {
+          stopAndClear()
+          return
+        }
         setError(null)
-      } catch (err) {
+      })
+      .catch((err) => {
         const errorMessage = err instanceof Error ? err.message : 'Failed to start camera'
         setError(errorMessage)
-        onError?.(errorMessage)
-      }
-    }
-
-    startScanner()
+        onErrorRef.current?.(errorMessage)
+      })
 
     return () => {
-      if (scannerRef.current && isStarted) {
-        scannerRef.current.stop().catch(console.error)
-      }
+      cancelled = true
+      scannerRef.current = null
+      stopAndClear()
     }
-  }, [isActive, onScan, onError, isStarted])
+  }, [isActive])
 
   if (!isActive) {
     return (

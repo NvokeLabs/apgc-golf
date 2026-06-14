@@ -67,6 +67,32 @@ export const HomePage: GlobalConfig = {
           ],
         },
         {
+          label: 'Stats Section',
+          fields: [
+            {
+              name: 'statsSection',
+              type: 'group',
+              fields: [
+                { name: 'label', type: 'text', defaultValue: 'Dampak APGC' },
+                { name: 'title', type: 'text', defaultValue: 'Dampak yang Kami Ciptakan' },
+                { name: 'description', type: 'text' },
+                {
+                  name: 'items',
+                  type: 'array',
+                  admin: {
+                    description:
+                      'Angka dampak (mis. value "500+", label "Alumni Terhubung"). Isi sendiri di admin.',
+                  },
+                  fields: [
+                    { name: 'value', type: 'text', required: true, admin: { width: '50%' } },
+                    { name: 'label', type: 'text', required: true, admin: { width: '50%' } },
+                  ],
+                },
+              ],
+            },
+          ],
+        },
+        {
           label: 'Featured Event Section',
           fields: [
             {
@@ -166,6 +192,79 @@ export const HomePage: GlobalConfig = {
           ],
         },
         {
+          label: 'Why Sponsor Section',
+          fields: [
+            {
+              name: 'whySponsorSection',
+              type: 'group',
+              fields: [
+                { name: 'label', type: 'text', defaultValue: 'Sponsorship' },
+                { name: 'title', type: 'text', defaultValue: 'Mengapa Menjadi Sponsor?' },
+                {
+                  name: 'description',
+                  type: 'text',
+                  defaultValue:
+                    'Bergabung sebagai sponsor APGC membuka akses ke komunitas profesional sekaligus mendukung program berdampak sosial.',
+                },
+                {
+                  name: 'benefits',
+                  type: 'array',
+                  admin: { initCollapsed: true },
+                  defaultValue: [
+                    {
+                      icon: 'exposure',
+                      title: 'Eksposur Premium',
+                      description:
+                        'Tampil di hadapan komunitas profesional, alumni, dan pelaku industri.',
+                    },
+                    {
+                      icon: 'network',
+                      title: 'Networking Strategis',
+                      description:
+                        'Bertemu langsung dengan pengambil keputusan dan pemimpin bisnis.',
+                    },
+                    {
+                      icon: 'impact',
+                      title: 'Dampak Sosial',
+                      description:
+                        'Mendukung program pendidikan dan pengembangan generasi masa depan.',
+                    },
+                    {
+                      icon: 'visibility',
+                      title: 'Brand Visibility',
+                      description:
+                        'Promosi melalui event, media sosial, website, dan materi publikasi.',
+                    },
+                  ],
+                  fields: [
+                    {
+                      name: 'icon',
+                      type: 'select',
+                      defaultValue: 'exposure',
+                      options: [
+                        { label: 'Exposure', value: 'exposure' },
+                        { label: 'Network', value: 'network' },
+                        { label: 'Impact', value: 'impact' },
+                        { label: 'Visibility', value: 'visibility' },
+                      ],
+                      admin: { width: '100%' },
+                    },
+                    { name: 'title', type: 'text', required: true },
+                    { name: 'description', type: 'textarea', required: true },
+                  ],
+                },
+                { name: 'ctaLabel', type: 'text', defaultValue: 'Unduh Proposal Sponsorship' },
+                {
+                  name: 'ctaLink',
+                  type: 'text',
+                  defaultValue: '/sponsors',
+                  admin: { description: 'Tujuan tombol CTA sponsor' },
+                },
+              ],
+            },
+          ],
+        },
+        {
           label: 'Partners Section',
           fields: [
             {
@@ -191,12 +290,12 @@ export const HomePage: GlobalConfig = {
                 {
                   name: 'title',
                   type: 'text',
-                  defaultValue: 'Featured Players',
+                  defaultValue: 'Anggota APGC',
                 },
                 {
                   name: 'description',
                   type: 'text',
-                  defaultValue: 'Top contenders fighting for the championship title.',
+                  defaultValue: 'Mengenal lebih dekat anggota dan pemain komunitas APGC.',
                 },
               ],
             },

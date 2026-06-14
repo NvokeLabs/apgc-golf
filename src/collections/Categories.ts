@@ -14,6 +14,13 @@ export const Categories: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
+    components: {
+      views: {
+        list: {
+          Component: '@/components/admin/lists/CategoriesListView',
+        },
+      },
+    },
   },
   fields: [
     {

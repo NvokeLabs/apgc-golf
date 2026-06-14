@@ -1,6 +1,5 @@
 import { cn } from '@/utilities/ui'
-import { ArrowRight } from 'lucide-react'
-import Link from 'next/link'
+import { TextLink } from './TextLink'
 
 interface SectionHeaderProps {
   label?: string
@@ -28,7 +27,9 @@ export function SectionHeader({
     <div
       className={cn(
         'flex flex-col gap-6 mb-12',
-        align === 'center' ? 'items-center text-center' : 'md:flex-row md:justify-between md:items-end',
+        align === 'center'
+          ? 'items-center text-center'
+          : 'md:flex-row md:justify-between md:items-end',
         className,
       )}
     >
@@ -50,19 +51,13 @@ export function SectionHeader({
             </>
           )}
         </h2>
-        {description && (
-          <p className="text-[#636364] text-lg mt-2 max-w-xl">{description}</p>
-        )}
+        {description && <p className="text-[#636364] text-lg mt-2 max-w-xl">{description}</p>}
       </div>
 
       {link && (
-        <Link
-          href={link.href}
-          className="inline-flex items-center gap-2 text-[#0b3d2e] hover:text-[#091f18] font-medium transition-colors shrink-0"
-        >
+        <TextLink href={link.href} className="shrink-0">
           {link.text}
-          <ArrowRight className="w-4 h-4" />
-        </Link>
+        </TextLink>
       )}
     </div>
   )

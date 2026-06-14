@@ -14,6 +14,13 @@ export const Users: CollectionConfig = {
   admin: {
     defaultColumns: ['name', 'email'],
     useAsTitle: 'name',
+    components: {
+      views: {
+        list: {
+          Component: '@/components/admin/lists/UsersListView',
+        },
+      },
+    },
   },
   auth: true,
   fields: [

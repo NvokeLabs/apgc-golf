@@ -15,7 +15,9 @@ interface PlayerCardProps {
 
 export function PlayerCard({ player, featured = false, className }: PlayerCardProps) {
   const imageUrl =
-    typeof player.image === 'object' && player.image?.url ? player.image.url : '/placeholder-player.jpg'
+    typeof player.image === 'object' && player.image?.url
+      ? player.image.url
+      : '/placeholder-player.jpg'
 
   return (
     <Link href={`/players/${player.slug}`}>
@@ -39,11 +41,13 @@ export function PlayerCard({ player, featured = false, className }: PlayerCardPr
 
           {/* Player Info */}
           <div className="absolute bottom-0 left-0 right-0 p-4">
-            <h3 className={cn('font-bold text-white', featured ? 'text-xl' : 'text-lg')}>{player.name}</h3>
+            <h3 className={cn('font-bold text-white', featured ? 'text-xl' : 'text-lg')}>
+              {player.name}
+            </h3>
             {player.country && <p className="text-sm text-white/70">{player.country}</p>}
 
             {/* Stats Row */}
-            <div className="mt-3 flex gap-4 text-sm">
+            <div className="mt-4 flex gap-4 text-sm">
               {player.wins != null && player.wins > 0 && (
                 <div className="text-white/80">
                   <span className="font-semibold text-emerald-400">{player.wins}</span> Wins

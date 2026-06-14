@@ -3,6 +3,7 @@
 import { useState } from 'react'
 import { useRouter } from 'next/navigation'
 import type { FormContent, SponsorshipTier } from '@/payload-types'
+import { Button } from '@/components/ui/button'
 
 type SponsorFormContent = FormContent['sponsorRegistration']
 
@@ -201,15 +202,17 @@ export function SponsorRegistrationForm({
       </div>
 
       {/* Submit */}
-      <button
+      <Button
         type="submit"
+        variant="brand"
+        size="cta"
         disabled={isSubmitting}
-        className="w-full rounded-lg bg-[#0b3d2e] py-4 font-semibold text-white transition-colors hover:bg-[#091f18] disabled:cursor-not-allowed disabled:opacity-50"
+        className="w-full font-semibold disabled:cursor-not-allowed disabled:opacity-50"
       >
         {isSubmitting
           ? formContent?.processingText || 'Submitting...'
           : formContent?.submitButtonText || 'Submit Application'}
-      </button>
+      </Button>
 
       <p className="text-center text-xs text-[#636364]">
         {formContent?.footerText ||

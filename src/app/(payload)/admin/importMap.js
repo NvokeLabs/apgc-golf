@@ -15,12 +15,30 @@ import { MetaImageComponent as MetaImageComponent_a8a977ebc872c5d5ea7ee689724c08
 import { MetaDescriptionComponent as MetaDescriptionComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { PreviewComponent as PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860 } from '@payloadcms/plugin-seo/client'
 import { SlugField as SlugField_3817bf644402e67bfe6577f60ef982de } from '@payloadcms/ui'
+import { default as default_249ce9bbbe4f6b24b1a1cf8314d84d95 } from '@/components/admin/lists/PagesListView'
 import { HorizontalRuleFeatureClient as HorizontalRuleFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
 import { BlocksFeatureClient as BlocksFeatureClient_e70f5e05f09f93e00b997edb1ef0c864 } from '@payloadcms/richtext-lexical/client'
+import { default as default_6c7ef7ca225a669f1c769679768396c5 } from '@/components/admin/lists/PostsListView'
+import { default as default_bc97a069566b54177965ca0cbbbacefa } from '@/components/admin/fields/ShadcnTextField'
+import { default as default_18850b7a35a847f880dcc480630d16a0 } from '@/components/admin/fields/ShadcnNumberField'
+import { default as default_ccc7012f8d9a9245453e8bb3c09930ba } from '@/components/admin/fields/ShadcnSelectField'
+import { default as default_debc6e93d955ac15e837e42c6d8a6455 } from '@/components/admin/fields/ShadcnTextareaField'
+import { default as default_c9e03add83fcd263753ce8d7a6ed6aa1 } from '@/components/admin/fields/ShadcnCheckboxField'
+import { default as default_0c0a0c4c30c35ef5cacbab567741c55b } from '@/components/admin/lists/PlayersListView'
+import { default as default_858c31217a0b478c21f09b1127cea96a } from '@/components/admin/lists/EventsListView'
+import { default as default_4fd1dced7565f11b4216b4dd7dafc35c } from '@/components/admin/lists/NewsListView'
+import { default as default_7a93b4ec34077016b723edb0720d8909 } from '@/components/admin/lists/SponsorsListView'
+import { default as default_0c41043eff577b7836bd2f1a4d447c12 } from '@/components/admin/lists/SponsorshipTiersListView'
+import { default as default_e6509babaebb998b4aa01570f3f2838c } from '@/components/admin/lists/EventRegistrationsListView'
+import { default as default_709f697c9ec0962d48645cc2c62e1622 } from '@/components/admin/lists/SponsorRegistrationsListView'
 import { default as default_9b0fc2ae6370234d743bb4ddbeaf7394 } from '@/components/admin/TicketsBeforeList'
 import { default as default_5df4f99d07757c9d9b5a94d9aac3ed4a } from '@/components/admin/views/TicketEditView'
+import { default as default_98c2726f334680e593ee4541e308d796 } from '@/components/admin/views/TicketsListView'
 import { FolderTableCell as FolderTableCell_ab83ff7e88da8d3530831f296ec4756a } from '@payloadcms/ui/rsc'
 import { FolderField as FolderField_ab83ff7e88da8d3530831f296ec4756a } from '@payloadcms/ui/rsc'
+import { default as default_6d60edd83547a84aa83e9d6ee3e10484 } from '@/components/admin/lists/MediaListView'
+import { default as default_eb8764771d6d8a3496a16c706fa4b016 } from '@/components/admin/lists/CategoriesListView'
+import { default as default_9305a439a3a285d19f87415e607e5428 } from '@/components/admin/lists/UsersListView'
 import { LinkToDoc as LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { ReindexButton as ReindexButton_aead06e4cbf6b2620c5c51c9ab283634 } from '@payloadcms/plugin-search/client'
 import { FolderTypeField as FolderTypeField_3817bf644402e67bfe6577f60ef982de } from '@payloadcms/ui'
@@ -30,7 +48,9 @@ import { default as default_a9d4b87e0306b3ddfe97926a52a69591 } from '@/component
 import { default as default_a44df17d0fc3dcd873dae43dc3bf66bd } from '@/components/admin/Logo'
 import { default as default_1a7510af427896d367a49dbf838d2de6 } from '@/components/BeforeDashboard'
 import { default as default_8a7ab0eb7ab5c511aba12e68480bfe5e } from '@/components/BeforeLogin'
+import { default as default_32df91e55f06c9f84f372e0ebfd0402e } from '@/components/admin/Provider'
 import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
+import { CheckInView as CheckInView_edcf424e6ba71eb455ed5dbf9f8001cf } from '@/components/admin/views/CheckInView'
 
 export const importMap = {
   '@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell':
@@ -66,14 +86,35 @@ export const importMap = {
   '@payloadcms/plugin-seo/client#PreviewComponent':
     PreviewComponent_a8a977ebc872c5d5ea7ee689724c0860,
   '@payloadcms/ui#SlugField': SlugField_3817bf644402e67bfe6577f60ef982de,
+  '@/components/admin/lists/PagesListView#default': default_249ce9bbbe4f6b24b1a1cf8314d84d95,
   '@payloadcms/richtext-lexical/client#HorizontalRuleFeatureClient':
     HorizontalRuleFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
   '@payloadcms/richtext-lexical/client#BlocksFeatureClient':
     BlocksFeatureClient_e70f5e05f09f93e00b997edb1ef0c864,
+  '@/components/admin/lists/PostsListView#default': default_6c7ef7ca225a669f1c769679768396c5,
+  '@/components/admin/fields/ShadcnTextField#default': default_bc97a069566b54177965ca0cbbbacefa,
+  '@/components/admin/fields/ShadcnNumberField#default': default_18850b7a35a847f880dcc480630d16a0,
+  '@/components/admin/fields/ShadcnSelectField#default': default_ccc7012f8d9a9245453e8bb3c09930ba,
+  '@/components/admin/fields/ShadcnTextareaField#default': default_debc6e93d955ac15e837e42c6d8a6455,
+  '@/components/admin/fields/ShadcnCheckboxField#default': default_c9e03add83fcd263753ce8d7a6ed6aa1,
+  '@/components/admin/lists/PlayersListView#default': default_0c0a0c4c30c35ef5cacbab567741c55b,
+  '@/components/admin/lists/EventsListView#default': default_858c31217a0b478c21f09b1127cea96a,
+  '@/components/admin/lists/NewsListView#default': default_4fd1dced7565f11b4216b4dd7dafc35c,
+  '@/components/admin/lists/SponsorsListView#default': default_7a93b4ec34077016b723edb0720d8909,
+  '@/components/admin/lists/SponsorshipTiersListView#default':
+    default_0c41043eff577b7836bd2f1a4d447c12,
+  '@/components/admin/lists/EventRegistrationsListView#default':
+    default_e6509babaebb998b4aa01570f3f2838c,
+  '@/components/admin/lists/SponsorRegistrationsListView#default':
+    default_709f697c9ec0962d48645cc2c62e1622,
   '@/components/admin/TicketsBeforeList#default': default_9b0fc2ae6370234d743bb4ddbeaf7394,
   '@/components/admin/views/TicketEditView#default': default_5df4f99d07757c9d9b5a94d9aac3ed4a,
+  '@/components/admin/views/TicketsListView#default': default_98c2726f334680e593ee4541e308d796,
   '@payloadcms/ui/rsc#FolderTableCell': FolderTableCell_ab83ff7e88da8d3530831f296ec4756a,
   '@payloadcms/ui/rsc#FolderField': FolderField_ab83ff7e88da8d3530831f296ec4756a,
+  '@/components/admin/lists/MediaListView#default': default_6d60edd83547a84aa83e9d6ee3e10484,
+  '@/components/admin/lists/CategoriesListView#default': default_eb8764771d6d8a3496a16c706fa4b016,
+  '@/components/admin/lists/UsersListView#default': default_9305a439a3a285d19f87415e607e5428,
   '@payloadcms/plugin-search/client#LinkToDoc': LinkToDoc_aead06e4cbf6b2620c5c51c9ab283634,
   '@payloadcms/plugin-search/client#ReindexButton': ReindexButton_aead06e4cbf6b2620c5c51c9ab283634,
   '@payloadcms/ui#FolderTypeField': FolderTypeField_3817bf644402e67bfe6577f60ef982de,
@@ -83,6 +124,8 @@ export const importMap = {
   '@/components/admin/Logo#default': default_a44df17d0fc3dcd873dae43dc3bf66bd,
   '@/components/BeforeDashboard#default': default_1a7510af427896d367a49dbf838d2de6,
   '@/components/BeforeLogin#default': default_8a7ab0eb7ab5c511aba12e68480bfe5e,
+  '@/components/admin/Provider#default': default_32df91e55f06c9f84f372e0ebfd0402e,
   '@payloadcms/storage-s3/client#S3ClientUploadHandler':
     S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24,
+  '@/components/admin/views/CheckInView#CheckInView': CheckInView_edcf424e6ba71eb455ed5dbf9f8001cf,
 }

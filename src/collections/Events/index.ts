@@ -27,12 +27,83 @@ export const Events: CollectionConfig = {
     defaultColumns: ['title', 'date', 'tier', 'status'],
     useAsTitle: 'title',
     group: 'Golf Content',
+    components: {
+      views: {
+        list: {
+          Component: '@/components/admin/lists/EventsListView',
+        },
+      },
+    },
   },
   hooks: {
     afterChange: [revalidateEventAfterChange],
     afterDelete: [revalidateEventAfterDelete],
   },
   fields: [
+    // Sidebar — scheduling, classification, and control fields
+    {
+      name: 'date',
+      type: 'date',
+      required: true,
+      admin: {
+        position: 'sidebar',
+        description: 'Event start date and time',
+        date: {
+          pickerAppearance: 'dayAndTime',
+        },
+      },
+    },
+    {
+      name: 'endDate',
+      type: 'date',
+      admin: {
+        position: 'sidebar',
+        description: 'For multi-day events',
+        date: {
+          pickerAppearance: 'dayAndTime',
+        },
+      },
+    },
+    {
+      name: 'tier',
+      type: 'select',
+      required: true,
+      options: [
+        { label: 'Major', value: 'major' },
+        { label: 'Championship', value: 'championship' },
+        { label: 'Qualifier', value: 'qualifier' },
+      ],
+      admin: {
+        position: 'sidebar',
+        description: 'Event classification level',
+      },
+    },
+    {
+      name: 'status',
+      type: 'select',
+      defaultValue: 'upcoming',
+      options: [
+        { label: 'Upcoming', value: 'upcoming' },
+        { label: 'Open', value: 'open' },
+        { label: 'Sold Out', value: 'sold-out' },
+        { label: 'Closed', value: 'closed' },
+        { label: 'Completed', value: 'completed' },
+      ],
+      admin: {
+        position: 'sidebar',
+        description: 'Registration / lifecycle status',
+      },
+    },
+    {
+      name: 'isFeatured',
+      type: 'checkbox',
+      defaultValue: false,
+      admin: {
+        position: 'sidebar',
+        description: 'Feature in hero section',
+      },
+    },
+    // Main body
     {
       name: 'title',
       type: 'text',
@@ -40,108 +111,88 @@ export const Events: CollectionConfig = {
     },
     slugField(),
     {
-      type: 'row',
-      fields: [
-        {
-          name: 'date',
-          type: 'date',
-          required: true,
-          admin: {
-            width: '33%',
-            date: {
-              pickerAppearance: 'dayAndTime',
-            },
-          },
-        },
-        {
-          name: 'endDate',
-          type: 'date',
-          admin: {
-            width: '33%',
-            description: 'For multi-day events',
-            date: {
-              pickerAppearance: 'dayAndTime',
-            },
-          },
-        },
-        {
-          name: 'location',
-          type: 'text',
-          required: true,
-          admin: {
-            width: '33%',
-          },
-        },
-      ],
-    },
-    {
-      type: 'row',
-      fields: [
-        {
-          name: 'tier',
-          type: 'select',
-          required: true,
-          options: [
-            { label: 'Major', value: 'major' },
-            { label: 'Championship', value: 'championship' },
-            { label: 'Qualifier', value: 'qualifier' },
-          ],
-          admin: {
-            width: '25%',
-          },
-        },
-        {
-          name: 'status',
-          type: 'select',
-          defaultValue: 'upcoming',
-          options: [
-            { label: 'Upcoming', value: 'upcoming' },
-            { label: 'Open', value: 'open' },
-            { label: 'Sold Out', value: 'sold-out' },
-            { label: 'Closed', value: 'closed' },
-            { label: 'Completed', value: 'completed' },
-          ],
-          admin: {
-            width: '25%',
-          },
-        },
-        {
-          name: 'price',
-          type: 'number',
-          admin: {
-            width: '25%',
-            description: 'Registration fee',
-          },
-        },
-        {
-          name: 'alumniPrice',
-          type: 'number',
-          admin: {
-            width: '25%',
-            description: 'Discounted alumni price',
-          },
-        },
-      ],
-    },
-    {
-      name: 'image',
-      type: 'upload',
-      relationTo: 'media',
-    },
-    {
-      name: 'prizeFund',
-      type: 'text',
-      admin: {
-        description: 'Prize money description (e.g., "$50,000")',
-      },
-    },
-    {
-      name: 'description',
-      type: 'richText',
-    },
-    {
       type: 'tabs',
       tabs: [
+        {
+          label: 'Details',
+          description: 'Core event information shown on the public event page.',
+          fields: [
+            {
+              name: 'location',
+              type: 'text',
+              required: true,
+              admin: {
+                description: 'Venue / course name',
+              },
+            },
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'price',
+                  type: 'number',
+                  admin: {
+                    width: '33%',
+                    description: 'Registration fee',
+                  },
+                },
+                {
+                  name: 'alumniPrice',
+                  type: 'number',
+                  admin: {
+                    width: '33%',
+                    description: 'Discounted alumni price',
+                  },
+                },
+                {
+                  name: 'prizeFund',
+                  type: 'text',
+                  admin: {
+                    width: '33%',
+                    description: 'Prize money description (e.g., "$50,000")',
+                  },
+                },
+              ],
+            },
+            {
+              name: 'description',
+              type: 'richText',
+            },
+          ],
+        },
+        {
+          label: 'Media',
+          description: 'Hero image and photo gallery.',
+          fields: [
+            {
+              name: 'image',
+              type: 'upload',
+              relationTo: 'media',
+              admin: {
+                description: 'Primary event image',
+              },
+            },
+            {
+              name: 'gallery',
+              type: 'array',
+              admin: {
+                description: 'Photo gallery for the event',
+              },
+              fields: [
+                {
+                  name: 'image',
+                  type: 'upload',
+                  relationTo: 'media',
+                  required: true,
+                },
+                {
+                  name: 'caption',
+                  type: 'text',
+                },
+              ],
+            },
+          ],
+        },
         {
           label: 'Schedule',
           fields: [
@@ -269,37 +320,7 @@ export const Events: CollectionConfig = {
             },
           ],
         },
-        {
-          label: 'Gallery',
-          fields: [
-            {
-              name: 'gallery',
-              type: 'array',
-              fields: [
-                {
-                  name: 'image',
-                  type: 'upload',
-                  relationTo: 'media',
-                  required: true,
-                },
-                {
-                  name: 'caption',
-                  type: 'text',
-                },
-              ],
-            },
-          ],
-        },
       ],
-    },
-    {
-      name: 'isFeatured',
-      type: 'checkbox',
-      defaultValue: false,
-      admin: {
-        position: 'sidebar',
-        description: 'Feature in hero section',
-      },
     },
   ],
 }

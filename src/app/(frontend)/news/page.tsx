@@ -39,12 +39,12 @@ export default async function NewsPage() {
   const standardArticles = articles.slice(1)
 
   return (
-    <div className="pt-24 pb-20 min-h-screen">
+    <div className="pt-24 pb-24 min-h-screen">
       <div className="container mx-auto px-6">
         {/* Header & Search */}
         <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 border-b border-[#0b3d2e]/10 pb-8">
           <div>
-            <span className="text-[#0b3d2e] text-xs font-bold tracking-widest uppercase mb-2 block">
+            <span className="text-[#0b3d2e] text-xs font-bold tracking-[0.2em] uppercase mb-2 block">
               Latest Updates
             </span>
             <h1 className="text-4xl md:text-5xl font-light text-[#0b3d2e]">
@@ -145,7 +145,7 @@ export default async function NewsPage() {
 
                     <div className="p-6 flex-1 flex flex-col">
                       <div className="flex-1">
-                        <h3 className="text-xl text-[#0b3d2e] font-medium mb-3 line-clamp-2 group-hover:text-[#0b3d2e]/80 transition-colors">
+                        <h3 className="text-xl font-semibold text-[#0b3d2e] mb-3 line-clamp-2 group-hover:text-[#0b3d2e]/80 transition-colors">
                           {article.title}
                         </h3>
                         {article.subtitle && (

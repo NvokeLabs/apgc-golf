@@ -39,12 +39,12 @@ export default async function PlayersPage() {
   const featuredPlayers = players.filter((p) => p.isFeatured)
 
   return (
-    <div className="pt-24 pb-20 min-h-screen">
+    <div className="pt-24 pb-24 min-h-screen">
       <div className="container mx-auto px-6 max-w-7xl">
         {/* Top Players Section */}
-        <div className="mb-16">
-          <h2 className="text-3xl text-[#0b3d2e] mb-8 font-bold">
-            {labels?.sectionLabels?.topPlayers || 'Top Players'}
+        <div className="mb-12">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#0b3d2e] mb-8">
+            {labels?.sectionLabels?.topPlayers || 'Sekilas Pemain'}
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {featuredPlayers.slice(0, 4).map((player, index) => (
@@ -99,7 +99,7 @@ export default async function PlayersPage() {
 
         {/* All Players List */}
         <div className="space-y-3 mb-8">
-          <h2 className="text-2xl text-[#0b3d2e] mb-6 font-bold">
+          <h2 className="text-3xl md:text-4xl font-bold text-[#0b3d2e] mb-6">
             {labels?.sectionLabels?.allPlayers || 'All Players'}
           </h2>
 

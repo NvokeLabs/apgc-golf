@@ -32,7 +32,9 @@ const categoryLabels: Record<string, string> = {
 
 export function NewsCard({ article, featured = false, className }: NewsCardProps) {
   const imageUrl =
-    typeof article.image === 'object' && article.image?.url ? article.image.url : '/placeholder-news.jpg'
+    typeof article.image === 'object' && article.image?.url
+      ? article.image.url
+      : '/placeholder-news.jpg'
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -68,7 +70,7 @@ export function NewsCard({ article, featured = false, className }: NewsCardProps
           )}
         </div>
 
-        <div className="p-4">
+        <div className="p-6">
           <h3 className={cn('font-bold text-white line-clamp-2', featured ? 'text-xl' : 'text-lg')}>
             {article.title}
           </h3>

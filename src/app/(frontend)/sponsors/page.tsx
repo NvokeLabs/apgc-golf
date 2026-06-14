@@ -7,6 +7,7 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { cache } from 'react'
 import { Check, ArrowRight, Award, Globe, Users, Handshake, Trophy, Star } from 'lucide-react'
+import { Button } from '@/components/ui/button'
 import {
   LOGO_SIZE_CLASSES,
   LOGO_SIZE_IMAGE_DIMS,
@@ -143,11 +144,11 @@ export default async function SponsorsPage() {
   }
 
   return (
-    <div className="pt-24 pb-20 min-h-screen">
+    <div className="pt-24 pb-24 min-h-screen">
       <div className="container mx-auto px-6">
         {/* Header */}
-        <div className="mb-16 text-center max-w-3xl mx-auto">
-          <span className="text-[#0b3d2e] text-xs font-bold tracking-widest uppercase mb-4 block">
+        <div className="mb-12 text-center max-w-3xl mx-auto">
+          <span className="text-[#0b3d2e] text-xs font-bold tracking-[0.2em] uppercase mb-4 block">
             {pageContent?.header?.label || 'Our Partners'}
           </span>
           <h1 className="text-4xl md:text-5xl font-light text-[#0b3d2e] mb-6">
@@ -191,7 +192,7 @@ export default async function SponsorsPage() {
                           alt={sponsor.name}
                           width={dims.width}
                           height={dims.height}
-                          className="max-w-full max-h-full object-contain grayscale opacity-70 hover:opacity-100 hover:grayscale-0 transition-all duration-500"
+                          className="max-w-full max-h-full object-contain opacity-100 transition-all duration-500"
                         />
                       ) : (
                         <span className={`${FALLBACK_TEXT_CLASSES[size]} text-center`}>
@@ -241,9 +242,9 @@ export default async function SponsorsPage() {
         </div>
 
         {/* Become a Sponsor Section */}
-        <div className="py-16 border-t border-[#0b3d2e]/10">
+        <div className="py-24 border-t border-[#0b3d2e]/10">
           <div className="text-center mb-12">
-            <h2 className="text-3xl font-light text-[#0b3d2e] mb-4">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#0b3d2e] mb-4">
               {pageContent?.becomeASponsor?.title || 'Become a'}{' '}
               <span className="font-serif italic font-medium">
                 {pageContent?.becomeASponsor?.titleHighlight || 'Sponsor'}
@@ -284,13 +285,12 @@ export default async function SponsorsPage() {
                   ))}
                 </ul>
 
-                <Link
-                  href="/register/sponsor"
-                  className="w-full py-4 text-lg group border-2 border-[#0b3d2e] bg-transparent text-[#0b3d2e] hover:bg-[#0b3d2e] hover:text-white transition-colors flex items-center justify-center gap-2 rounded-lg"
-                >
-                  {labels?.buttonLabels?.inquireNow || 'Inquire Now'}
-                  <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                </Link>
+                <Button asChild variant="brandOutline" className="w-full py-4 text-lg group gap-2">
+                  <Link href="/register/sponsor">
+                    {labels?.buttonLabels?.inquireNow || 'Inquire Now'}
+                    <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                  </Link>
+                </Button>
               </GlassCard>
             ))}
           </div>
@@ -298,8 +298,8 @@ export default async function SponsorsPage() {
 
         {/* Why Partner With Us Section */}
         <div className="py-24 border-t border-[#0b3d2e]/10">
-          <div className="text-center mb-16">
-            <h2 className="text-3xl font-light text-[#0b3d2e] mb-6">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl md:text-4xl font-bold text-[#0b3d2e] mb-6">
               {pageContent?.whyPartner?.title || 'Why'}{' '}
               <span className="font-serif italic font-medium">
                 {pageContent?.whyPartner?.titleHighlight || 'Partner With Us?'}
@@ -311,7 +311,7 @@ export default async function SponsorsPage() {
             </p>
           </div>
 
-          <div className="grid md:grid-cols-3 gap-8 mb-16">
+          <div className="grid md:grid-cols-3 gap-8 mb-12">
             {pageContent?.whyPartner?.benefits && pageContent.whyPartner.benefits.length > 0 ? (
               pageContent.whyPartner.benefits.map((benefit, idx) => {
                 const IconComponent =

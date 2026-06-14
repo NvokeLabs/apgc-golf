@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 
 import { GlassCard, EventDetailsTabs, ParticipantsList } from '@/components/golf'
+import { Button } from '@/components/ui/button'
 import RichText from '@/components/RichText'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
@@ -454,12 +455,11 @@ export default async function EventPage({ params }: Args) {
                 </div>
 
                 {isRegistrationOpen ? (
-                  <Link
-                    href={`/register/event/${event.slug}`}
-                    className="block w-full bg-[#0b3d2e] hover:bg-[#091f18] text-white font-bold py-4 rounded-xl text-center transition-colors shadow-lg"
-                  >
-                    {labels?.buttonLabels?.registerNow || 'Register Now'}
-                  </Link>
+                  <Button asChild variant="brand" size="cta" className="w-full">
+                    <Link href={`/register/event/${event.slug}`}>
+                      {labels?.buttonLabels?.registerNow || 'Register Now'}
+                    </Link>
+                  </Button>
                 ) : (
                   <button
                     disabled

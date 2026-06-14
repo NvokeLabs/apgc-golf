@@ -41,17 +41,17 @@ export default async function EventsPage() {
   const [events, labels] = await Promise.all([getEvents(), getSiteLabels()])
 
   return (
-    <div className="pt-24 pb-20 min-h-screen">
+    <div className="pt-24 pb-24 min-h-screen">
       <div className="container mx-auto px-6">
         {/* Header Section */}
         <div className="mb-12 text-center max-w-2xl mx-auto">
-          <span className="text-[#0b3d2e] text-xs font-bold tracking-widest uppercase mb-4 block">
+          <span className="text-[#0b3d2e] text-xs font-bold tracking-[0.2em] uppercase mb-4 block">
             Tournament Schedule
           </span>
           <h1 className="text-4xl md:text-5xl font-light text-[#0b3d2e] mb-6">
             Upcoming <span className="font-serif italic font-medium">Events</span>
           </h1>
-          <p className="text-[#636364] mb-8">
+          <p className="text-[#636364] text-lg mb-8">
             Join the world&apos;s most prestigious golf tournaments across iconic venues.
           </p>
         </div>

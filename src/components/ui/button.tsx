@@ -17,6 +17,9 @@ const buttonVariants = cva(
         icon: 'h-10 w-10',
         lg: 'h-11 rounded px-8',
         sm: 'h-9 rounded px-3',
+        cta: 'px-6 py-4 text-sm',
+        ctaSm: 'px-4 py-2 text-xs',
+        ctaLg: 'px-8 py-4 text-sm',
       },
       variant: {
         default: 'bg-primary text-primary-foreground hover:bg-primary/90',
@@ -25,6 +28,12 @@ const buttonVariants = cva(
         link: 'text-primary items-start justify-start underline-offset-4 hover:underline',
         outline: 'border border-border bg-background hover:bg-card hover:text-accent-foreground',
         secondary: 'bg-secondary text-secondary-foreground hover:bg-secondary/80',
+        brand:
+          'bg-[#0b3d2e] text-white hover:bg-[#091f18] rounded-sm tracking-[0.15em] uppercase shadow-md hover:shadow-lg transition-all duration-300',
+        brandSecondary:
+          'bg-[#c2ecdb] text-[#0b3d2e] hover:bg-[#a8e0c8] border border-[#0b3d2e]/20 rounded-sm tracking-[0.15em] uppercase transition-all duration-300',
+        brandOutline:
+          'border-2 border-[#0b3d2e] bg-transparent text-[#0b3d2e] hover:bg-[#0b3d2e] hover:text-white rounded-sm transition-colors',
       },
     },
   },

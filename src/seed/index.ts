@@ -633,7 +633,7 @@ async function seedCMSContent(payload: Payload) {
         memberProfile: 'Profil Anggota',
         careerStats: 'Statistik Karir',
         recentResults: 'Hasil Terbaru',
-        topPlayers: 'Pemain Unggulan',
+        topPlayers: 'Sekilas Pemain',
         allPlayers: 'Semua Pemain',
         relatedArticles: 'Artikel Terkait',
         shareArticle: 'Bagikan Artikel',
@@ -715,8 +715,8 @@ async function seedCMSContent(payload: Payload) {
         label: 'Partner Resmi',
       },
       featuredPlayersSection: {
-        title: 'Pemain Unggulan',
-        description: 'Kontestan top yang berjuang untuk gelar juara.',
+        title: 'Anggota APGC',
+        description: 'Mengenal lebih dekat anggota dan pemain komunitas APGC.',
       },
       newsSection: {
         title: 'Berita Terbaru',

@@ -458,7 +458,7 @@ export const SiteLabels: GlobalConfig = {
                 {
                   name: 'topPlayers',
                   type: 'text',
-                  defaultValue: 'Top Players',
+                  defaultValue: 'Sekilas Pemain',
                   admin: { width: '50%' },
                 },
                 {

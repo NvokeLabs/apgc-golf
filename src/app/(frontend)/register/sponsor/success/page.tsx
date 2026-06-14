@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 
 import { GlassCard } from '@/components/golf'
+import { Button } from '@/components/ui/button'
 import Link from 'next/link'
 import { CheckCircle, Handshake, ArrowRight } from 'lucide-react'
 import { getFormContent, getSiteLabels } from '@/utilities/getSiteContent'
@@ -44,19 +45,15 @@ export default async function SponsorRegistrationSuccessPage() {
           </div>
 
           <div className="space-y-3">
-            <Link
-              href="/sponsors"
-              className="flex items-center justify-center gap-2 w-full rounded-xl bg-[#0b3d2e] py-4 font-bold text-white transition-colors hover:bg-[#091f18] shadow-lg"
-            >
-              {labels?.buttonLabels?.viewAll || 'View Current Sponsors'}
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link
-              href="/"
-              className="block w-full rounded-xl border border-[#0b3d2e]/20 py-4 font-medium text-[#0b3d2e] transition-colors hover:bg-[#0b3d2e]/5"
-            >
-              {labels?.buttonLabels?.backToHome || 'Back to Home'}
-            </Link>
+            <Button asChild variant="brand" size="cta" className="w-full gap-2 font-bold">
+              <Link href="/sponsors">
+                {labels?.buttonLabels?.viewAll || 'View Current Sponsors'}
+                <ArrowRight className="w-4 h-4" />
+              </Link>
+            </Button>
+            <Button asChild variant="brandOutline" size="cta" className="w-full font-medium">
+              <Link href="/">{labels?.buttonLabels?.backToHome || 'Back to Home'}</Link>
+            </Button>
           </div>
         </GlassCard>
       </div>

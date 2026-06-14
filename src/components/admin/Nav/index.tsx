@@ -11,16 +11,23 @@ import {
   Calendar,
   Users,
   Image,
-  MessageSquare,
-  Database,
   Globe,
-  Shuffle,
-  Flag,
   Ticket,
   ChevronDown,
   ChevronRight,
   LogOut,
   User,
+  Trophy,
+  UserCircle,
+  Handshake,
+  Layers,
+  ClipboardList,
+  Megaphone,
+  Home,
+  LayoutTemplate,
+  Tag,
+  Type,
+  QrCode,
 } from 'lucide-react'
 import './styles.scss'
 
@@ -39,33 +46,53 @@ interface MenuGroup {
 
 const menuGroups: MenuGroup[] = [
   {
-    label: 'Content',
-    id: 'content',
+    label: 'Golf Content',
+    id: 'golf-content',
     defaultOpen: true,
     items: [
-      { name: 'Pages', href: '/admin/collections/pages', icon: FileText },
-      { name: 'News', href: '/admin/collections/news', icon: Newspaper },
       { name: 'Events', href: '/admin/collections/events', icon: Calendar },
-      { name: 'Players', href: '/admin/collections/players', icon: Users },
-      { name: 'Sponsors', href: '/admin/collections/sponsors', icon: Flag },
+      { name: 'Players', href: '/admin/collections/players', icon: UserCircle },
+      { name: 'Sponsors', href: '/admin/collections/sponsors', icon: Handshake },
+      {
+        name: 'Sponsorship Tiers',
+        href: '/admin/collections/sponsorship-tiers',
+        icon: Layers,
+      },
+      { name: 'News', href: '/admin/collections/news', icon: Newspaper },
     ],
   },
   {
-    label: 'Workflow',
-    id: 'workflow',
+    label: 'Registrations',
+    id: 'registrations',
     defaultOpen: true,
     items: [
       {
         name: 'Event Registrations',
         href: '/admin/collections/event-registrations',
-        icon: Database,
+        icon: ClipboardList,
       },
       {
         name: 'Sponsor Registrations',
         href: '/admin/collections/sponsor-registrations',
-        icon: Database,
+        icon: Megaphone,
       },
       { name: 'Tickets', href: '/admin/collections/tickets', icon: Ticket },
+      { name: 'Check-In Scanner', href: '/admin/check-in', icon: QrCode },
+    ],
+  },
+  {
+    label: 'Website Content',
+    id: 'website-content',
+    defaultOpen: false,
+    items: [
+      { name: 'Home Page', href: '/admin/globals/home-page', icon: Home },
+      { name: 'Sponsors Page', href: '/admin/globals/sponsors-page', icon: Trophy },
+      { name: 'Site Labels', href: '/admin/globals/site-labels', icon: Tag },
+      { name: 'Form Content', href: '/admin/globals/form-content', icon: Type },
+      { name: 'Pages', href: '/admin/collections/pages', icon: FileText },
+      { name: 'Posts', href: '/admin/collections/posts', icon: LayoutTemplate },
+      { name: 'Header', href: '/admin/globals/header', icon: Globe },
+      { name: 'Footer', href: '/admin/globals/footer', icon: Globe },
     ],
   },
   {
@@ -73,11 +100,9 @@ const menuGroups: MenuGroup[] = [
     id: 'settings',
     defaultOpen: false,
     items: [
-      { name: 'Categories', href: '/admin/collections/categories', icon: Shuffle },
       { name: 'Media', href: '/admin/collections/media', icon: Image },
+      { name: 'Categories', href: '/admin/collections/categories', icon: Tag },
       { name: 'Users', href: '/admin/collections/users', icon: Users },
-      { name: 'Header', href: '/admin/globals/header', icon: Globe },
-      { name: 'Footer', href: '/admin/globals/footer', icon: Globe },
     ],
   },
 ]
@@ -131,16 +156,6 @@ export function Nav() {
           {isDashboardActive && <span className="apgc-nav__active-indicator" />}
           <LayoutDashboard className="apgc-nav__icon" />
           <span>Dashboard</span>
-        </Link>
-
-        {/* Check-In Scanner Link */}
-        <Link
-          href="/admin/check-in"
-          className={`apgc-nav__link apgc-nav__link--standalone ${isActive('/admin/check-in') ? 'apgc-nav__link--active' : ''}`}
-        >
-          {isActive('/admin/check-in') && <span className="apgc-nav__active-indicator" />}
-          <Ticket className="apgc-nav__icon" />
-          <span>Check-In Scanner</span>
         </Link>
 
         {/* Menu Groups */}

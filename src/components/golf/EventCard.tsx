@@ -98,10 +98,12 @@ export function EventCard({ event, featured = false, className }: EventCardProps
           )}
         </div>
 
-        <div className="p-4">
-          <h3 className={cn('font-bold text-white', featured ? 'text-xl' : 'text-lg')}>{event.title}</h3>
+        <div className="p-6">
+          <h3 className={cn('font-bold text-white', featured ? 'text-xl' : 'text-lg')}>
+            {event.title}
+          </h3>
 
-          <div className="mt-3 space-y-2 text-sm text-white/70">
+          <div className="mt-4 space-y-2 text-sm text-white/70">
             <div className="flex items-center gap-2">
               <CalendarDays className="h-4 w-4 text-emerald-400" />
               <span>

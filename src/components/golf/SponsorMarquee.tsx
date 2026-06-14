@@ -36,25 +36,25 @@ export function SponsorMarquee({ sponsors }: SponsorMarqueeProps) {
                   href={sponsor.website}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="opacity-60 transition-opacity hover:opacity-100"
+                  className="opacity-100 transition-opacity"
                 >
                   <div className="relative h-16 w-32">
                     <Image
                       src={logoUrl}
                       alt={sponsor.name}
                       fill
-                      className="object-contain grayscale hover:grayscale-0 transition-all"
+                      className="object-contain transition-all"
                       sizes="128px"
                     />
                   </div>
                 </a>
               ) : (
-                <div className="relative h-16 w-32 opacity-60">
+                <div className="relative h-16 w-32 opacity-100">
                   <Image
                     src={logoUrl}
                     alt={sponsor.name}
                     fill
-                    className="object-contain grayscale"
+                    className="object-contain"
                     sizes="128px"
                   />
                 </div>

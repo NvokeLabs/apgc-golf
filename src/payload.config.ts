@@ -35,6 +35,7 @@ const dirname = path.dirname(filename)
 
 export default buildConfig({
   admin: {
+    theme: 'light',
     meta: {
       title: 'APGC Golf Admin',
       description: 'Manage your golf events, players, and sponsors',
@@ -47,12 +48,19 @@ export default buildConfig({
       ],
     },
     components: {
+      providers: ['@/components/admin/Provider'],
       Nav: '@/components/admin/Nav',
       beforeLogin: ['@/components/BeforeLogin'],
       beforeDashboard: ['@/components/BeforeDashboard'],
       graphics: {
         Logo: '@/components/admin/Logo',
         Icon: '@/components/admin/Logo',
+      },
+      views: {
+        checkIn: {
+          Component: '@/components/admin/views/CheckInView#CheckInView',
+          path: '/check-in',
+        },
       },
     },
     importMap: {

@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 
 import { GlassCard } from '@/components/golf'
+import { TextLink } from '@/components/golf/TextLink'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
 import Link from 'next/link'
@@ -84,7 +85,7 @@ export default async function EventRegistrationPage({ params }: Args) {
     <div className="container pt-24 pb-16">
       <Link
         href={`/events/${event.slug}`}
-        className="mb-8 inline-flex items-center gap-2 text-sm text-gray-600 hover:text-gray-900"
+        className="mb-8 inline-flex items-center gap-2 text-sm text-[#636364] hover:text-[#0b3d2e]"
       >
         <ArrowLeft className="h-4 w-4" />
         {labels?.navigationLabels?.backToEvent || 'Back to Event'}
@@ -94,10 +95,10 @@ export default async function EventRegistrationPage({ params }: Args) {
         {/* Registration Form */}
         <div className="lg:col-span-2">
           <GlassCard className="p-6 md:p-8">
-            <h1 className="mb-2 text-2xl font-bold text-gray-900 md:text-3xl">
+            <h1 className="mb-2 text-3xl font-bold text-[#0b3d2e] md:text-4xl">
               {content?.pageTitle || 'Register for'} {event.title}
             </h1>
-            <p className="mb-8 text-gray-600">
+            <p className="mb-8 text-[#636364] text-lg">
               {content?.pageDescription || 'Fill out the form below to register for this event'}
             </p>
 
@@ -108,17 +109,14 @@ export default async function EventRegistrationPage({ params }: Args) {
                 categoryOptions={formContent?.categoryOptions?.categories}
               />
             ) : (
-              <div className="rounded-lg border border-gray-200 bg-gray-50 p-8 text-center">
-                <p className="text-lg text-gray-600">
+              <div className="rounded-lg border border-[#0b3d2e]/10 bg-[#0b3d2e]/5 p-8 text-center">
+                <p className="text-lg text-[#636364]">
                   {formContent?.errorMessages?.registrationClosed ||
                     'Registration for this event is currently closed.'}
                 </p>
-                <Link
-                  href="/events"
-                  className="mt-4 inline-block text-emerald-400 hover:text-emerald-300"
-                >
+                <TextLink href="/events" className="mt-4 justify-center text-sm">
                   {labels?.navigationLabels?.viewOtherEvents || 'View other events'}
-                </Link>
+                </TextLink>
               </div>
             )}
           </GlassCard>
@@ -127,37 +125,37 @@ export default async function EventRegistrationPage({ params }: Args) {
         {/* Event Summary */}
         <div>
           <GlassCard className="p-6">
-            <h2 className="mb-4 text-lg font-bold text-gray-900">
+            <h2 className="mb-4 text-lg font-bold text-[#0b3d2e]">
               {content?.eventSummaryTitle || 'Event Summary'}
             </h2>
 
             <div className="space-y-4">
               <div className="flex items-start gap-3">
-                <CalendarDays className="mt-1 h-5 w-5 text-emerald-400" />
+                <CalendarDays className="mt-1 h-5 w-5 text-[#0b3d2e]" />
                 <div>
-                  <p className="text-sm text-gray-500">{labels?.fieldLabels?.date || 'Date'}</p>
-                  <p className="text-gray-900">{formatDate(event.date)}</p>
+                  <p className="text-sm text-[#636364]">{labels?.fieldLabels?.date || 'Date'}</p>
+                  <p className="text-[#0b3d2e]">{formatDate(event.date)}</p>
                 </div>
               </div>
 
               <div className="flex items-start gap-3">
-                <MapPin className="mt-1 h-5 w-5 text-emerald-400" />
+                <MapPin className="mt-1 h-5 w-5 text-[#0b3d2e]" />
                 <div>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-[#636364]">
                     {labels?.fieldLabels?.location || 'Location'}
                   </p>
-                  <p className="text-gray-900">{event.location}</p>
+                  <p className="text-[#0b3d2e]">{event.location}</p>
                 </div>
               </div>
 
               {event.price && (
-                <div className="border-t border-gray-200 pt-4">
-                  <p className="text-sm text-gray-500">
+                <div className="border-t border-[#0b3d2e]/10 pt-4">
+                  <p className="text-sm text-[#636364]">
                     {labels?.fieldLabels?.entryFee || 'Entry Fee'}
                   </p>
-                  <p className="text-2xl font-bold text-emerald-400">{formatPrice(event.price)}</p>
+                  <p className="text-2xl font-bold text-[#0b3d2e]">{formatPrice(event.price)}</p>
                   {event.alumniPrice && (
-                    <p className="mt-1 text-sm text-gray-600">
+                    <p className="mt-1 text-sm text-[#636364]">
                       {content?.alumniLabel || 'Alumni:'} {formatPrice(event.alumniPrice)}
                     </p>
                   )}

@@ -1,0 +1,60 @@
+/*
+ * shadcn tokens scoped to `.apgc-admin` so Payload's native admin UI is untouched.
+ * Preflight (`@tailwind base`) is intentionally omitted; the scoped reset below
+ * restores the box-sizing / border defaults that shadcn `border` utilities rely on.
+ * Values mirror the frontend `globals.css` `:root` (APGC brand greens + orange).
+ *
+ * ORDER MATTERS: the reset is declared BEFORE `@tailwind utilities`. Tailwind v3
+ * flattens @layer into plain CSS, so the cascade is decided by specificity +
+ * source order. The reset and the `border` utility have equal specificity, so
+ * the utilities (emitted later, at `@tailwind utilities`) must come after the
+ * reset — otherwise the reset's `border-width: 0` wins and inputs render with
+ * no border at all. Do NOT wrap the reset in `@layer base` (Tailwind errors
+ * without a matching `@tailwind base`).
+ */
+
+.apgc-admin {
+  --background: 0 0% 100%;
+  --foreground: 160 76% 14%;
+
+  --card: 0 0% 100%;
+  --card-foreground: 160 76% 14%;
+
+  --popover: 0 0% 100%;
+  --popover-foreground: 160 76% 14%;
+
+  --primary: 160 76% 14%; /* #0b3d2e - APGC Emerald */
+  --primary-foreground: 0 0% 100%;
+
+  --secondary: 150 52% 90%; /* #c2ecdb - Light Green */
+  --secondary-foreground: 160 76% 14%;
+
+  --muted: 0 0% 96%;
+  --muted-foreground: 0 0% 39%; /* #636364 */
+
+  --accent: 18 66% 51%; /* #D66232 - APGC Accent Orange */
+  --accent-foreground: 0 0% 100%;
+
+  --destructive: 0 84.2% 60.2%;
+  --destructive-foreground: 0 0% 100%;
+
+  /* Visible neutral borders so inputs/cards read clearly on white backgrounds. */
+  --border: 214 18% 85%; /* ~#d2d8e0 — card/edge borders */
+  --input: 214 16% 78%; /* ~#bfc7d2 — input borders, a touch stronger */
+  --ring: 160 76% 14%;
+
+  --radius: 0.5rem;
+}
+
+/* Scoped reset (required because preflight is omitted). MUST stay above
+ * `@tailwind utilities` — see the note at the top of this file. */
+.apgc-admin *,
+.apgc-admin *::before,
+.apgc-admin *::after {
+  box-sizing: border-box;
+  border-width: 0;
+  border-style: solid;
+  border-color: hsl(var(--border));
+}
+
+@tailwind utilities;

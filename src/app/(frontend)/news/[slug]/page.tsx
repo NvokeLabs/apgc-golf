@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 
 import { GlassCard } from '@/components/golf'
+import { TextLink } from '@/components/golf/TextLink'
 import RichText from '@/components/RichText'
 import { getPayload } from 'payload'
 import configPromise from '@payload-config'
@@ -8,7 +9,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import { notFound } from 'next/navigation'
 import { cache } from 'react'
-import { Calendar, ChevronLeft, Clock, User, Share2, ArrowRight } from 'lucide-react'
+import { Calendar, ChevronLeft, Clock, User, Share2 } from 'lucide-react'
 
 type Args = {
   params: Promise<{ slug: string }>
@@ -122,9 +123,7 @@ export default async function ArticlePage({ params }: Args) {
       : 'https://images.unsplash.com/photo-1573684955725-34046d1ea9f3?w=1200&q=80'
 
   const authorName =
-    typeof article.author === 'object' && article.author?.name
-      ? article.author.name
-      : 'APGC Staff'
+    typeof article.author === 'object' && article.author?.name ? article.author.name : 'APGC Staff'
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -237,11 +236,7 @@ export default async function ArticlePage({ params }: Args) {
                         : null
 
                     return (
-                      <Link
-                        key={related.id}
-                        href={`/news/${related.slug}`}
-                        className="block group"
-                      >
+                      <Link key={related.id} href={`/news/${related.slug}`} className="block group">
                         <div className="flex gap-4">
                           {relatedImageUrl && (
                             <div className="relative w-20 h-20 rounded-lg overflow-hidden flex-shrink-0">
@@ -273,13 +268,9 @@ export default async function ArticlePage({ params }: Args) {
                   })}
                 </div>
 
-                <Link
-                  href="/news"
-                  className="mt-6 flex items-center justify-center gap-2 text-[#0b3d2e] text-sm font-medium hover:text-[#0b3d2e]/80 transition-colors"
-                >
+                <TextLink href="/news" className="mt-6 justify-center text-sm">
                   View All News
-                  <ArrowRight className="w-4 h-4" />
-                </Link>
+                </TextLink>
               </GlassCard>
             )}
           </div>

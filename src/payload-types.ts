@@ -1014,12 +1014,18 @@ export interface Player {
   generateSlug?: boolean | null;
   slug: string;
   /**
+   * Role/title shown on the Alumni & Professional Network card (e.g. Vice Chairman APGC)
+   */
+  role?: string | null;
+  /**
    * Current ranking position
    */
   rank?: number | null;
   country?: string | null;
   gender?: ('male' | 'female') | null;
-  status?: ('active' | 'inactive') | null;
+  /**
+   * Player photo
+   */
   image?: (number | null) | Media;
   wins?: number | null;
   points?: number | null;
@@ -1080,6 +1086,10 @@ export interface Player {
    */
   matchPlayAvailable?: boolean | null;
   /**
+   * Active players are shown publicly
+   */
+  status?: ('active' | 'inactive') | null;
+  /**
    * Show on homepage featured section
    */
   isFeatured?: boolean | null;
@@ -1092,20 +1102,36 @@ export interface Player {
  */
 export interface Event {
   id: number;
+  /**
+   * Event start date and time
+   */
+  date: string;
+  /**
+   * For multi-day events
+   */
+  endDate?: string | null;
+  /**
+   * Event classification level
+   */
+  tier: 'major' | 'championship' | 'qualifier';
+  /**
+   * Registration / lifecycle status
+   */
+  status?: ('upcoming' | 'open' | 'sold-out' | 'closed' | 'completed') | null;
+  /**
+   * Feature in hero section
+   */
+  isFeatured?: boolean | null;
   title: string;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
    */
   generateSlug?: boolean | null;
   slug: string;
-  date: string;
   /**
-   * For multi-day events
+   * Venue / course name
    */
-  endDate?: string | null;
   location: string;
-  tier: 'major' | 'championship' | 'qualifier';
-  status?: ('upcoming' | 'open' | 'sold-out' | 'closed' | 'completed') | null;
   /**
    * Registration fee
    */
@@ -1114,7 +1140,6 @@ export interface Event {
    * Discounted alumni price
    */
   alumniPrice?: number | null;
-  image?: (number | null) | Media;
   /**
    * Prize money description (e.g., "$50,000")
    */
@@ -1134,6 +1159,20 @@ export interface Event {
     };
     [k: string]: unknown;
   } | null;
+  /**
+   * Primary event image
+   */
+  image?: (number | null) | Media;
+  /**
+   * Photo gallery for the event
+   */
+  gallery?:
+    | {
+        image: number | Media;
+        caption?: string | null;
+        id?: string | null;
+      }[]
+    | null;
   /**
    * Event schedule by day
    */
@@ -1187,17 +1226,6 @@ export interface Event {
    * Event sponsors
    */
   sponsors?: (number | Sponsor)[] | null;
-  gallery?:
-    | {
-        image: number | Media;
-        caption?: string | null;
-        id?: string | null;
-      }[]
-    | null;
-  /**
-   * Feature in hero section
-   */
-  isFeatured?: boolean | null;
   updatedAt: string;
   createdAt: string;
 }
@@ -1207,13 +1235,9 @@ export interface Event {
  */
 export interface Sponsor {
   id: number;
-  name: string;
   /**
-   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   * Sponsorship tier this sponsor belongs to
    */
-  generateSlug?: boolean | null;
-  slug: string;
-  logo?: (number | null) | Media;
   tier: number | SponsorshipTier;
   /**
    * Display order within tier (lower = first)
@@ -1223,6 +1247,16 @@ export interface Sponsor {
    * Show on website
    */
   isActive?: boolean | null;
+  name: string;
+  /**
+   * When enabled, the slug will auto-generate from the title field on save and autosave.
+   */
+  generateSlug?: boolean | null;
+  slug: string;
+  /**
+   * Sponsor logo
+   */
+  logo?: (number | null) | Media;
   /**
    * Company website URL
    */
@@ -1250,10 +1284,6 @@ export interface Sponsor {
 export interface SponsorshipTier {
   id: number;
   /**
-   * Display name (e.g., "Title Sponsor", "Platinum Partner")
-   */
-  name: string;
-  /**
    * Display order (lower = first)
    */
   order?: number | null;
@@ -1262,6 +1292,10 @@ export interface SponsorshipTier {
    */
   isActive?: boolean | null;
   /**
+   * Show "Most Popular" badge
+   */
+  isHighlighted?: boolean | null;
+  /**
    * Display price (e.g., "Rp 500,000,000")
    */
   price: string;
@@ -1269,6 +1303,14 @@ export interface SponsorshipTier {
    * Numeric value for sorting/comparison
    */
   priceNumeric?: number | null;
+  /**
+   * Controls how big sponsor logos are displayed on the public Sponsors page. Bigger = more prominent.
+   */
+  logoSize: 'xl' | 'lg' | 'md' | 'sm';
+  /**
+   * Display name (e.g., "Title Sponsor", "Platinum Partner")
+   */
+  name: string;
   /**
    * Brief tier description
    */
@@ -1282,14 +1324,6 @@ export interface SponsorshipTier {
         id?: string | null;
       }[]
     | null;
-  /**
-   * Show "Most Popular" badge
-   */
-  isHighlighted?: boolean | null;
-  /**
-   * Controls how big sponsor logos are displayed on the public Sponsors page. Bigger = more prominent.
-   */
-  logoSize: 'xl' | 'lg' | 'md' | 'sm';
   updatedAt: string;
   createdAt: string;
 }
@@ -1299,6 +1333,19 @@ export interface SponsorshipTier {
  */
 export interface News {
   id: number;
+  /**
+   * Article category
+   */
+  category: 'tournament-recap' | 'course-design' | 'instruction' | 'club-news' | 'member-spotlight';
+  /**
+   * Date shown to readers
+   */
+  publishedDate: string;
+  /**
+   * e.g., "5 min read"
+   */
+  readTime?: string | null;
+  author?: (number | null) | User;
   title: string;
   /**
    * When enabled, the slug will auto-generate from the title field on save and autosave.
@@ -1309,12 +1356,6 @@ export interface News {
    * Article subheading
    */
   subtitle?: string | null;
-  category: 'tournament-recap' | 'course-design' | 'instruction' | 'club-news' | 'member-spotlight';
-  publishedDate: string;
-  /**
-   * e.g., "5 min read"
-   */
-  readTime?: string | null;
   /**
    * Featured image
    */
@@ -1334,7 +1375,6 @@ export interface News {
     };
     [k: string]: unknown;
   };
-  author?: (number | null) | User;
   /**
    * Related news articles
    */
@@ -1349,23 +1389,44 @@ export interface News {
  */
 export interface EventRegistration {
   id: number;
+  /**
+   * Event being registered for
+   */
   event: number | Event;
+  /**
+   * Registration category
+   */
+  category: 'general' | 'alumni';
+  /**
+   * Registration status
+   */
+  status?: ('pending' | 'confirmed' | 'cancelled' | 'waitlist') | null;
+  /**
+   * Payment state
+   */
+  paymentStatus?: ('unpaid' | 'pending' | 'paid' | 'expired' | 'failed') | null;
   playerName: string;
   email: string;
-  category: 'general' | 'alumni';
-  paymentMethod?: ('bank-transfer' | 'credit-card' | 'cash') | null;
-  status?: ('pending' | 'confirmed' | 'cancelled' | 'waitlist') | null;
   phone?: string | null;
   /**
    * Additional notes or special requests
    */
   notes?: string | null;
+  /**
+   * Registrant accepted the terms and conditions
+   */
   agreedToTerms: boolean;
-  paymentStatus?: ('unpaid' | 'pending' | 'paid' | 'expired' | 'failed') | null;
+  /**
+   * How the registrant intends to pay
+   */
+  paymentMethod?: ('bank-transfer' | 'credit-card' | 'cash') | null;
   /**
    * Amount paid in IDR
    */
   amountPaid?: number | null;
+  /**
+   * Timestamp payment was received
+   */
   paidAt?: string | null;
   /**
    * Xendit Payment Session ID
@@ -1415,23 +1476,26 @@ export interface Ticket {
  */
 export interface SponsorRegistration {
   id: number;
+  /**
+   * Tier key from SponsorshipTiers, or "custom"
+   */
+  selectedTier: string;
+  /**
+   * Review status
+   */
+  status?: ('pending' | 'contacted' | 'approved' | 'declined') | null;
   companyName: string;
   contactName: string;
   email: string;
   phone?: string | null;
   /**
-   * Tier key from SponsorshipTiers, or "custom"
+   * Company website
    */
-  selectedTier: string;
-  status?: ('pending' | 'contacted' | 'approved' | 'declined') | null;
+  website?: string | null;
   /**
    * Additional information or questions
    */
   message?: string | null;
-  /**
-   * Company website
-   */
-  website?: string | null;
   /**
    * Internal notes (not visible to applicant)
    */
@@ -2061,10 +2125,10 @@ export interface PlayersSelect<T extends boolean = true> {
   name?: T;
   generateSlug?: T;
   slug?: T;
+  role?: T;
   rank?: T;
   country?: T;
   gender?: T;
-  status?: T;
   image?: T;
   wins?: T;
   points?: T;
@@ -2086,6 +2150,7 @@ export interface PlayersSelect<T extends boolean = true> {
   memberDescription?: T;
   email?: T;
   matchPlayAvailable?: T;
+  status?: T;
   isFeatured?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -2095,19 +2160,27 @@ export interface PlayersSelect<T extends boolean = true> {
  * via the `definition` "events_select".
  */
 export interface EventsSelect<T extends boolean = true> {
+  date?: T;
+  endDate?: T;
+  tier?: T;
+  status?: T;
+  isFeatured?: T;
   title?: T;
   generateSlug?: T;
   slug?: T;
-  date?: T;
-  endDate?: T;
   location?: T;
-  tier?: T;
-  status?: T;
   price?: T;
   alumniPrice?: T;
-  image?: T;
   prizeFund?: T;
   description?: T;
+  image?: T;
+  gallery?:
+    | T
+    | {
+        image?: T;
+        caption?: T;
+        id?: T;
+      };
   schedule?:
     | T
     | {
@@ -2137,14 +2210,6 @@ export interface EventsSelect<T extends boolean = true> {
         id?: T;
       };
   sponsors?: T;
-  gallery?:
-    | T
-    | {
-        image?: T;
-        caption?: T;
-        id?: T;
-      };
-  isFeatured?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2153,16 +2218,16 @@ export interface EventsSelect<T extends boolean = true> {
  * via the `definition` "news_select".
  */
 export interface NewsSelect<T extends boolean = true> {
+  category?: T;
+  publishedDate?: T;
+  readTime?: T;
+  author?: T;
   title?: T;
   generateSlug?: T;
   slug?: T;
   subtitle?: T;
-  category?: T;
-  publishedDate?: T;
-  readTime?: T;
   image?: T;
   content?: T;
-  author?: T;
   relatedArticles?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -2173,13 +2238,13 @@ export interface NewsSelect<T extends boolean = true> {
  * via the `definition` "sponsors_select".
  */
 export interface SponsorsSelect<T extends boolean = true> {
+  tier?: T;
+  order?: T;
+  isActive?: T;
   name?: T;
   generateSlug?: T;
   slug?: T;
   logo?: T;
-  tier?: T;
-  order?: T;
-  isActive?: T;
   website?: T;
   description?: T;
   benefits?:
@@ -2196,11 +2261,13 @@ export interface SponsorsSelect<T extends boolean = true> {
  * via the `definition` "sponsorship-tiers_select".
  */
 export interface SponsorshipTiersSelect<T extends boolean = true> {
-  name?: T;
   order?: T;
   isActive?: T;
+  isHighlighted?: T;
   price?: T;
   priceNumeric?: T;
+  logoSize?: T;
+  name?: T;
   description?: T;
   benefits?:
     | T
@@ -2208,8 +2275,6 @@ export interface SponsorshipTiersSelect<T extends boolean = true> {
         benefit?: T;
         id?: T;
       };
-  isHighlighted?: T;
-  logoSize?: T;
   updatedAt?: T;
   createdAt?: T;
 }
@@ -2219,15 +2284,15 @@ export interface SponsorshipTiersSelect<T extends boolean = true> {
  */
 export interface EventRegistrationsSelect<T extends boolean = true> {
   event?: T;
+  category?: T;
+  status?: T;
+  paymentStatus?: T;
   playerName?: T;
   email?: T;
-  category?: T;
-  paymentMethod?: T;
-  status?: T;
   phone?: T;
   notes?: T;
   agreedToTerms?: T;
-  paymentStatus?: T;
+  paymentMethod?: T;
   amountPaid?: T;
   paidAt?: T;
   xenditSessionId?: T;
@@ -2241,14 +2306,14 @@ export interface EventRegistrationsSelect<T extends boolean = true> {
  * via the `definition` "sponsor-registrations_select".
  */
 export interface SponsorRegistrationsSelect<T extends boolean = true> {
+  selectedTier?: T;
+  status?: T;
   companyName?: T;
   contactName?: T;
   email?: T;
   phone?: T;
-  selectedTier?: T;
-  status?: T;
-  message?: T;
   website?: T;
+  message?: T;
   adminNotes?: T;
   updatedAt?: T;
   createdAt?: T;
@@ -2901,6 +2966,21 @@ export interface HomePage {
      */
     backgroundImage?: (number | null) | Media;
   };
+  statsSection?: {
+    label?: string | null;
+    title?: string | null;
+    description?: string | null;
+    /**
+     * Angka dampak (mis. value "500+", label "Alumni Terhubung"). Isi sendiri di admin.
+     */
+    items?:
+      | {
+          value: string;
+          label: string;
+          id?: string | null;
+        }[]
+      | null;
+  };
   featuredEventSection?: {
     label?: string | null;
   };
@@ -2924,6 +3004,24 @@ export interface HomePage {
           id?: string | null;
         }[]
       | null;
+  };
+  whySponsorSection?: {
+    label?: string | null;
+    title?: string | null;
+    description?: string | null;
+    benefits?:
+      | {
+          icon?: ('exposure' | 'network' | 'impact' | 'visibility') | null;
+          title: string;
+          description: string;
+          id?: string | null;
+        }[]
+      | null;
+    ctaLabel?: string | null;
+    /**
+     * Tujuan tombol CTA sponsor
+     */
+    ctaLink?: string | null;
   };
   partnersSection?: {
     label?: string | null;
@@ -3255,6 +3353,20 @@ export interface HomePageSelect<T extends boolean = true> {
         description?: T;
         backgroundImage?: T;
       };
+  statsSection?:
+    | T
+    | {
+        label?: T;
+        title?: T;
+        description?: T;
+        items?:
+          | T
+          | {
+              value?: T;
+              label?: T;
+              id?: T;
+            };
+      };
   featuredEventSection?:
     | T
     | {
@@ -3281,6 +3393,23 @@ export interface HomePageSelect<T extends boolean = true> {
               highlight?: T;
               id?: T;
             };
+      };
+  whySponsorSection?:
+    | T
+    | {
+        label?: T;
+        title?: T;
+        description?: T;
+        benefits?:
+          | T
+          | {
+              icon?: T;
+              title?: T;
+              description?: T;
+              id?: T;
+            };
+        ctaLabel?: T;
+        ctaLink?: T;
       };
   partnersSection?:
     | T
