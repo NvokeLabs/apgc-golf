@@ -4,15 +4,16 @@ import { mintUploadToken, verifyUploadToken } from '@/utilities/uploadToken'
 const SECRET_A = 'test-secret-alpha-1234567890'
 const SECRET_B = 'test-secret-beta-0987654321'
 
-const FUTURE = Date.now() + 1000 * 60 * 60 // 1 hour from now
-const PAST = Date.now() - 1000 * 60 * 60 // 1 hour ago
-
 describe('uploadToken utility', () => {
   let originalSecret: string | undefined
+  let FUTURE: number
+  let PAST: number
 
   beforeEach(() => {
     originalSecret = process.env.UPLOAD_TOKEN_SECRET
     process.env.UPLOAD_TOKEN_SECRET = SECRET_A
+    FUTURE = Date.now() + 1000 * 60 * 60 // 1 hour from now
+    PAST = Date.now() - 1000 * 60 * 60 // 1 hour ago
   })
 
   afterEach(() => {
@@ -66,6 +67,19 @@ describe('uploadToken utility', () => {
     expect(result).toEqual({ valid: false, reason: 'bad-signature' })
   })
 
+  // S3.2c — tampered exp field without re-signing
+  it('S3.2c: tampering with the payload (changed exp) returns bad-signature', () => {
+    const token = mintUploadToken(7, FUTURE)
+    const [, sig] = token.split('.')
+    // Push exp far into the future but keep the original signature — must not validate
+    const tamperedPayload = Buffer.from(
+      JSON.stringify({ rid: 7, exp: Date.now() + 1000 * 60 * 60 * 24 * 365 }),
+    ).toString('base64url')
+    const tamperedToken = tamperedPayload + '.' + sig
+    const result = verifyUploadToken(tamperedToken)
+    expect(result).toEqual({ valid: false, reason: 'bad-signature' })
+  })
+
   // S3.3 — malformed inputs
   it('S3.3a: a bare integer string returns malformed', () => {
     const result = verifyUploadToken('1234')
@@ -87,16 +101,16 @@ describe('uploadToken utility', () => {
     expect(result).toEqual({ valid: false, reason: 'malformed' })
   })
 
-  it('S3.3e: malformed input never returns valid:true and never throws', () => {
-    const badInputs = ['1234', '', 'nodot', 'bad.b64', '..', 'null.null']
-    for (const input of badInputs) {
+  it.each(['1234', '', 'nodot', 'bad.b64', '..', 'null.null'])(
+    'S3.3e: malformed input "%s" never returns valid:true and never throws',
+    (input) => {
       let result: ReturnType<typeof verifyUploadToken> | undefined
       expect(() => {
         result = verifyUploadToken(input)
       }).not.toThrow()
       expect(result?.valid).not.toBe(true)
-    }
-  })
+    },
+  )
 
   // S3.3 — cannot forge a token for another registrationId without the secret
   it('S3.3f: cannot forge a valid token for registrationId+1 without the secret', () => {

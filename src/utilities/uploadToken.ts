@@ -73,7 +73,10 @@ export function verifyUploadToken(token: string): VerifyResult {
   try {
     const expectedBuf = Buffer.from(expectedSig, 'base64url')
     const providedBuf = Buffer.from(providedSig, 'base64url')
-    // Guard against length mismatch (timingSafeEqual requires same length)
+    // Guard against length mismatch (timingSafeEqual requires same length).
+    // This short-circuit is intentional and does not leak secret-dependent timing:
+    // HMAC-SHA256 always produces a fixed 32-byte digest, so the expected length
+    // is a public constant — no branch here reveals anything about the secret value.
     if (expectedBuf.length !== providedBuf.length) {
       sigMatch = false
     } else {
