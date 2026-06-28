@@ -1,0 +1,51 @@
+# Supabase local development config for APGC Golf.
+# Boots Postgres + Storage (S3-compatible) + Studio so local dev/tests don't
+# touch the shared cloud Supabase project.
+#
+# Usage:
+#   supabase start         # boots the stack, prints local URLs + S3 keys
+#   supabase stop          # tears it down
+#   supabase status        # shows ports/keys again
+#
+# If `supabase start` rejects this file due to a CLI version mismatch, run
+# `supabase init` to regenerate config.toml, then re-add the [storage.buckets.*]
+# blocks below (the `proofs` private bucket is required for Story 0).
+
+project_id = "apgc-golf"
+
+[api]
+enabled = true
+port = 54321
+schemas = ["public", "graphql_public"]
+extra_search_path = ["public", "extensions"]
+max_rows = 1000
+
+[db]
+port = 54322
+shadow_port = 54320
+major_version = 15
+
+[studio]
+enabled = true
+port = 54323
+
+[storage]
+enabled = true
+file_size_limit = "50MiB"
+
+# Public bucket — mirrors the prod `golf` bucket used for general media.
+[storage.buckets.golf]
+public = true
+
+# Private bucket — payment-transfer proofs (Story 0). NOT public: files are
+# only reachable through an authenticated stream route, never a public URL.
+# MIME + size limits also enforce the Story 6 upload constraints at the
+# storage layer.
+[storage.buckets.proofs]
+public = false
+file_size_limit = "10MiB"
+allowed_mime_types = ["image/jpeg", "image/png", "application/pdf"]
+
+# Local dev doesn't need Supabase Auth (Payload handles its own auth).
+[auth]
+enabled = false

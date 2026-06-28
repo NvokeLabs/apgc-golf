@@ -3,8 +3,17 @@ dist / media
 node_modules
 .DS_Store
 .env
+.env*.local
 .next
 .vercel
+
+# Supabase local stack (keep config.toml; ignore runtime/temp + generated files)
+supabase/.branches
+supabase/.temp
+supabase/.env
+
+# Subagent-driven-development scratch ledger
+.superpowers/
 
 # Payload default media upload directory
 public/media/
