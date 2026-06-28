@@ -2,7 +2,7 @@
  * Unit tests for issueTicketForRegistration utility.
  * Uses a fake payload object (no real DB) and fake deps (vi.fn).
  */
-import { describe, it, expect, vi, beforeEach } from 'vitest'
+import { describe, it, expect, vi } from 'vitest'
 import { issueTicketForRegistration } from '@/utilities/ticketing/issueTicketForRegistration'
 import type { IssueTicketDeps } from '@/utilities/ticketing/issueTicketForRegistration'
 
@@ -149,43 +149,95 @@ describe('issueTicketForRegistration', () => {
 
   // S2.2 — idempotency: registration already has a linked ticket
   describe('S2.2 idempotency (ticket already linked)', () => {
-    it('does NOT call create', async () => {
-      const payload = makeFakePayload({ ticket: fakeTicket })
-      const deps = makeFakeDeps()
+    describe('ticket linked as resolved object', () => {
+      it('does NOT call create', async () => {
+        const payload = makeFakePayload({ ticket: fakeTicket })
+        const deps = makeFakeDeps()
 
-      await issueTicketForRegistration(payload as any, 42, deps)
+        await issueTicketForRegistration(payload as any, 42, deps)
 
-      expect(payload.create).not.toHaveBeenCalled()
+        expect(payload.create).not.toHaveBeenCalled()
+      })
+
+      it('does NOT call sendTicketEmail', async () => {
+        const payload = makeFakePayload({ ticket: fakeTicket })
+        const deps = makeFakeDeps()
+
+        await issueTicketForRegistration(payload as any, 42, deps)
+
+        expect(deps.sendTicketEmail).not.toHaveBeenCalled()
+      })
+
+      it('does NOT call update', async () => {
+        const payload = makeFakePayload({ ticket: fakeTicket })
+        const deps = makeFakeDeps()
+
+        await issueTicketForRegistration(payload as any, 42, deps)
+
+        expect(payload.update).not.toHaveBeenCalled()
+      })
+
+      it('returns { alreadyIssued:true, emailSent:false } with the existing ticket', async () => {
+        const payload = makeFakePayload({ ticket: fakeTicket })
+        const deps = makeFakeDeps()
+
+        const result = await issueTicketForRegistration(payload as any, 42, deps)
+
+        expect(result.alreadyIssued).toBe(true)
+        expect(result.emailSent).toBe(false)
+        expect(result.ticket).toMatchObject({ id: fakeTicket.id })
+      })
     })
 
-    it('does NOT call sendTicketEmail', async () => {
-      const payload = makeFakePayload({ ticket: fakeTicket })
-      const deps = makeFakeDeps()
+    describe('ticket linked as bare id (number)', () => {
+      function makeBareIdPayload() {
+        return {
+          findByID: vi
+            .fn()
+            .mockResolvedValueOnce({ ...fakeRegistrationBase, ticket: 99 }) // registration fetch
+            .mockResolvedValueOnce(fakeTicket), // ticket fetch by id
+          create: vi.fn(),
+          update: vi.fn(),
+        }
+      }
 
-      await issueTicketForRegistration(payload as any, 42, deps)
+      it('fetches the full ticket via findByID for the tickets collection', async () => {
+        const payload = makeBareIdPayload()
+        const deps = makeFakeDeps()
 
-      expect(deps.sendTicketEmail).not.toHaveBeenCalled()
-    })
+        await issueTicketForRegistration(payload as any, 42, deps)
 
-    it('returns { alreadyIssued:true, emailSent:false } with the existing ticket', async () => {
-      const payload = makeFakePayload({ ticket: fakeTicket })
-      const deps = makeFakeDeps()
+        const ticketFetchCall = payload.findByID.mock.calls.find(
+          (c: any[]) => c[0].collection === 'tickets',
+        )
+        expect(ticketFetchCall).toBeDefined()
+        expect(ticketFetchCall![0].id).toBe(99)
+      })
 
-      const result = await issueTicketForRegistration(payload as any, 42, deps)
+      it('returns the full ticket object (not a stub), alreadyIssued:true', async () => {
+        const payload = makeBareIdPayload()
+        const deps = makeFakeDeps()
 
-      expect(result.alreadyIssued).toBe(true)
-      expect(result.emailSent).toBe(false)
-      expect(result.ticket).toMatchObject({ id: fakeTicket.id })
-    })
+        const result = await issueTicketForRegistration(payload as any, 42, deps)
 
-    it('also handles idempotency when ticket is an id (number)', async () => {
-      const payload = makeFakePayload({ ticket: 99 })
-      const deps = makeFakeDeps()
+        expect(result.alreadyIssued).toBe(true)
+        expect(result.emailSent).toBe(false)
+        expect(result.ticket).toMatchObject({
+          id: fakeTicket.id,
+          ticketCode: fakeTicket.ticketCode,
+        })
+      })
 
-      const result = await issueTicketForRegistration(payload as any, 42, deps)
+      it('does NOT call create, sendTicketEmail, or update', async () => {
+        const payload = makeBareIdPayload()
+        const deps = makeFakeDeps()
 
-      expect(result.alreadyIssued).toBe(true)
-      expect(payload.create).not.toHaveBeenCalled()
+        await issueTicketForRegistration(payload as any, 42, deps)
+
+        expect(payload.create).not.toHaveBeenCalled()
+        expect(deps.sendTicketEmail).not.toHaveBeenCalled()
+        expect(payload.update).not.toHaveBeenCalled()
+      })
     })
   })
 
@@ -197,7 +249,7 @@ describe('issueTicketForRegistration', () => {
         sendTicketEmail: vi.fn().mockResolvedValue({ success: false, error: 'SMTP error' }),
       })
 
-      await expect(issueTicketForRegistration(payload as any, 42, deps)).resolves.not.toThrow()
+      await expect(issueTicketForRegistration(payload as any, 42, deps)).resolves.toBeDefined()
     })
 
     it('still creates and links the ticket', async () => {
@@ -252,6 +304,27 @@ describe('issueTicketForRegistration', () => {
 
       expect(payload.create).toHaveBeenCalledOnce()
       expect(result.emailSent).toBe(false)
+    })
+  })
+
+  // S2.4c — ticketEmailSent persist fails after ticket is created and email is sent
+  describe('S2.4c ticketEmailSent persist fails', () => {
+    it('does NOT throw even if the final update rejects', async () => {
+      const payload = {
+        findByID: vi.fn().mockResolvedValue({ ...fakeRegistrationBase, ticket: null }),
+        create: vi.fn().mockResolvedValue(fakeTicket),
+        update: vi
+          .fn()
+          .mockResolvedValueOnce({}) // link-update succeeds
+          .mockRejectedValueOnce(new Error('DB write failed')), // ticketEmailSent update fails
+      }
+      const deps = makeFakeDeps()
+
+      const result = await issueTicketForRegistration(payload as any, 42, deps)
+
+      expect(result.ticket).toMatchObject({ id: fakeTicket.id })
+      expect(result.alreadyIssued).toBe(false)
+      expect(result.emailSent).toBe(true)
     })
   })
 })

@@ -62,15 +62,19 @@ export async function issueTicketForRegistration(
 
   // 2. Idempotency check — ticket already linked?
   if (registration.ticket != null) {
-    // May be a Ticket object or just a number id; return as-is.
     const existingTicket = registration.ticket as Ticket | number
-    return {
-      ticket: (typeof existingTicket === 'object'
-        ? existingTicket
-        : { id: existingTicket }) as Ticket,
-      alreadyIssued: true,
-      emailSent: false,
+    let ticket: Ticket
+    if (typeof existingTicket === 'object') {
+      // Already a resolved Ticket object — return it directly, no extra fetch.
+      ticket = existingTicket
+    } else {
+      // Bare id — fetch the full ticket record so callers get a real Ticket.
+      ticket = (await payload.findByID({
+        collection: 'tickets',
+        id: existingTicket,
+      })) as Ticket
     }
+    return { ticket, alreadyIssued: true, emailSent: false }
   }
 
   // 3. Generate code + QR
@@ -134,14 +138,21 @@ export async function issueTicketForRegistration(
     emailSent = false
   }
 
-  // 8. Persist email-sent status to the registration
-  await payload.update({
-    collection: 'event-registrations',
-    id: registrationId,
-    data: {
-      ticketEmailSent: emailSent,
-    } as any, // ticketEmailSent is added by sibling task; cast avoids type error until types regenerate
-  })
+  // 8. Persist email-sent status to the registration.
+  // Wrapped in its own try/catch: the ticket has already been created and linked, so a
+  // failure here must never surface to the caller.
+  try {
+    await payload.update({
+      collection: 'event-registrations',
+      id: registrationId,
+      data: {
+        ticketEmailSent: emailSent,
+      } as any, // ticketEmailSent is added by sibling task; cast avoids type error until types regenerate
+    })
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err)
+    console.warn(`[issueTicketForRegistration] Failed to persist ticketEmailSent: ${msg}`)
+  }
 
   return { ticket, alreadyIssued: false, emailSent }
 }
