@@ -84,6 +84,10 @@ export default buildConfig({
           Component: '@/components/admin/views/CheckInView#CheckInView',
           path: '/check-in',
         },
+        manualTransfers: {
+          Component: '@/components/admin/views/ManualTransfersView#ManualTransfersView',
+          path: '/manual-transfers',
+        },
       },
     },
     importMap: {

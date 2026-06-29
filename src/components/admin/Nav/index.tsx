@@ -28,6 +28,7 @@ import {
   Tag,
   Type,
   QrCode,
+  Banknote,
 } from 'lucide-react'
 import './styles.scss'
 
@@ -77,6 +78,7 @@ const menuGroups: MenuGroup[] = [
         icon: Megaphone,
       },
       { name: 'Tickets', href: '/admin/collections/tickets', icon: Ticket },
+      { name: 'Manual Transfers', href: '/admin/manual-transfers', icon: Banknote },
       { name: 'Check-In Scanner', href: '/admin/check-in', icon: QrCode },
     ],
   },

@@ -52,6 +52,7 @@ import { default as default_8a7ab0eb7ab5c511aba12e68480bfe5e } from '@/component
 import { default as default_32df91e55f06c9f84f372e0ebfd0402e } from '@/components/admin/Provider'
 import { S3ClientUploadHandler as S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24 } from '@payloadcms/storage-s3/client'
 import { CheckInView as CheckInView_edcf424e6ba71eb455ed5dbf9f8001cf } from '@/components/admin/views/CheckInView'
+import { ManualTransfersView as ManualTransfersView_78a279bdc987c69ef9f78bfe8f6a9240 } from '@/components/admin/views/ManualTransfersView'
 
 export const importMap = {
   '@payloadcms/richtext-lexical/rsc#RscEntryLexicalCell':
@@ -130,4 +131,6 @@ export const importMap = {
   '@payloadcms/storage-s3/client#S3ClientUploadHandler':
     S3ClientUploadHandler_f97aa6c64367fa259c5bc0567239ef24,
   '@/components/admin/views/CheckInView#CheckInView': CheckInView_edcf424e6ba71eb455ed5dbf9f8001cf,
+  '@/components/admin/views/ManualTransfersView#ManualTransfersView':
+    ManualTransfersView_78a279bdc987c69ef9f78bfe8f6a9240,
 }
