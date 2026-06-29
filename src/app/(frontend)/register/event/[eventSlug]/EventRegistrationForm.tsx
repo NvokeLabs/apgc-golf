@@ -10,12 +10,14 @@ type CategoryOption = { value?: string | null; label?: string | null; id?: strin
 
 interface EventRegistrationFormProps {
   eventId: number
+  eventSlug: string
   formContent?: EventFormContent
   categoryOptions?: CategoryOption[] | null
 }
 
 export function EventRegistrationForm({
   eventId,
+  eventSlug,
   formContent,
   categoryOptions,
 }: EventRegistrationFormProps) {
@@ -44,11 +46,17 @@ export function EventRegistrationForm({
         throw new Error(result.error || 'Failed to process registration')
       }
 
-      // Redirect to Xendit checkout
-      if (result.checkoutUrl) {
+      // Manual bank transfer (launch default): go to the tokenized upload page
+      // to view bank instructions and submit the transfer proof.
+      if (result.uploadToken) {
+        window.location.href = `/register/event/${eventSlug}/upload?token=${encodeURIComponent(
+          result.uploadToken,
+        )}`
+      } else if (result.checkoutUrl) {
+        // Legacy Xendit path
         window.location.href = result.checkoutUrl
       } else {
-        throw new Error('No checkout URL returned')
+        throw new Error('No upload link returned')
       }
     } catch (err) {
       console.error('Registration error:', err)
@@ -183,7 +191,7 @@ export function EventRegistrationForm({
 
       <p className="text-center text-xs text-gray-500">
         {formContent?.termsText ||
-          'By registering, you agree to our terms and conditions. You will be redirected to complete payment securely via Xendit.'}
+          'By registering, you agree to our terms and conditions. Next you will see the bank-transfer instructions and upload your transfer proof.'}
       </p>
     </form>
   )
