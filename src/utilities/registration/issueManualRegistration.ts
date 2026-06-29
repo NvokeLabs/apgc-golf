@@ -1,6 +1,7 @@
 import type { Payload } from 'payload'
 
 import type { Event } from '@/payload-types'
+import { resolveEventPrice } from './resolveEventPrice'
 
 const DAY_MS = 86_400_000
 /** Days after the event date that the upload link stays valid (Story 3 TTL). */
@@ -60,8 +61,7 @@ export async function issueManualRegistration(
     return { success: false, error: 'Event not found' }
   }
 
-  const isAlumni = input.category === 'alumni'
-  const amount = isAlumni && event.alumniPrice ? event.alumniPrice : event.price || 0
+  const amount = resolveEventPrice(event, input.category)
 
   if (amount <= 0) {
     return { success: false, error: 'Event price is not configured' }
