@@ -12,11 +12,13 @@ project** that `.env` points at.
 
 ## Prerequisites
 - Docker running
-- Supabase CLI: `brew install supabase/tap/supabase` (or `npm i -g supabase`)
+- Supabase CLI as a project dev dependency (already in `package.json`):
+  `bun add -d supabase`, then invoke via `bunx supabase`.
+  (Global `npm i -g supabase` is unsupported; Homebrew needs current CLT.)
 
 ## First-time setup
 ```bash
-supabase start                 # boots the stack; prints local URLs + S3 keys
+bunx supabase start            # boots the stack; prints local URLs + S3 keys
 cp .env.local.example .env.local
 ```
 Then fill `.env.local` with the values `supabase start` printed:
@@ -31,11 +33,11 @@ Buckets `golf` (public) and `proofs` (private) are declared in
 
 ## Daily use
 ```bash
-supabase start        # if not already running
+bunx supabase start   # if not already running
 bun run dev           # connects to local DB; auto-pushes schema changes safely
 bun run test:int      # int tests now reach a real local Postgres
 ```
-`supabase stop` to shut down. `supabase status` to re-print ports/keys.
+`bunx supabase stop` to shut down. `bunx supabase status` to re-print ports/keys.
 Studio (DB browser) is at http://localhost:54323.
 
 ## Caveats
