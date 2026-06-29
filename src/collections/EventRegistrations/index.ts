@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { anyone } from '@/access/anyone'
 import { authenticated } from '@/access/authenticated'
+import { authenticatedFieldAccess } from '@/access/authenticatedFieldAccess'
 
 export const EventRegistrations: CollectionConfig = {
   slug: 'event-registrations',
@@ -75,12 +76,23 @@ export const EventRegistrations: CollectionConfig = {
       name: 'paymentStatus',
       type: 'select',
       defaultValue: 'unpaid',
+      // Public can create registrations, but only authenticated staff (or
+      // server-side flows via the local API, which override access) may set the
+      // payment state. Prevents an anonymous REST caller self-advancing payment.
+      access: {
+        create: authenticatedFieldAccess,
+        update: authenticatedFieldAccess,
+      },
       options: [
         { label: 'Unpaid', value: 'unpaid' },
         { label: 'Pending', value: 'pending' },
         { label: 'Paid', value: 'paid' },
         { label: 'Expired', value: 'expired' },
         { label: 'Failed', value: 'failed' },
+        // Manual bank-transfer lifecycle (Story 1)
+        { label: 'Awaiting Payment', value: 'awaiting-payment' },
+        { label: 'Awaiting Verification', value: 'awaiting-verification' },
+        { label: 'Rejected', value: 'rejected' },
       ],
       admin: {
         position: 'sidebar',
@@ -176,6 +188,70 @@ export const EventRegistrations: CollectionConfig = {
                   },
                 },
               ],
+            },
+            // Manual bank-transfer verification (Story 1)
+            {
+              name: 'transferProof',
+              type: 'upload',
+              relationTo: 'proofs',
+              admin: {
+                description: 'Uploaded bank-transfer proof (stored privately)',
+              },
+            },
+            {
+              name: 'rejectionReason',
+              type: 'textarea',
+              admin: {
+                description: 'Why the transfer was rejected (shown to the registrant)',
+                condition: (data) => data?.paymentStatus === 'rejected',
+              },
+            },
+            {
+              type: 'row',
+              fields: [
+                {
+                  name: 'verifiedBy',
+                  type: 'relationship',
+                  relationTo: 'users',
+                  // Verification metadata is staff-only — never settable by a
+                  // public (unauthenticated) registration create/update.
+                  access: {
+                    create: authenticatedFieldAccess,
+                    update: authenticatedFieldAccess,
+                  },
+                  admin: {
+                    width: '50%',
+                    description: 'Admin who verified this transfer',
+                  },
+                },
+                {
+                  name: 'verifiedAt',
+                  type: 'date',
+                  access: {
+                    create: authenticatedFieldAccess,
+                    update: authenticatedFieldAccess,
+                  },
+                  admin: {
+                    width: '50%',
+                    description: 'When the transfer was verified',
+                    date: {
+                      pickerAppearance: 'dayAndTime',
+                    },
+                  },
+                },
+              ],
+            },
+            {
+              name: 'ticketEmailSent',
+              type: 'checkbox',
+              defaultValue: false,
+              access: {
+                create: authenticatedFieldAccess,
+                update: authenticatedFieldAccess,
+              },
+              admin: {
+                description: 'Whether the ticket email was successfully sent',
+              },
             },
           ],
         },

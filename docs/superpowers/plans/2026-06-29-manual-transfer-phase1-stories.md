@@ -207,6 +207,13 @@ Build order: **0, 1, 2, 3 → 4 → 5 → 6 → 11 → 7 → 8 → 9 → 10.** F
 - **Email:** reuse the Resend setup behind `sendTicketEmail`. In Phase 1 scope: ticket email (Story 2), "complete your payment" email (Story 11), rejection email (Story 9). All must be non-fatal on send failure.
 - **New env vars:** `UPLOAD_TOKEN_SECRET` (Story 3) and the private-bucket config (Story 0).
 
+## Foundation review follow-ups (Stories 0 & 1, code review 2026-06-30)
+
+Foundation merged with these tracked; address in the noted story:
+- **Anonymous proof-retrieval test + randomized filenames (Story 6).** Field/collection access is verified by config + plugin-wiring, but add a negative test that an unauthenticated `GET /api/proofs/file/<filename>` actually 403s. Payload's default filename is the sanitized original (guessable) — give proofs randomized filenames so privacy doesn't hinge solely on the bucket being private.
+- **Proofs bucket must be PRIVATE on Supabase (deploy checklist).** Code now asserts the proofs bucket is set and ≠ the media bucket (`assertProofsBucketIsolated`), but it cannot verify the Supabase-side "public" flag is off. Add to the deploy checklist: confirm the `proofs` bucket is private.
+- **Field-level access done for `paymentStatus`/`verifiedBy`/`verifiedAt`/`ticketEmailSent` (Story 1).** When Story 5/6 add the public manual-transfer create path, route it through the server action (local API) and re-confirm no privileged field is settable via anonymous REST. Consider extending field access to `amountPaid` during Story 8.
+
 ## Open Questions (must answer before/at sprint start)
 - Token TTL buffer — how many days after the event date stays valid (Story 3)?
 - Notification channel for new pending transfers (email/Slack) — Phase 2 (P1 #11), not blocking Phase 1.

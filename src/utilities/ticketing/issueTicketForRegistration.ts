@@ -147,7 +147,7 @@ export async function issueTicketForRegistration(
       id: registrationId,
       data: {
         ticketEmailSent: emailSent,
-      } as any, // ticketEmailSent is added by sibling task; cast avoids type error until types regenerate
+      },
     })
   } catch (err) {
     const msg = err instanceof Error ? err.message : String(err)

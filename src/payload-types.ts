@@ -78,6 +78,7 @@ export interface Config {
     'sponsor-registrations': SponsorRegistration;
     tickets: Ticket;
     media: Media;
+    proofs: Proof;
     categories: Category;
     users: User;
     redirects: Redirect;
@@ -108,6 +109,7 @@ export interface Config {
     'sponsor-registrations': SponsorRegistrationsSelect<false> | SponsorRegistrationsSelect<true>;
     tickets: TicketsSelect<false> | TicketsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    proofs: ProofsSelect<false> | ProofsSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
@@ -1404,7 +1406,9 @@ export interface EventRegistration {
   /**
    * Payment state
    */
-  paymentStatus?: ('unpaid' | 'pending' | 'paid' | 'expired' | 'failed') | null;
+  paymentStatus?:
+    | ('unpaid' | 'pending' | 'paid' | 'expired' | 'failed' | 'awaiting-payment' | 'awaiting-verification' | 'rejected')
+    | null;
   playerName: string;
   email: string;
   phone?: string | null;
@@ -1429,6 +1433,26 @@ export interface EventRegistration {
    */
   paidAt?: string | null;
   /**
+   * Uploaded bank-transfer proof (stored privately)
+   */
+  transferProof?: (number | null) | Proof;
+  /**
+   * Why the transfer was rejected (shown to the registrant)
+   */
+  rejectionReason?: string | null;
+  /**
+   * Admin who verified this transfer
+   */
+  verifiedBy?: (number | null) | User;
+  /**
+   * When the transfer was verified
+   */
+  verifiedAt?: string | null;
+  /**
+   * Whether the ticket email was successfully sent
+   */
+  ticketEmailSent?: boolean | null;
+  /**
    * Xendit Payment Session ID
    */
   xenditSessionId?: string | null;
@@ -1442,6 +1466,30 @@ export interface EventRegistration {
   ticket?: (number | null) | Ticket;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * Private payment-transfer proofs. Not publicly accessible.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "proofs".
+ */
+export interface Proof {
+  id: number;
+  /**
+   * Registration this transfer proof belongs to
+   */
+  registration?: (number | null) | EventRegistration;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * Manage event tickets and check-in status
@@ -1736,6 +1784,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'proofs';
+        value: number | Proof;
       } | null)
     | ({
         relationTo: 'categories';
@@ -2295,6 +2347,11 @@ export interface EventRegistrationsSelect<T extends boolean = true> {
   paymentMethod?: T;
   amountPaid?: T;
   paidAt?: T;
+  transferProof?: T;
+  rejectionReason?: T;
+  verifiedBy?: T;
+  verifiedAt?: T;
+  ticketEmailSent?: T;
   xenditSessionId?: T;
   xenditCheckoutUrl?: T;
   ticket?: T;
@@ -2456,6 +2513,24 @@ export interface MediaSelect<T extends boolean = true> {
               filename?: T;
             };
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "proofs_select".
+ */
+export interface ProofsSelect<T extends boolean = true> {
+  registration?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema

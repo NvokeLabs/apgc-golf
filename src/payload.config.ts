@@ -15,6 +15,7 @@ import { News } from './collections/News'
 import { Pages } from './collections/Pages'
 import { Players } from './collections/Players'
 import { Posts } from './collections/Posts'
+import { Proofs } from './collections/Proofs'
 import { Sponsors } from './collections/Sponsors'
 import { SponsorRegistrations } from './collections/SponsorRegistrations'
 import { SponsorshipTiers } from './collections/SponsorshipTiers'
@@ -29,9 +30,30 @@ import { SponsorsPage } from './SponsorsPage/config'
 import { plugins } from './plugins'
 import { defaultLexical } from '@/fields/defaultLexical'
 import { getServerSideURL } from './utilities/getURL'
+import { assertProofsBucketIsolated } from './utilities/storage/assertProofsBucketIsolated'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
+
+const mediaBucket = process.env.SUPABASE_STORAGE_BUCKET_NAME || ''
+const proofsBucket = process.env.SUPABASE_STORAGE_PROOFS_BUCKET || ''
+
+// Fail fast if the private proofs bucket is missing or collides with the public
+// media bucket — otherwise proofs (financial PII) could land in a world-readable
+// bucket and silently defeat Story 0's access control.
+assertProofsBucketIsolated(mediaBucket, proofsBucket)
+
+// Shared Supabase S3 client config — same endpoint/credentials for every
+// bucket; only the `bucket` name differs per s3Storage() instance below.
+const s3ClientConfig = {
+  endpoint: process.env.SUPABASE_STORAGE_ENDPOINT,
+  region: process.env.SUPABASE_STORAGE_REGION,
+  forcePathStyle: true,
+  credentials: {
+    accessKeyId: process.env.SUPABASE_STORAGE_ACCESS_KEY || '',
+    secretAccessKey: process.env.SUPABASE_STORAGE_SECRET_ACCESS_KEY || '',
+  },
+}
 
 export default buildConfig({
   admin: {
@@ -122,6 +144,7 @@ export default buildConfig({
     Tickets,
     // System
     Media,
+    Proofs,
     Categories,
     Users,
   ],
@@ -145,16 +168,20 @@ export default buildConfig({
           },
         },
       },
-      bucket: process.env.SUPABASE_STORAGE_BUCKET_NAME || '',
-      config: {
-        endpoint: process.env.SUPABASE_STORAGE_ENDPOINT,
-        region: process.env.SUPABASE_STORAGE_REGION,
-        forcePathStyle: true,
-        credentials: {
-          accessKeyId: process.env.SUPABASE_STORAGE_ACCESS_KEY || '',
-          secretAccessKey: process.env.SUPABASE_STORAGE_SECRET_ACCESS_KEY || '',
-        },
+      bucket: mediaBucket,
+      config: s3ClientConfig,
+    }),
+    // Private proofs bucket (Story 0). Separate s3Storage() instance because the
+    // plugin takes a single bucket per call; the `proofs` collection set is
+    // disjoint from `media`, so the two instances coexist. No
+    // `disablePayloadAccessControl` and no public `generateFileURL` here — files
+    // are served only through Payload's access-controlled route.
+    s3Storage({
+      collections: {
+        proofs: true,
       },
+      bucket: proofsBucket,
+      config: s3ClientConfig,
     }),
   ],
   secret: process.env.PAYLOAD_SECRET,
