@@ -3010,6 +3010,24 @@ export interface SiteLabel {
     noBiographyAvailable?: string | null;
     pts?: string | null;
   };
+  paymentSettings?: {
+    /**
+     * e.g. BCA, Mandiri
+     */
+    bankName?: string | null;
+    /**
+     * Name on the receiving account
+     */
+    accountHolder?: string | null;
+    /**
+     * Receiving account number
+     */
+    accountNumber?: string | null;
+    /**
+     * Optional extra notes shown with the transfer instructions
+     */
+    instructions?: string | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3409,6 +3427,14 @@ export interface SiteLabelsSelect<T extends boolean = true> {
         memberData?: T;
         noBiographyAvailable?: T;
         pts?: T;
+      };
+  paymentSettings?:
+    | T
+    | {
+        bankName?: T;
+        accountHolder?: T;
+        accountNumber?: T;
+        instructions?: T;
       };
   updatedAt?: T;
   createdAt?: T;
