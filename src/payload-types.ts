@@ -1425,6 +1425,10 @@ export interface EventRegistration {
    */
   paymentMethod?: ('bank-transfer' | 'credit-card' | 'cash') | null;
   /**
+   * Expected amount in IDR (snapshot at registration time)
+   */
+  amountDue?: number | null;
+  /**
    * Amount paid in IDR
    */
   amountPaid?: number | null;
@@ -2345,6 +2349,7 @@ export interface EventRegistrationsSelect<T extends boolean = true> {
   notes?: T;
   agreedToTerms?: T;
   paymentMethod?: T;
+  amountDue?: T;
   amountPaid?: T;
   paidAt?: T;
   transferProof?: T;

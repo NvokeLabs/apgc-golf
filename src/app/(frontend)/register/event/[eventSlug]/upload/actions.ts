@@ -3,10 +3,9 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { headers } from 'next/headers'
-import { revalidatePath } from 'next/cache'
 
 import { verifyUploadToken } from '@/utilities/uploadToken'
-import { processProofUpload } from '@/utilities/registration/processProofUpload'
+import { processProofUpload, MAX_PROOF_BYTES } from '@/utilities/registration/processProofUpload'
 import { createRateLimiter } from '@/utilities/rateLimiter'
 
 export type UploadProofState = { status: 'idle' | 'success' | 'error'; message?: string }
@@ -35,6 +34,10 @@ export async function submitTransferProof(
   if (!(file instanceof File) || file.size === 0) {
     return { status: 'error', message: 'Please choose a file to upload.' }
   }
+  // Reject oversize at the boundary, before reading the whole file into memory.
+  if (file.size > MAX_PROOF_BYTES) {
+    return { status: 'error', message: 'The file must be 10MB or smaller.' }
+  }
 
   const hdrs = await headers()
   const ip = hdrs.get('x-forwarded-for')?.split(',')[0]?.trim() || 'unknown'
@@ -59,9 +62,6 @@ export async function submitTransferProof(
   if (!result.success) {
     return { status: 'error', message: result.error }
   }
-
-  // Reflect the new awaiting-verification state if the page is revisited.
-  revalidatePath(`/register/event`)
 
   return {
     status: 'success',

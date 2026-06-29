@@ -83,7 +83,9 @@ export default async function UploadProofPage({ searchParams }: { searchParams: 
   }
 
   const event = registration.event as Event
-  const amount = resolveEventPrice(event, registration.category)
+  // Prefer the amount snapshotted at registration; fall back to a live compute
+  // for any registration created before amountDue existed.
+  const amount = registration.amountDue ?? resolveEventPrice(event, registration.category)
   const reference = `reg-${registration.id}`
   const settings = await getPaymentSettings(payload)
   const isResubmit = registration.paymentStatus === 'awaiting-verification'

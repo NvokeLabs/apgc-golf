@@ -130,6 +130,29 @@ describe('processProofUpload', () => {
     expect(update).not.toHaveBeenCalled()
   })
 
+  it('rejects a cancelled registration (cannot be resurrected via upload)', async () => {
+    const create = vi.fn()
+    const update = vi.fn()
+    const deps = {
+      payload: {
+        findByID: vi.fn(async () => ({
+          id: 42,
+          paymentStatus: 'awaiting-payment',
+          status: 'cancelled',
+        })),
+        create,
+        update,
+      },
+      verifyToken: vi.fn(() => VALID),
+    } as unknown as ProofUploadDeps
+    const result = await processProofUpload(deps, input)
+    expect(result.success).toBe(false)
+    if (result.success) throw new Error('expected failure')
+    expect(result.code).toBe('already-confirmed')
+    expect(create).not.toHaveBeenCalled()
+    expect(update).not.toHaveBeenCalled()
+  })
+
   it('rejects an unsupported file type before storing', async () => {
     const { deps, create } = makeDeps()
     const result = await processProofUpload(deps, {

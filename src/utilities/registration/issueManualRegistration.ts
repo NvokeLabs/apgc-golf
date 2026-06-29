@@ -86,6 +86,7 @@ export async function issueManualRegistration(
       status: 'pending',
       paymentMethod: 'bank-transfer',
       paymentStatus: 'awaiting-payment',
+      amountDue: amount,
     },
   })
 

@@ -214,6 +214,26 @@ Foundation merged with these tracked; address in the noted story:
 - **Proofs bucket must be PRIVATE on Supabase (deploy checklist).** Code now asserts the proofs bucket is set and ≠ the media bucket (`assertProofsBucketIsolated`), but it cannot verify the Supabase-side "public" flag is off. Add to the deploy checklist: confirm the `proofs` bucket is private.
 - **Field-level access done for `paymentStatus`/`verifiedBy`/`verifiedAt`/`ticketEmailSent` (Story 1).** When Story 5/6 add the public manual-transfer create path, route it through the server action (local API) and re-confirm no privileged field is settable via anonymous REST. Consider extending field access to `amountPaid` during Story 8.
 
+## Stories 4-6 review follow-ups (code review 2026-06-30)
+
+Fixed in-session: server-action body limit raised to 11mb (uploads >1MB were
+broken); cancelled-status gate added to processProofUpload; oversize file
+rejected at the action boundary; amountDue persisted at registration and read on
+the upload page; removed a no-op revalidatePath.
+
+Tracked (not yet done):
+- **Magic-byte sniffing for proof files** (Minor #5). We trust client `file.type`;
+  add content sniffing (e.g. `file-type`) as hardening. Low risk (private bucket,
+  human-reviewed).
+- **Token in URL query string** (Minor #6). Long-lived token persists in history/
+  logs/Referer. Standard tokenized-link tradeoff; consider documenting + shorter
+  TTL.
+- **Rate-limiter Map eviction** (Minor #7). In-memory buckets are never evicted —
+  slow leak on a warm instance. Add a sweep/cap or move to a distributed store.
+- **Action-layer integration test** (test gap). submitTransferProof's IP
+  extraction, rate-limit ordering, and >1MB-file path are untested (core logic is
+  covered). Add an action-level test with a multi-MB fixture.
+
 ## Open Questions (must answer before/at sprint start)
 - Token TTL buffer — how many days after the event date stays valid (Story 3)?
 - Notification channel for new pending transfers (email/Slack) — Phase 2 (P1 #11), not blocking Phase 1.

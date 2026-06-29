@@ -66,6 +66,7 @@ describe('issueManualRegistration', () => {
     expect(created.event).toBe(7)
     expect(created.agreedToTerms).toBe(true)
     expect(created.phone).toBe('+6281234') // leading zero stripped, +62 prefixed
+    expect(created.amountDue).toBe(500_000) // persisted so the displayed amount can't drift
     expect(result.eventSlug).toBe('spring-open') // for building the upload link
   })
 

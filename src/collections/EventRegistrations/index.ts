@@ -166,6 +166,19 @@ export const EventRegistrations: CollectionConfig = {
               },
             },
             {
+              name: 'amountDue',
+              type: 'number',
+              // Set server-side at registration so the amount shown to the
+              // registrant can't drift if the event price is later edited.
+              access: {
+                create: authenticatedFieldAccess,
+                update: authenticatedFieldAccess,
+              },
+              admin: {
+                description: 'Expected amount in IDR (snapshot at registration time)',
+              },
+            },
+            {
               type: 'row',
               fields: [
                 {

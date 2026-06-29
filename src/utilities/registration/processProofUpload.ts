@@ -74,10 +74,20 @@ export async function processProofUpload(
     collection: 'event-registrations',
     id: registrationId,
     depth: 0,
-  })) as { id: number; paymentStatus?: string | null } | null
+  })) as { id: number; paymentStatus?: string | null; status?: string | null } | null
 
   if (!registration) {
     return { success: false, code: 'not-found', error: 'Registration not found.' }
+  }
+
+  // A cancelled registration is terminal — a still-valid token must not be able
+  // to flip it back into the verification queue.
+  if (registration.status === 'cancelled') {
+    return {
+      success: false,
+      code: 'already-confirmed',
+      error: 'This registration has been cancelled.',
+    }
   }
 
   // Status gate — checked on the server, not just the token. Once paid, the

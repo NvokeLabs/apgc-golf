@@ -97,13 +97,14 @@ describe('Story 1: EventRegistrations manual-transfer fields', () => {
     expect((field as { relationTo: string }).relationTo).toBe('proofs')
   })
 
-  it('has rejectionReason, verifiedBy, verifiedAt and ticketEmailSent fields', () => {
+  it('has rejectionReason, verifiedBy, verifiedAt, ticketEmailSent and amountDue fields', () => {
     expect(regField('rejectionReason')?.type).toBe('textarea')
     expect(regField('verifiedBy')?.type).toBe('relationship')
     expect((regField('verifiedBy') as { relationTo: string }).relationTo).toBe('users')
     expect(regField('verifiedAt')?.type).toBe('date')
     expect(regField('ticketEmailSent')?.type).toBe('checkbox')
     expect((regField('ticketEmailSent') as { defaultValue: boolean }).defaultValue).toBe(false)
+    expect(regField('amountDue')?.type).toBe('number')
   })
 
   it('locks the trust-critical fields against anonymous writes (field-level access)', () => {
