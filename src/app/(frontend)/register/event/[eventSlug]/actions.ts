@@ -5,6 +5,8 @@ import config from '@payload-config'
 import { createXenditInvoice } from '@/utilities/xendit/createSession'
 import { issueManualRegistration } from '@/utilities/registration/issueManualRegistration'
 import { mintUploadToken } from '@/utilities/uploadToken'
+import { getPaymentSettings } from '@/utilities/payments/getPaymentSettings'
+import { sendPaymentInstructionsEmail } from '@/utilities/email/sendPaymentInstructionsEmail'
 import type { Event } from '@/payload-types'
 
 export type RegistrationFormData = {
@@ -61,6 +63,32 @@ export async function createRegistrationWithPayment(
       if (!result.success) {
         return { success: false, error: result.error }
       }
+
+      // Send the "complete your payment" email with bank details + upload link.
+      // Non-fatal: a send failure must not break registration — the on-screen
+      // redirect still shows the same instructions and link.
+      try {
+        const baseUrl =
+          process.env.BASE_URL || process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
+        const uploadUrl = `${baseUrl}/register/event/${result.eventSlug}/upload?token=${encodeURIComponent(
+          result.uploadToken,
+        )}`
+        const settings = await getPaymentSettings(payload)
+        await sendPaymentInstructionsEmail({
+          to: data.email,
+          playerName: data.playerName,
+          bankName: settings.bankName,
+          accountNumber: settings.accountNumber,
+          accountHolder: settings.accountHolder,
+          instructions: settings.instructions,
+          amount: result.amount,
+          reference: `reg-${result.registrationId}`,
+          uploadUrl,
+        })
+      } catch (emailErr) {
+        console.error('Failed to send payment instructions email:', emailErr)
+      }
+
       return {
         success: true,
         registrationId: result.registrationId,

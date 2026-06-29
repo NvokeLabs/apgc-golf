@@ -30,6 +30,7 @@ export type ManualRegistrationResult =
       uploadToken: string
       expiresAt: number
       amount: number
+      eventSlug: string
     }
   | { success: false; error: string }
 
@@ -89,6 +90,14 @@ export async function issueManualRegistration(
   })
 
   const uploadToken = mintToken(registration.id, expiresAt)
+  const eventSlug = event.slug || String(event.id)
 
-  return { success: true, registrationId: registration.id, uploadToken, expiresAt, amount }
+  return {
+    success: true,
+    registrationId: registration.id,
+    uploadToken,
+    expiresAt,
+    amount,
+    eventSlug,
+  }
 }
