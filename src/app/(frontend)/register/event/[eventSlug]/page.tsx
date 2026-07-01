@@ -105,6 +105,7 @@ export default async function EventRegistrationPage({ params }: Args) {
             {canRegister ? (
               <EventRegistrationForm
                 eventId={event.id}
+                eventSlug={event.slug || String(event.id)}
                 formContent={formContent?.eventRegistration}
                 categoryOptions={formContent?.categoryOptions?.categories}
               />

@@ -2,9 +2,7 @@ import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { verifyXenditWebhook, parseWebhookPayload } from '@/utilities/xendit/verifyWebhook'
-import { generateTicketCode } from '@/utilities/ticketing/generateTicketCode'
-import { generateQRCode } from '@/utilities/ticketing/generateQRCode'
-import { sendTicketEmail } from '@/utilities/email/sendTicketEmail'
+import { issueTicketForRegistration } from '@/utilities/ticketing/issueTicketForRegistration'
 import { revalidatePath } from 'next/cache'
 import type { Event, EventRegistration } from '@/payload-types'
 
@@ -65,62 +63,25 @@ export async function POST(request: NextRequest) {
         },
       })
 
-      // Generate ticket
-      const ticketCode = generateTicketCode(registrationId)
-      const qrCodeData = await generateQRCode(ticketCode)
+      // Issue ticket (idempotent, email-safe)
+      console.log(`Issuing ticket for registration ${registrationId}...`)
+      const { ticket, alreadyIssued, emailSent } = await issueTicketForRegistration(
+        payload,
+        registrationId,
+      )
 
-      const event = registration.event as Event
-
-      // Create ticket record
-      const ticket = await payload.create({
-        collection: 'tickets',
-        data: {
-          ticketCode,
-          registration: Number(registrationId),
-          event: typeof event === 'object' ? event.id : event,
-          qrCodeData: qrCodeData,
-          status: 'pending',
-        },
-      })
-
-      // Link ticket to registration
-      await payload.update({
-        collection: 'event-registrations',
-        id: registrationId,
-        data: {
-          ticket: ticket.id,
-        },
-      })
-
-      // Send ticket email
-      const eventDate = event.date
-        ? new Date(event.date).toLocaleDateString('en-US', {
-            weekday: 'long',
-            year: 'numeric',
-            month: 'long',
-            day: 'numeric',
-          })
-        : 'TBD'
-
-      console.log(`Sending ticket email to ${registration.email}...`)
-      const emailResult = await sendTicketEmail({
-        to: registration.email,
-        playerName: registration.playerName,
-        eventName: event.title,
-        eventDate,
-        eventLocation: event.location || 'TBD',
-        ticketCode,
-        qrCodeDataUrl: qrCodeData,
-      })
-
-      if (!emailResult.success) {
-        console.error(`Failed to send ticket email: ${emailResult.error}`)
-        // Continue processing - ticket was created, just email failed
+      if (alreadyIssued) {
+        console.log(`Ticket already issued for registration ${registrationId}`)
       } else {
-        console.log(`Ticket email sent successfully to ${registration.email}`)
+        if (emailSent) {
+          console.log(`Ticket email sent successfully to ${registration.email}`)
+        } else {
+          console.error(`Failed to send ticket email for registration ${registrationId}`)
+        }
       }
 
       // Revalidate event page so participant list updates immediately
+      const event = registration.event as Event
       if (typeof event === 'object' && event.slug) {
         revalidatePath(`/events/${event.slug}`)
       }

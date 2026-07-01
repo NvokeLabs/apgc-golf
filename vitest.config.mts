@@ -8,5 +8,9 @@ export default defineConfig({
     environment: 'jsdom',
     setupFiles: ['./vitest.setup.ts'],
     include: ['tests/int/**/*.int.spec.ts'],
+    // Integration tests each boot Payload, which runs dev schema-push against
+    // the single local Postgres. Running files in parallel races on DDL
+    // (Postgres error 42704). Serialize file execution to keep pushes ordered.
+    fileParallelism: false,
   },
 })

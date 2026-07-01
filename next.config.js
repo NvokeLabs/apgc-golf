@@ -53,6 +53,14 @@ const nextConfig = {
   },
   reactStrictMode: true,
   redirects,
+  experimental: {
+    // Proof uploads (Story 6) post through a Server Action; Next's default body
+    // limit is 1MB, which would reject the advertised 10MB receipts before our
+    // own validation runs. Allow headroom for multipart overhead.
+    serverActions: {
+      bodySizeLimit: '11mb',
+    },
+  },
 }
 
 export default withPayload(nextConfig, { devBundleServerPackages: false })

@@ -78,6 +78,7 @@ export interface Config {
     'sponsor-registrations': SponsorRegistration;
     tickets: Ticket;
     media: Media;
+    proofs: Proof;
     categories: Category;
     users: User;
     redirects: Redirect;
@@ -108,6 +109,7 @@ export interface Config {
     'sponsor-registrations': SponsorRegistrationsSelect<false> | SponsorRegistrationsSelect<true>;
     tickets: TicketsSelect<false> | TicketsSelect<true>;
     media: MediaSelect<false> | MediaSelect<true>;
+    proofs: ProofsSelect<false> | ProofsSelect<true>;
     categories: CategoriesSelect<false> | CategoriesSelect<true>;
     users: UsersSelect<false> | UsersSelect<true>;
     redirects: RedirectsSelect<false> | RedirectsSelect<true>;
@@ -1404,7 +1406,9 @@ export interface EventRegistration {
   /**
    * Payment state
    */
-  paymentStatus?: ('unpaid' | 'pending' | 'paid' | 'expired' | 'failed') | null;
+  paymentStatus?:
+    | ('unpaid' | 'pending' | 'paid' | 'expired' | 'failed' | 'awaiting-payment' | 'awaiting-verification' | 'rejected')
+    | null;
   playerName: string;
   email: string;
   phone?: string | null;
@@ -1421,6 +1425,10 @@ export interface EventRegistration {
    */
   paymentMethod?: ('bank-transfer' | 'credit-card' | 'cash') | null;
   /**
+   * Expected amount in IDR (snapshot at registration time)
+   */
+  amountDue?: number | null;
+  /**
    * Amount paid in IDR
    */
   amountPaid?: number | null;
@@ -1428,6 +1436,26 @@ export interface EventRegistration {
    * Timestamp payment was received
    */
   paidAt?: string | null;
+  /**
+   * Uploaded bank-transfer proof (stored privately)
+   */
+  transferProof?: (number | null) | Proof;
+  /**
+   * Why the transfer was rejected (shown to the registrant)
+   */
+  rejectionReason?: string | null;
+  /**
+   * Admin who verified this transfer
+   */
+  verifiedBy?: (number | null) | User;
+  /**
+   * When the transfer was verified
+   */
+  verifiedAt?: string | null;
+  /**
+   * Whether the ticket email was successfully sent
+   */
+  ticketEmailSent?: boolean | null;
   /**
    * Xendit Payment Session ID
    */
@@ -1442,6 +1470,30 @@ export interface EventRegistration {
   ticket?: (number | null) | Ticket;
   updatedAt: string;
   createdAt: string;
+}
+/**
+ * Private payment-transfer proofs. Not publicly accessible.
+ *
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "proofs".
+ */
+export interface Proof {
+  id: number;
+  /**
+   * Registration this transfer proof belongs to
+   */
+  registration?: (number | null) | EventRegistration;
+  updatedAt: string;
+  createdAt: string;
+  url?: string | null;
+  thumbnailURL?: string | null;
+  filename?: string | null;
+  mimeType?: string | null;
+  filesize?: number | null;
+  width?: number | null;
+  height?: number | null;
+  focalX?: number | null;
+  focalY?: number | null;
 }
 /**
  * Manage event tickets and check-in status
@@ -1736,6 +1788,10 @@ export interface PayloadLockedDocument {
     | ({
         relationTo: 'media';
         value: number | Media;
+      } | null)
+    | ({
+        relationTo: 'proofs';
+        value: number | Proof;
       } | null)
     | ({
         relationTo: 'categories';
@@ -2293,8 +2349,14 @@ export interface EventRegistrationsSelect<T extends boolean = true> {
   notes?: T;
   agreedToTerms?: T;
   paymentMethod?: T;
+  amountDue?: T;
   amountPaid?: T;
   paidAt?: T;
+  transferProof?: T;
+  rejectionReason?: T;
+  verifiedBy?: T;
+  verifiedAt?: T;
+  ticketEmailSent?: T;
   xenditSessionId?: T;
   xenditCheckoutUrl?: T;
   ticket?: T;
@@ -2456,6 +2518,24 @@ export interface MediaSelect<T extends boolean = true> {
               filename?: T;
             };
       };
+}
+/**
+ * This interface was referenced by `Config`'s JSON-Schema
+ * via the `definition` "proofs_select".
+ */
+export interface ProofsSelect<T extends boolean = true> {
+  registration?: T;
+  updatedAt?: T;
+  createdAt?: T;
+  url?: T;
+  thumbnailURL?: T;
+  filename?: T;
+  mimeType?: T;
+  filesize?: T;
+  width?: T;
+  height?: T;
+  focalX?: T;
+  focalY?: T;
 }
 /**
  * This interface was referenced by `Config`'s JSON-Schema
@@ -2935,6 +3015,24 @@ export interface SiteLabel {
     noBiographyAvailable?: string | null;
     pts?: string | null;
   };
+  paymentSettings?: {
+    /**
+     * e.g. BCA, Mandiri
+     */
+    bankName?: string | null;
+    /**
+     * Name on the receiving account
+     */
+    accountHolder?: string | null;
+    /**
+     * Receiving account number
+     */
+    accountNumber?: string | null;
+    /**
+     * Optional extra notes shown with the transfer instructions
+     */
+    instructions?: string | null;
+  };
   updatedAt?: string | null;
   createdAt?: string | null;
 }
@@ -3334,6 +3432,14 @@ export interface SiteLabelsSelect<T extends boolean = true> {
         memberData?: T;
         noBiographyAvailable?: T;
         pts?: T;
+      };
+  paymentSettings?:
+    | T
+    | {
+        bankName?: T;
+        accountHolder?: T;
+        accountNumber?: T;
+        instructions?: T;
       };
   updatedAt?: T;
   createdAt?: T;

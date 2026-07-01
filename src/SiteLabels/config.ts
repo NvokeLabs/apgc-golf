@@ -584,6 +584,45 @@ export const SiteLabels: GlobalConfig = {
             },
           ],
         },
+        {
+          label: 'Payment Settings',
+          description: 'Bank details shown to registrants paying by manual transfer.',
+          fields: [
+            {
+              name: 'paymentSettings',
+              type: 'group',
+              fields: [
+                {
+                  type: 'row',
+                  fields: [
+                    {
+                      name: 'bankName',
+                      type: 'text',
+                      admin: { width: '50%', description: 'e.g. BCA, Mandiri' },
+                    },
+                    {
+                      name: 'accountHolder',
+                      type: 'text',
+                      admin: { width: '50%', description: 'Name on the receiving account' },
+                    },
+                  ],
+                },
+                {
+                  name: 'accountNumber',
+                  type: 'text',
+                  admin: { description: 'Receiving account number' },
+                },
+                {
+                  name: 'instructions',
+                  type: 'textarea',
+                  admin: {
+                    description: 'Optional extra notes shown with the transfer instructions',
+                  },
+                },
+              ],
+            },
+          ],
+        },
       ],
     },
   ],

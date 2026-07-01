@@ -3,6 +3,10 @@
 import { getPayload } from 'payload'
 import config from '@payload-config'
 import { createXenditInvoice } from '@/utilities/xendit/createSession'
+import { issueManualRegistration } from '@/utilities/registration/issueManualRegistration'
+import { mintUploadToken } from '@/utilities/uploadToken'
+import { getPaymentSettings } from '@/utilities/payments/getPaymentSettings'
+import { sendPaymentInstructionsEmail } from '@/utilities/email/sendPaymentInstructionsEmail'
 import type { Event } from '@/payload-types'
 
 export type RegistrationFormData = {
@@ -12,23 +16,88 @@ export type RegistrationFormData = {
   phone?: string
   category: 'general' | 'alumni'
   notes?: string
+  /**
+   * Launch is manual-transfer only; defaults to 'bank-transfer'. The 'xendit'
+   * branch is retained in the repo but not reachable from the UI yet.
+   */
+  paymentMethod?: 'bank-transfer' | 'xendit'
 }
 
 export type RegistrationResult = {
   success: boolean
-  checkoutUrl?: string
   error?: string
+  /** Xendit path. */
+  checkoutUrl?: string
+  /** Manual-transfer path: signed token + the new registration id + price. */
+  uploadToken?: string
+  registrationId?: number
+  amount?: number
 }
 
 /**
- * Server action to create registration and payment invoice
- * All sensitive operations happen server-side
+ * Server action to create a registration. At launch this creates a manual
+ * bank-transfer registration (no payment gateway) and returns a signed upload
+ * token; the caller builds the tokenized upload link. The legacy Xendit branch
+ * is kept for when the gateway is enabled.
  */
 export async function createRegistrationWithPayment(
   data: RegistrationFormData,
 ): Promise<RegistrationResult> {
   try {
     const payload = await getPayload({ config })
+
+    const method = data.paymentMethod ?? 'bank-transfer'
+
+    if (method === 'bank-transfer') {
+      const result = await issueManualRegistration(
+        { payload, mintToken: mintUploadToken },
+        {
+          eventId: data.eventId,
+          playerName: data.playerName,
+          email: data.email,
+          phone: data.phone,
+          category: data.category,
+          notes: data.notes,
+        },
+      )
+      if (!result.success) {
+        return { success: false, error: result.error }
+      }
+
+      // Send the "complete your payment" email with bank details + upload link.
+      // Non-fatal: a send failure must not break registration — the on-screen
+      // redirect still shows the same instructions and link.
+      try {
+        const baseUrl =
+          process.env.BASE_URL || process.env.NEXT_PUBLIC_SERVER_URL || 'http://localhost:3000'
+        const uploadUrl = `${baseUrl}/register/event/${result.eventSlug}/upload?token=${encodeURIComponent(
+          result.uploadToken,
+        )}`
+        const settings = await getPaymentSettings(payload)
+        await sendPaymentInstructionsEmail({
+          to: data.email,
+          playerName: data.playerName,
+          bankName: settings.bankName,
+          accountNumber: settings.accountNumber,
+          accountHolder: settings.accountHolder,
+          instructions: settings.instructions,
+          amount: result.amount,
+          reference: `reg-${result.registrationId}`,
+          uploadUrl,
+        })
+      } catch (emailErr) {
+        console.error('Failed to send payment instructions email:', emailErr)
+      }
+
+      return {
+        success: true,
+        registrationId: result.registrationId,
+        uploadToken: result.uploadToken,
+        amount: result.amount,
+      }
+    }
+
+    // --- Legacy Xendit path (not reached from the UI at launch) ---
 
     // Fetch event details
     const event = (await payload.findByID({
