@@ -3,6 +3,7 @@ import type { CollectionConfig } from 'payload'
 import { anyone } from '@/access/anyone'
 import { authenticated } from '@/access/authenticated'
 import { authenticatedFieldAccess } from '@/access/authenticatedFieldAccess'
+import { notifyEventRegistration } from './hooks/notifyWhatsApp'
 
 export const EventRegistrations: CollectionConfig = {
   slug: 'event-registrations',
@@ -11,6 +12,9 @@ export const EventRegistrations: CollectionConfig = {
     delete: authenticated,
     read: authenticated,
     update: authenticated,
+  },
+  hooks: {
+    afterChange: [notifyEventRegistration],
   },
   defaultPopulate: {
     playerName: true,

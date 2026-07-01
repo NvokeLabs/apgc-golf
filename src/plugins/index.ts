@@ -5,6 +5,7 @@ import { seoPlugin } from '@payloadcms/plugin-seo'
 import { searchPlugin } from '@payloadcms/plugin-search'
 import { Plugin } from 'payload'
 import { revalidateRedirects } from '@/hooks/revalidateRedirects'
+import { notifyContactSubmission } from '@/hooks/notifyContactSubmission'
 import { GenerateTitle, GenerateURL } from '@payloadcms/plugin-seo/types'
 import { FixedToolbarFeature, HeadingFeature, lexicalEditor } from '@payloadcms/richtext-lexical'
 import { searchFields } from '@/search/fieldOverrides'
@@ -77,6 +78,11 @@ export const plugins: Plugin[] = [
           }
           return field
         })
+      },
+    },
+    formSubmissionOverrides: {
+      hooks: {
+        afterChange: [notifyContactSubmission],
       },
     },
   }),

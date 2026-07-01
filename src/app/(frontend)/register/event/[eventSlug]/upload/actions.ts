@@ -7,6 +7,7 @@ import { headers } from 'next/headers'
 import { verifyUploadToken } from '@/utilities/uploadToken'
 import { processProofUpload, MAX_PROOF_BYTES } from '@/utilities/registration/processProofUpload'
 import { createRateLimiter } from '@/utilities/rateLimiter'
+import { notifyProofUploaded } from '@/utilities/whatsapp/notifyProofUploaded'
 
 export type UploadProofState = { status: 'idle' | 'success' | 'error'; message?: string }
 
@@ -52,7 +53,11 @@ export async function submitTransferProof(
   const payload = await getPayload({ config })
 
   const result = await processProofUpload(
-    { payload, verifyToken: verifyUploadToken },
+    {
+      payload,
+      verifyToken: verifyUploadToken,
+      notifyProofUploaded: (registrationId) => notifyProofUploaded(payload, registrationId),
+    },
     {
       token,
       file: { filename: file.name, mimeType: file.type, size: file.size, data: buffer },

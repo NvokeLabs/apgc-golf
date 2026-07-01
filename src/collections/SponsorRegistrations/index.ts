@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { anyone } from '@/access/anyone'
 import { authenticated } from '@/access/authenticated'
+import { notifySponsorInquiry } from './hooks/notifyWhatsApp'
 
 export const SponsorRegistrations: CollectionConfig = {
   slug: 'sponsor-registrations',
@@ -10,6 +11,9 @@ export const SponsorRegistrations: CollectionConfig = {
     delete: authenticated,
     read: authenticated,
     update: authenticated,
+  },
+  hooks: {
+    afterChange: [notifySponsorInquiry],
   },
   admin: {
     defaultColumns: ['companyName', 'contactName', 'selectedTier', 'status', 'createdAt'],

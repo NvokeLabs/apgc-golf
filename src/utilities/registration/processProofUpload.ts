@@ -17,6 +17,7 @@ export type ProofUploadFile = {
 export type ProofUploadDeps = {
   payload: Pick<Payload, 'findByID' | 'create' | 'update'>
   verifyToken: (token: string) => VerifyResult
+  notifyProofUploaded?: (registrationId: number) => Promise<void>
 }
 
 export type ProofUploadInput = {
@@ -149,6 +150,12 @@ export async function processProofUpload(
       rejectionReason: null,
     },
   })
+
+  try {
+    await deps.notifyProofUploaded?.(registrationId)
+  } catch (err) {
+    console.error('Proof WhatsApp notify failed:', err instanceof Error ? err.message : err)
+  }
 
   return { success: true, registrationId, status: 'awaiting-verification' }
 }
