@@ -133,6 +133,20 @@ export const EventRegistrations: CollectionConfig = {
               type: 'text',
             },
             {
+              name: 'tshirtSize',
+              type: 'select',
+              required: true,
+              label: 'Ukuran Kaos Golf',
+              options: [
+                { label: 'S', value: 'S' },
+                { label: 'M', value: 'M' },
+                { label: 'L', value: 'L' },
+                { label: 'XL', value: 'XL' },
+                { label: 'XXL', value: 'XXL' },
+              ],
+              admin: { description: 'Ukuran kaos golf peserta' },
+            },
+            {
               name: 'notes',
               type: 'textarea',
               admin: {

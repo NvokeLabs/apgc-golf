@@ -1413,6 +1413,10 @@ export interface EventRegistration {
   email: string;
   phone?: string | null;
   /**
+   * Ukuran kaos golf peserta
+   */
+  tshirtSize: 'S' | 'M' | 'L' | 'XL' | 'XXL';
+  /**
    * Additional notes or special requests
    */
   notes?: string | null;
@@ -2346,6 +2350,7 @@ export interface EventRegistrationsSelect<T extends boolean = true> {
   playerName?: T;
   email?: T;
   phone?: T;
+  tshirtSize?: T;
   notes?: T;
   agreedToTerms?: T;
   paymentMethod?: T;
