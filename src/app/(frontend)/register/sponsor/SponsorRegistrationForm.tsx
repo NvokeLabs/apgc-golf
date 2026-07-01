@@ -51,7 +51,7 @@ export function SponsorRegistrationForm({
       // Redirect to success page
       router.push('/register/sponsor/success')
     } catch (err) {
-      setError('Failed to submit application. Please try again.')
+      setError('Gagal mengirim pengajuan. Silakan coba lagi.')
     } finally {
       setIsSubmitting(false)
     }
@@ -68,12 +68,12 @@ export function SponsorRegistrationForm({
       {/* Company Information */}
       <div>
         <h3 className="mb-4 font-semibold text-[#0b3d2e]">
-          {formContent?.companyInfoHeading || 'Company Information'}
+          {formContent?.companyInfoHeading || 'Informasi Perusahaan'}
         </h3>
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="sm:col-span-2">
             <label htmlFor="companyName" className="mb-2 block text-sm text-[#636364]">
-              {formContent?.companyNameLabel || 'Company Name *'}
+              {formContent?.companyNameLabel || 'Nama Perusahaan *'}
             </label>
             <input
               type="text"
@@ -81,12 +81,12 @@ export function SponsorRegistrationForm({
               name="companyName"
               required
               className="w-full rounded-lg border border-[#0b3d2e]/20 bg-white px-4 py-3 text-[#0b3d2e] placeholder:text-[#636364]/50 focus:border-[#0b3d2e] focus:outline-none focus:ring-1 focus:ring-[#0b3d2e]"
-              placeholder={formContent?.companyNamePlaceholder || 'Enter company name'}
+              placeholder={formContent?.companyNamePlaceholder || 'Masukkan nama perusahaan'}
             />
           </div>
           <div className="sm:col-span-2">
             <label htmlFor="website" className="mb-2 block text-sm text-[#636364]">
-              {formContent?.companyWebsiteLabel || 'Company Website'}
+              {formContent?.companyWebsiteLabel || 'Situs Web Perusahaan'}
             </label>
             <input
               type="url"
@@ -102,12 +102,12 @@ export function SponsorRegistrationForm({
       {/* Contact Information */}
       <div>
         <h3 className="mb-4 font-semibold text-[#0b3d2e]">
-          {formContent?.contactInfoHeading || 'Contact Information'}
+          {formContent?.contactInfoHeading || 'Informasi Kontak'}
         </h3>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label htmlFor="contactName" className="mb-2 block text-sm text-[#636364]">
-              {formContent?.contactPersonLabel || 'Contact Person *'}
+              {formContent?.contactPersonLabel || 'Narahubung *'}
             </label>
             <input
               type="text"
@@ -115,12 +115,12 @@ export function SponsorRegistrationForm({
               name="contactName"
               required
               className="w-full rounded-lg border border-[#0b3d2e]/20 bg-white px-4 py-3 text-[#0b3d2e] placeholder:text-[#636364]/50 focus:border-[#0b3d2e] focus:outline-none focus:ring-1 focus:ring-[#0b3d2e]"
-              placeholder={formContent?.contactPersonPlaceholder || 'Full name'}
+              placeholder={formContent?.contactPersonPlaceholder || 'Nama lengkap'}
             />
           </div>
           <div>
             <label htmlFor="email" className="mb-2 block text-sm text-[#636364]">
-              {formContent?.emailLabel || 'Email Address *'}
+              {formContent?.emailLabel || 'Alamat Email *'}
             </label>
             <input
               type="email"
@@ -133,7 +133,7 @@ export function SponsorRegistrationForm({
           </div>
           <div className="sm:col-span-2">
             <label htmlFor="phone" className="mb-2 block text-sm text-[#636364]">
-              {formContent?.phoneLabel || 'Phone Number *'}
+              {formContent?.phoneLabel || 'Nomor Telepon *'}
             </label>
             <input
               type="tel"
@@ -150,11 +150,11 @@ export function SponsorRegistrationForm({
       {/* Sponsorship Interest */}
       <div>
         <h3 className="mb-4 font-semibold text-[#0b3d2e]">
-          {formContent?.sponsorshipInterestHeading || 'Sponsorship Interest'}
+          {formContent?.sponsorshipInterestHeading || 'Minat Sponsorship'}
         </h3>
         <div>
           <label htmlFor="selectedTier" className="mb-2 block text-sm text-[#636364]">
-            {formContent?.tierLabel || 'Interested Tier *'}
+            {formContent?.tierLabel || 'Tier yang Diminati *'}
           </label>
           <select
             id="selectedTier"
@@ -162,7 +162,7 @@ export function SponsorRegistrationForm({
             required
             className="w-full rounded-lg border border-[#0b3d2e]/20 bg-white px-4 py-3 text-[#0b3d2e] focus:border-[#0b3d2e] focus:outline-none focus:ring-1 focus:ring-[#0b3d2e]"
           >
-            <option value="">{formContent?.tierPlaceholder || 'Select a tier'}</option>
+            <option value="">{formContent?.tierPlaceholder || 'Pilih tier'}</option>
             {sponsorshipTiers && sponsorshipTiers.length > 0 ? (
               <>
                 {sponsorshipTiers.map((tier) => (
@@ -170,7 +170,7 @@ export function SponsorRegistrationForm({
                     {tier.name} ({tier.price})
                   </option>
                 ))}
-                <option value="Custom">Custom Package</option>
+                <option value="Custom">Paket Khusus</option>
               </>
             ) : (
               <>
@@ -178,7 +178,7 @@ export function SponsorRegistrationForm({
                 <option value="EAGLE">EAGLE (Rp 75.000.000)</option>
                 <option value="BIRDIE">BIRDIE (Rp 50.000.000)</option>
                 <option value="PAR">PAR (Rp 25.000.000)</option>
-                <option value="Custom">Custom Package</option>
+                <option value="Custom">Paket Khusus</option>
               </>
             )}
           </select>
@@ -188,7 +188,7 @@ export function SponsorRegistrationForm({
       {/* Message */}
       <div>
         <label htmlFor="message" className="mb-2 block text-sm text-[#636364]">
-          {formContent?.messageLabel || 'Message'}
+          {formContent?.messageLabel || 'Pesan'}
         </label>
         <textarea
           id="message"
@@ -196,7 +196,8 @@ export function SponsorRegistrationForm({
           rows={4}
           className="w-full rounded-lg border border-[#0b3d2e]/20 bg-white px-4 py-3 text-[#0b3d2e] placeholder:text-[#636364]/50 focus:border-[#0b3d2e] focus:outline-none focus:ring-1 focus:ring-[#0b3d2e]"
           placeholder={
-            formContent?.messagePlaceholder || 'Tell us about your company and sponsorship goals...'
+            formContent?.messagePlaceholder ||
+            'Ceritakan tentang perusahaan dan tujuan sponsorship Anda...'
           }
         />
       </div>
@@ -210,13 +211,13 @@ export function SponsorRegistrationForm({
         className="w-full font-semibold disabled:cursor-not-allowed disabled:opacity-50"
       >
         {isSubmitting
-          ? formContent?.processingText || 'Submitting...'
-          : formContent?.submitButtonText || 'Submit Application'}
+          ? formContent?.processingText || 'Mengirim...'
+          : formContent?.submitButtonText || 'Kirim Pengajuan'}
       </Button>
 
       <p className="text-center text-xs text-[#636364]">
         {formContent?.footerText ||
-          'Our sponsorship team will review your application and contact you within 2-3 business days.'}
+          'Tim sponsorship kami akan meninjau pengajuan Anda dan menghubungi Anda dalam 2-3 hari kerja.'}
       </p>
     </form>
   )

@@ -7,7 +7,7 @@ import { CheckCircle, Calendar, ArrowRight } from 'lucide-react'
 import { getFormContent, getSiteLabels } from '@/utilities/getSiteContent'
 
 export const metadata: Metadata = {
-  title: 'Registration Successful | APGC Golf',
+  title: 'Pendaftaran Berhasil | APGC Golf',
 }
 
 export default async function EventRegistrationSuccessPage() {
@@ -23,36 +23,36 @@ export default async function EventRegistrationSuccessPage() {
           </div>
 
           <h1 className="text-3xl font-serif italic text-[#0b3d2e] mb-4">
-            {successContent?.eventRegistrationTitle || 'Registration Successful!'}
+            {successContent?.eventRegistrationTitle || 'Pendaftaran Berhasil!'}
           </h1>
 
           <p className="text-[#636364] mb-8 leading-relaxed">
             {successContent?.eventRegistrationDescription ||
-              'Thank you for registering. We have sent a confirmation email with payment instructions to your email address. Please check your inbox.'}
+              'Terima kasih telah mendaftar. Kami telah mengirim email konfirmasi berisi instruksi pembayaran ke alamat email Anda. Silakan periksa kotak masuk Anda.'}
           </p>
 
           <div className="bg-[#0b3d2e]/5 rounded-xl p-6 mb-8 border border-[#0b3d2e]/10">
             <div className="flex items-center justify-center gap-2 text-[#0b3d2e] mb-2">
               <Calendar className="w-5 h-5" />
               <span className="font-medium">
-                {successContent?.whatsNextTitle || "What's Next?"}
+                {successContent?.whatsNextTitle || 'Langkah Selanjutnya?'}
               </span>
             </div>
             <p className="text-sm text-[#636364]">
               {successContent?.whatsNextDescription ||
-                "Complete your payment within 48 hours to secure your spot. You'll receive a final confirmation once payment is verified."}
+                'Selesaikan pembayaran Anda dalam 48 jam untuk mengamankan tempat Anda. Anda akan menerima konfirmasi akhir setelah pembayaran diverifikasi.'}
             </p>
           </div>
 
           <div className="space-y-3">
             <Button asChild variant="brand" size="cta" className="w-full gap-2 font-bold">
               <Link href="/events">
-                {labels?.buttonLabels?.viewAllEvents || 'View More Events'}
+                {labels?.buttonLabels?.viewAllEvents || 'Lihat Acara Lainnya'}
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </Button>
             <Button asChild variant="brandOutline" size="cta" className="w-full font-medium">
-              <Link href="/">{labels?.buttonLabels?.backToHome || 'Back to Home'}</Link>
+              <Link href="/">{labels?.buttonLabels?.backToHome || 'Kembali ke Beranda'}</Link>
             </Button>
           </div>
         </GlassCard>

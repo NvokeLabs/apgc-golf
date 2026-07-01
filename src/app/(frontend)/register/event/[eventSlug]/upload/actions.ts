@@ -29,14 +29,14 @@ export async function submitTransferProof(
   const file = formData.get('file')
 
   if (!token) {
-    return { status: 'error', message: 'This upload link is invalid.' }
+    return { status: 'error', message: 'Tautan unggah ini tidak valid.' }
   }
   if (!(file instanceof File) || file.size === 0) {
-    return { status: 'error', message: 'Please choose a file to upload.' }
+    return { status: 'error', message: 'Silakan pilih berkas untuk diunggah.' }
   }
   // Reject oversize at the boundary, before reading the whole file into memory.
   if (file.size > MAX_PROOF_BYTES) {
-    return { status: 'error', message: 'The file must be 10MB or smaller.' }
+    return { status: 'error', message: 'Ukuran berkas harus 10MB atau lebih kecil.' }
   }
 
   const hdrs = await headers()
@@ -44,7 +44,7 @@ export async function submitTransferProof(
   if (!tokenLimiter.check(token).allowed || !ipLimiter.check(ip).allowed) {
     return {
       status: 'error',
-      message: 'Too many attempts. Please wait a minute and try again.',
+      message: 'Terlalu banyak percobaan. Silakan tunggu satu menit dan coba lagi.',
     }
   }
 
@@ -65,6 +65,7 @@ export async function submitTransferProof(
 
   return {
     status: 'success',
-    message: 'Your transfer proof was uploaded. We will verify it and email your ticket shortly.',
+    message:
+      'Bukti transfer Anda berhasil diunggah. Kami akan memverifikasinya dan segera mengirim tiket Anda melalui email.',
   }
 }

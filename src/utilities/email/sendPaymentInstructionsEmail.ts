@@ -2,7 +2,7 @@ import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
-export const PAYMENT_EMAIL_SUBJECT = 'Complete your payment — APGC Golf'
+export const PAYMENT_EMAIL_SUBJECT = 'Selesaikan pembayaran Anda — APGC Golf'
 
 export type PaymentInstructionsParams = {
   playerName: string
@@ -48,12 +48,12 @@ export function generatePaymentInstructionsHtml(params: PaymentInstructionsParam
       <table role="presentation" style="width: 100%; border-collapse: collapse; background-color: #f9fafb; border-radius: 8px; margin-bottom: 24px;">
         <tr><td style="padding: 24px;">
           <p style="margin: 0 0 8px; color: #6b7280; font-size: 14px;"><strong>Bank:</strong> ${escapeHtml(bankName)}</p>
-          <p style="margin: 0 0 8px; color: #6b7280; font-size: 14px;"><strong>Account number:</strong> ${escapeHtml(accountNumber)}</p>
-          <p style="margin: 0; color: #6b7280; font-size: 14px;"><strong>Account holder:</strong> ${escapeHtml(accountHolder)}</p>
+          <p style="margin: 0 0 8px; color: #6b7280; font-size: 14px;"><strong>Nomor rekening:</strong> ${escapeHtml(accountNumber)}</p>
+          <p style="margin: 0; color: #6b7280; font-size: 14px;"><strong>Atas nama:</strong> ${escapeHtml(accountHolder)}</p>
           ${instructions ? `<p style="margin: 12px 0 0; color: #6b7280; font-size: 14px;">${escapeHtml(instructions)}</p>` : ''}
         </td></tr>
       </table>`
-    : `<p style="margin: 0 0 24px; color: #6b7280; font-size: 14px;">Our team will share the bank transfer details with you shortly.</p>`
+    : `<p style="margin: 0 0 24px; color: #6b7280; font-size: 14px;">Tim kami akan segera memberikan detail transfer bank kepada Anda.</p>`
 
   return `
 <!DOCTYPE html>
@@ -65,25 +65,25 @@ export function generatePaymentInstructionsHtml(params: PaymentInstructionsParam
       <table role="presentation" style="width: 100%; max-width: 600px; border-collapse: collapse; background-color: #ffffff; border-radius: 12px;">
         <tr><td style="padding: 40px 40px 20px; text-align: center; background-color: #0b3d2e; border-radius: 12px 12px 0 0;">
           <h1 style="margin: 0; color: #ffffff; font-size: 28px;">APGC Golf</h1>
-          <p style="margin: 10px 0 0; color: #d1fae5; font-size: 16px;">Complete your payment</p>
+          <p style="margin: 10px 0 0; color: #d1fae5; font-size: 16px;">Selesaikan pembayaran Anda</p>
         </td></tr>
         <tr><td style="padding: 40px;">
-          <p style="margin: 0 0 20px; color: #374151; font-size: 16px;">Dear <strong>${playerName}</strong>,</p>
-          <p style="margin: 0 0 24px; color: #374151; font-size: 16px;">Thank you for registering. To confirm your spot, transfer the exact amount below and upload your transfer proof.</p>
+          <p style="margin: 0 0 20px; color: #374151; font-size: 16px;">Halo <strong>${playerName}</strong>,</p>
+          <p style="margin: 0 0 24px; color: #374151; font-size: 16px;">Terima kasih telah mendaftar. Untuk mengonfirmasi tempat Anda, transfer sesuai nominal di bawah ini dan unggah bukti transfer Anda.</p>
 
           <table role="presentation" style="width: 100%; border-collapse: collapse; background-color: #0b3d2e0d; border-radius: 8px; margin-bottom: 24px;">
             <tr><td style="padding: 20px;">
-              <p style="margin: 0 0 8px; color: #111827; font-size: 16px;"><strong>Amount:</strong> ${formatAmount(amount)}</p>
-              <p style="margin: 0; color: #111827; font-size: 16px;"><strong>Reference:</strong> ${escapeHtml(reference)}</p>
+              <p style="margin: 0 0 8px; color: #111827; font-size: 16px;"><strong>Nominal:</strong> ${formatAmount(amount)}</p>
+              <p style="margin: 0; color: #111827; font-size: 16px;"><strong>Referensi:</strong> ${escapeHtml(reference)}</p>
             </td></tr>
           </table>
 
           ${bankBlock}
 
           <div style="text-align: center; margin: 8px 0 24px;">
-            <a href="${uploadUrl}" style="display: inline-block; background-color: #0b3d2e; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 600;">Upload transfer proof</a>
+            <a href="${uploadUrl}" style="display: inline-block; background-color: #0b3d2e; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 600;">Unggah bukti transfer</a>
           </div>
-          <p style="margin: 0; color: #6b7280; font-size: 13px;">Or open this link: <a href="${uploadUrl}" style="color: #0b3d2e;">${uploadUrl}</a></p>
+          <p style="margin: 0; color: #6b7280; font-size: 13px;">Atau buka tautan ini: <a href="${uploadUrl}" style="color: #0b3d2e;">${uploadUrl}</a></p>
         </td></tr>
         <tr><td style="padding: 24px 40px; text-align: center; background-color: #f9fafb; border-radius: 0 0 12px 12px;">
           <p style="margin: 0; color: #9ca3af; font-size: 12px;">&copy; APGC Golf</p>

@@ -37,7 +37,7 @@ export function NewsCard({ article, featured = false, className }: NewsCardProps
       : '/placeholder-news.jpg'
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString('id-ID', {
       month: 'short',
       day: 'numeric',
       year: 'numeric',

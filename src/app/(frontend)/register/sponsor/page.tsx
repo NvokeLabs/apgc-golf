@@ -8,8 +8,8 @@ import { getFormContent, getSiteLabels, getSponsorshipTiers } from '@/utilities/
 import { SponsorRegistrationForm } from './SponsorRegistrationForm'
 
 export const metadata: Metadata = {
-  title: 'Become a Sponsor | APGC Golf',
-  description: 'Partner with APGC Golf and connect with our community of passionate golfers.',
+  title: 'Menjadi Sponsor | APGC Golf',
+  description: 'Bermitra dengan APGC Golf dan terhubung dengan komunitas pegolf kami.',
 }
 
 export default async function SponsorRegistrationPage() {
@@ -28,17 +28,17 @@ export default async function SponsorRegistrationPage() {
         className="mb-8 inline-flex items-center gap-2 text-sm text-[#636364] hover:text-[#0b3d2e]"
       >
         <ArrowLeft className="h-4 w-4" />
-        {labels?.navigationLabels?.backToSponsors || 'Back to Sponsors'}
+        {labels?.navigationLabels?.backToSponsors || 'Kembali ke Sponsor'}
       </Link>
 
       {/* Header */}
       <div className="mb-12 text-center">
         <h1 className="text-3xl font-bold text-[#0b3d2e] md:text-4xl">
-          {content?.pageTitle || 'Become a Sponsor'}
+          {content?.pageTitle || 'Menjadi Sponsor'}
         </h1>
         <p className="mx-auto mt-4 max-w-2xl text-lg text-[#636364]">
           {content?.pageDescription ||
-            'Partner with APGC Golf and connect with our community of passionate golfers and industry leaders.'}
+            'Bermitra dengan APGC Golf dan terhubung dengan komunitas pegolf serta pemimpin industri kami.'}
         </p>
       </div>
 
@@ -72,11 +72,11 @@ export default async function SponsorRegistrationPage() {
       {/* Application Form */}
       <GlassCard className="mx-auto max-w-2xl p-6 md:p-8">
         <h2 className="mb-2 text-xl font-bold text-[#0b3d2e]">
-          {content?.formTitle || 'Sponsorship Application'}
+          {content?.formTitle || 'Pengajuan Sponsorship'}
         </h2>
         <p className="mb-8 text-[#636364]">
           {content?.formDescription ||
-            'Fill out the form below and our team will contact you to discuss partnership opportunities.'}
+            'Isi formulir di bawah ini dan tim kami akan menghubungi Anda untuk membahas peluang kemitraan.'}
         </p>
 
         <SponsorRegistrationForm formContent={content} sponsorshipTiers={tiers} />

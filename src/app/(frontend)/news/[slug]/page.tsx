@@ -85,24 +85,24 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
 
   if (!article) {
     return {
-      title: 'Article Not Found | APGC Golf',
+      title: 'Artikel Tidak Ditemukan | APGC Golf',
     }
   }
 
   return {
-    title: `${article.title} | APGC Golf News`,
-    description: article.subtitle || `Read ${article.title} on APGC Golf.`,
+    title: `${article.title} | Berita APGC Golf`,
+    description: article.subtitle || `Baca ${article.title} di APGC Golf.`,
   }
 }
 
 export const revalidate = 3600
 
 const categoryLabels: Record<string, string> = {
-  'tournament-recap': 'Tournament Recap',
-  'member-spotlight': 'Member Spotlight',
-  'club-news': 'Club News',
-  instruction: 'Instruction',
-  announcement: 'Announcement',
+  'tournament-recap': 'Rangkuman Turnamen',
+  'member-spotlight': 'Sorotan Anggota',
+  'club-news': 'Berita Klub',
+  instruction: 'Instruksi',
+  announcement: 'Pengumuman',
 }
 
 export default async function ArticlePage({ params }: Args) {
@@ -123,10 +123,10 @@ export default async function ArticlePage({ params }: Args) {
       : 'https://images.unsplash.com/photo-1573684955725-34046d1ea9f3?w=1200&q=80'
 
   const authorName =
-    typeof article.author === 'object' && article.author?.name ? article.author.name : 'APGC Staff'
+    typeof article.author === 'object' && article.author?.name ? article.author.name : 'Staf APGC'
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString('id-ID', {
       weekday: 'long',
       month: 'long',
       day: 'numeric',
@@ -143,7 +143,7 @@ export default async function ArticlePage({ params }: Args) {
           className="inline-flex items-center mb-8 text-[#636364] hover:text-[#0b3d2e] pl-0 -ml-4 group transition-colors"
         >
           <ChevronLeft className="mr-2 w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-          Back to News
+          Kembali ke Berita
         </Link>
 
         {/* Article Header */}
@@ -176,7 +176,7 @@ export default async function ArticlePage({ params }: Args) {
             {article.readTime && (
               <div className="flex items-center gap-2">
                 <Clock className="w-4 h-4" />
-                <span>{article.readTime} min read</span>
+                <span>{article.readTime} menit baca</span>
               </div>
             )}
           </div>
@@ -210,7 +210,7 @@ export default async function ArticlePage({ params }: Args) {
             <GlassCard className="p-6">
               <h3 className="text-lg text-[#0b3d2e] font-bold uppercase tracking-widest mb-4 pb-2 border-b border-[#0b3d2e]/10 flex items-center gap-2">
                 <Share2 className="w-4 h-4" />
-                Share Article
+                Bagikan Artikel
               </h3>
               <div className="flex gap-3">
                 <button className="flex-1 rounded-lg bg-[#1DA1F2] py-3 text-sm font-medium text-white hover:bg-[#1a91da] transition-colors">
@@ -226,7 +226,7 @@ export default async function ArticlePage({ params }: Args) {
             {relatedArticles.length > 0 && (
               <GlassCard className="p-6">
                 <h3 className="text-lg text-[#0b3d2e] font-bold uppercase tracking-widest mb-6 pb-2 border-b border-[#0b3d2e]/10">
-                  Related Articles
+                  Artikel Terkait
                 </h3>
                 <div className="space-y-6">
                   {relatedArticles.map((related) => {
@@ -254,7 +254,7 @@ export default async function ArticlePage({ params }: Args) {
                             </h4>
                             {related.publishedDate && (
                               <p className="text-[#636364] text-xs mt-1">
-                                {new Date(related.publishedDate).toLocaleDateString('en-US', {
+                                {new Date(related.publishedDate).toLocaleDateString('id-ID', {
                                   month: 'short',
                                   day: 'numeric',
                                   year: 'numeric',
@@ -269,7 +269,7 @@ export default async function ArticlePage({ params }: Args) {
                 </div>
 
                 <TextLink href="/news" className="mt-6 justify-center text-sm">
-                  View All News
+                  Lihat Semua Berita
                 </TextLink>
               </GlassCard>
             )}

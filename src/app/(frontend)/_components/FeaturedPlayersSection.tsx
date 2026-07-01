@@ -45,10 +45,10 @@ export function FeaturedPlayersSection() {
     <section className="py-20">
       <div className="container mx-auto px-6">
         <SectionHeader
-          label="Our Champions"
-          title="Featured"
-          titleHighlight="Players"
-          link={{ href: '/players', text: 'View All Players' }}
+          label="Juara Kami"
+          title="Pemain"
+          titleHighlight="Unggulan"
+          link={{ href: '/players', text: 'Lihat Semua Pemain' }}
         />
         <Suspense fallback={<FeaturedPlayersSkeleton />}>
           <FeaturedPlayersContent />

@@ -63,9 +63,9 @@ export async function processProofUpload(
   const verified = verifyToken(input.token)
   if (!verified.valid) {
     if (verified.reason === 'expired') {
-      return { success: false, code: 'expired', error: 'This upload link has expired.' }
+      return { success: false, code: 'expired', error: 'Tautan unggah ini telah kedaluwarsa.' }
     }
-    return { success: false, code: 'invalid-token', error: 'This upload link is invalid.' }
+    return { success: false, code: 'invalid-token', error: 'Tautan unggah ini tidak valid.' }
   }
 
   const registrationId = verified.registrationId
@@ -77,7 +77,7 @@ export async function processProofUpload(
   })) as { id: number; paymentStatus?: string | null; status?: string | null } | null
 
   if (!registration) {
-    return { success: false, code: 'not-found', error: 'Registration not found.' }
+    return { success: false, code: 'not-found', error: 'Pendaftaran tidak ditemukan.' }
   }
 
   // A cancelled registration is terminal — a still-valid token must not be able
@@ -86,7 +86,7 @@ export async function processProofUpload(
     return {
       success: false,
       code: 'already-confirmed',
-      error: 'This registration has been cancelled.',
+      error: 'Pendaftaran ini telah dibatalkan.',
     }
   }
 
@@ -96,14 +96,14 @@ export async function processProofUpload(
     return {
       success: false,
       code: 'already-confirmed',
-      error: 'This registration is already confirmed.',
+      error: 'Pendaftaran ini sudah dikonfirmasi.',
     }
   }
   if (!UPLOADABLE_STATUSES.has(registration.paymentStatus ?? '')) {
     return {
       success: false,
       code: 'already-confirmed',
-      error: 'This registration is not awaiting a transfer proof.',
+      error: 'Pendaftaran ini tidak sedang menunggu bukti transfer.',
     }
   }
 
@@ -112,11 +112,15 @@ export async function processProofUpload(
     return {
       success: false,
       code: 'invalid-file',
-      error: 'Only JPG, PNG or PDF files are accepted.',
+      error: 'Hanya berkas JPG, PNG, atau PDF yang diterima.',
     }
   }
   if (input.file.size > MAX_PROOF_BYTES || input.file.size <= 0) {
-    return { success: false, code: 'invalid-file', error: 'The file must be 10MB or smaller.' }
+    return {
+      success: false,
+      code: 'invalid-file',
+      error: 'Ukuran berkas harus 10MB atau lebih kecil.',
+    }
   }
 
   // Store the bytes in the private proofs collection (overrideAccess: this runs

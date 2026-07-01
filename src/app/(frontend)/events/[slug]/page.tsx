@@ -66,13 +66,13 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
 
   if (!event) {
     return {
-      title: 'Event Not Found | APGC Golf',
+      title: 'Acara Tidak Ditemukan | APGC Golf',
     }
   }
 
   return {
     title: `${event.title} | APGC Golf`,
-    description: `Join us for ${event.title} at ${event.location}. ${event.prizeFund ? `Prize fund: ${event.prizeFund}` : ''}`,
+    description: `Ikuti ${event.title} di ${event.location}. ${event.prizeFund ? `Total Hadiah: ${event.prizeFund}` : ''}`,
   }
 }
 
@@ -81,7 +81,7 @@ export const revalidate = 3600
 const tierLabels: Record<string, string> = {
   major: 'Major',
   championship: 'Championship',
-  qualifier: 'Qualifier',
+  qualifier: 'Kualifikasi',
 }
 
 export default async function EventPage({ params }: Args) {
@@ -100,7 +100,7 @@ export default async function EventPage({ params }: Args) {
       : 'https://images.unsplash.com/photo-1653515906212-ba8bd8ab6000?w=1200&q=80'
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString('id-ID', {
       weekday: 'long',
       month: 'long',
       day: 'numeric',
@@ -136,7 +136,7 @@ export default async function EventPage({ params }: Args) {
             className="inline-flex items-center mb-8 text-[#636364] hover:text-[#0b3d2e] pl-0 -ml-4 group transition-colors"
           >
             <ChevronLeft className="mr-2 w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-            {labels?.navigationLabels?.backToEventList || 'Back to Event List'}
+            {labels?.navigationLabels?.backToEventList || 'Kembali ke Daftar Acara'}
           </Link>
 
           {/* Hero Section */}
@@ -160,7 +160,7 @@ export default async function EventPage({ params }: Args) {
                     </span>
                     {event.status === 'open' && (
                       <span className="px-3 py-1 rounded-full text-[10px] uppercase tracking-widest font-semibold bg-[#0b3d2e] text-white border border-white/20">
-                        {labels?.statusLabels?.registrationOpen || 'Registration Open'}
+                        {labels?.statusLabels?.registrationOpen || 'Pendaftaran Dibuka'}
                       </span>
                     )}
                   </div>
@@ -172,7 +172,7 @@ export default async function EventPage({ params }: Args) {
                       <Calendar className="w-5 h-5 text-white/80" />
                       <span className="text-lg font-light">
                         {event.date
-                          ? new Date(event.date).toLocaleDateString('en-US', {
+                          ? new Date(event.date).toLocaleDateString('id-ID', {
                               month: 'short',
                               day: 'numeric',
                               year: 'numeric',
@@ -187,15 +187,14 @@ export default async function EventPage({ params }: Args) {
                     {event.prizeFund && (
                       <div className="flex items-center gap-2">
                         <Trophy className="w-5 h-5 text-white/80" />
-                        <span className="text-lg font-light">{event.prizeFund} Purse</span>
+                        <span className="text-lg font-light">Total Hadiah {event.prizeFund}</span>
                       </div>
                     )}
                     {participants.length > 0 && (
                       <div className="flex items-center gap-2">
                         <Users className="w-5 h-5 text-white/80" />
                         <span className="text-lg font-light">
-                          {participants.length}{' '}
-                          {participants.length === 1 ? 'Participant' : 'Participants'}
+                          {participants.length} {participants.length === 1 ? 'Peserta' : 'Peserta'}
                         </span>
                       </div>
                     )}
@@ -210,17 +209,17 @@ export default async function EventPage({ params }: Args) {
                     }`}
                   >
                     {event.status === 'sold-out'
-                      ? labels?.statusLabels?.soldOut || 'Sold Out'
+                      ? labels?.statusLabels?.soldOut || 'Tiket Habis'
                       : event.status === 'closed'
-                        ? labels?.statusLabels?.registrationClosed || 'Registration Closed'
+                        ? labels?.statusLabels?.registrationClosed || 'Pendaftaran Ditutup'
                         : event.status === 'completed'
-                          ? labels?.statusLabels?.eventCompleted || 'Event Completed'
-                          : labels?.buttonLabels?.registerNow || 'Register Now'}
+                          ? labels?.statusLabels?.eventCompleted || 'Acara Selesai'
+                          : labels?.buttonLabels?.registerNow || 'Daftar Sekarang'}
                     {isRegistrationOpen && <ArrowRight className="ml-2 w-5 h-5" />}
                   </Link>
                   {event.price && (
                     <p className="text-white/60 text-xs text-center mt-3">
-                      Starting from {formatPrice(event.price)}
+                      Mulai dari {formatPrice(event.price)}
                     </p>
                   )}
                 </div>
@@ -238,8 +237,8 @@ export default async function EventPage({ params }: Args) {
                     {/* Description */}
                     <section>
                       <h2 className="text-2xl text-[#0b3d2e] font-light mb-6">
-                        {labels?.sectionLabels?.aboutTheEvent || 'About the'}{' '}
-                        <span className="font-serif italic font-medium">Event</span>
+                        {labels?.sectionLabels?.aboutTheEvent || 'Tentang'}{' '}
+                        <span className="font-serif italic font-medium">Acara</span>
                       </h2>
                       <GlassCard className="p-6">
                         {event.description ? (
@@ -248,7 +247,7 @@ export default async function EventPage({ params }: Args) {
                           </div>
                         ) : (
                           <p className="text-[#636364] text-lg leading-relaxed">
-                            More details coming soon.
+                            Detail lebih lanjut segera hadir.
                           </p>
                         )}
                       </GlassCard>
@@ -258,8 +257,8 @@ export default async function EventPage({ params }: Args) {
                     {event.schedule && event.schedule.length > 0 && (
                       <section>
                         <h2 className="text-2xl text-[#0b3d2e] font-light mb-6">
-                          {labels?.sectionLabels?.eventSchedule || 'Event'}{' '}
-                          <span className="font-serif italic font-medium">Schedule</span>
+                          {labels?.sectionLabels?.eventSchedule || 'Jadwal'}{' '}
+                          <span className="font-serif italic font-medium">Acara</span>
                         </h2>
                         <div className="space-y-6">
                           {event.schedule.map((day, dayIndex) => (
@@ -296,15 +295,15 @@ export default async function EventPage({ params }: Args) {
                     {event.pairings && event.pairings.length > 0 && (
                       <section>
                         <h2 className="text-2xl text-[#0b3d2e] font-light mb-6">
-                          {labels?.sectionLabels?.teeTimesAndPairings || 'Tee Times &'}{' '}
-                          <span className="font-serif italic font-medium">Pairings</span>
+                          {labels?.sectionLabels?.teeTimesAndPairings || 'Waktu Tee &'}{' '}
+                          <span className="font-serif italic font-medium">Pasangan</span>
                         </h2>
                         <div className="space-y-4">
                           {event.pairings.map((pairing, index) => (
                             <GlassCard key={index} className="p-4">
                               <div className="flex items-center justify-between mb-3">
                                 <span className="font-bold text-[#0b3d2e]">
-                                  {labels?.miscLabels?.group || 'Group'} {pairing.group}
+                                  {labels?.miscLabels?.group || 'Grup'} {pairing.group}
                                 </span>
                                 <div className="flex items-center gap-4 text-sm text-[#636364]">
                                   <span>
@@ -335,8 +334,8 @@ export default async function EventPage({ params }: Args) {
                       <section>
                         <h2 className="text-2xl text-[#0b3d2e] font-light mb-6 flex items-center gap-2">
                           <Camera className="w-5 h-5" />
-                          {labels?.sectionLabels?.eventGallery || 'Event'}{' '}
-                          <span className="font-serif italic font-medium">Gallery</span>
+                          {labels?.sectionLabels?.eventGallery || 'Galeri'}{' '}
+                          <span className="font-serif italic font-medium">Acara</span>
                         </h2>
                         <div className="grid grid-cols-2 md:grid-cols-3 gap-4">
                           {event.gallery.map((item, index) => {
@@ -352,7 +351,7 @@ export default async function EventPage({ params }: Args) {
                               >
                                 <Image
                                   src={imgUrl}
-                                  alt={`Gallery image ${index + 1}`}
+                                  alt={`Gambar galeri ${index + 1}`}
                                   fill
                                   className="object-cover"
                                 />
@@ -393,18 +392,18 @@ export default async function EventPage({ params }: Args) {
               {/* Registration Card */}
               <GlassCard className="p-8">
                 <h3 className="text-lg text-[#0b3d2e] font-bold uppercase tracking-widest mb-6 pb-2 border-b border-[#0b3d2e]/10">
-                  {labels?.sectionLabels?.registration || 'Registration'}
+                  {labels?.sectionLabels?.registration || 'Pendaftaran'}
                 </h3>
 
                 {event.price && (
                   <div className="mb-6">
                     <p className="text-[#636364] text-xs uppercase tracking-wider mb-1">
-                      {labels?.fieldLabels?.entryFee || 'Entry Fee'}
+                      {labels?.fieldLabels?.entryFee || 'Biaya Pendaftaran'}
                     </p>
                     <p className="text-3xl font-light text-[#0b3d2e]">{formatPrice(event.price)}</p>
                     {event.alumniPrice && (
                       <p className="mt-2 text-sm text-[#636364]">
-                        {labels?.fieldLabels?.alumniPrice || 'Alumni Price'}:{' '}
+                        {labels?.fieldLabels?.alumniPrice || 'Harga Alumni'}:{' '}
                         {formatPrice(event.alumniPrice)}
                       </p>
                     )}
@@ -414,7 +413,7 @@ export default async function EventPage({ params }: Args) {
                 <div className="space-y-4 mb-6">
                   <div className="flex justify-between py-2 border-b border-[#0b3d2e]/10">
                     <span className="text-[#636364] text-sm">
-                      {labels?.fieldLabels?.date || 'Date'}
+                      {labels?.fieldLabels?.date || 'Tanggal'}
                     </span>
                     <span className="text-[#0b3d2e] text-sm font-medium">
                       {event.date ? formatDate(event.date) : 'TBA'}
@@ -422,7 +421,7 @@ export default async function EventPage({ params }: Args) {
                   </div>
                   <div className="flex justify-between py-2 border-b border-[#0b3d2e]/10">
                     <span className="text-[#636364] text-sm">
-                      {labels?.fieldLabels?.location || 'Location'}
+                      {labels?.fieldLabels?.location || 'Lokasi'}
                     </span>
                     <span className="text-[#0b3d2e] text-sm font-medium text-right max-w-[60%]">
                       {event.location || 'TBA'}
@@ -442,14 +441,14 @@ export default async function EventPage({ params }: Args) {
                       }`}
                     >
                       {event.status === 'open'
-                        ? labels?.statusLabels?.open || 'Open'
+                        ? labels?.statusLabels?.open || 'Dibuka'
                         : event.status === 'upcoming'
-                          ? labels?.statusLabels?.comingSoon || 'Coming Soon'
+                          ? labels?.statusLabels?.comingSoon || 'Segera Hadir'
                           : event.status === 'sold-out'
-                            ? labels?.statusLabels?.soldOut || 'Sold Out'
+                            ? labels?.statusLabels?.soldOut || 'Tiket Habis'
                             : event.status === 'closed'
-                              ? labels?.statusLabels?.closed || 'Closed'
-                              : 'Completed'}
+                              ? labels?.statusLabels?.closed || 'Ditutup'
+                              : 'Selesai'}
                     </span>
                   </div>
                 </div>
@@ -457,7 +456,7 @@ export default async function EventPage({ params }: Args) {
                 {isRegistrationOpen ? (
                   <Button asChild variant="brand" size="cta" className="w-full">
                     <Link href={`/register/event/${event.slug}`}>
-                      {labels?.buttonLabels?.registerNow || 'Register Now'}
+                      {labels?.buttonLabels?.registerNow || 'Daftar Sekarang'}
                     </Link>
                   </Button>
                 ) : (
@@ -466,10 +465,10 @@ export default async function EventPage({ params }: Args) {
                     className="block w-full bg-[#636364]/50 text-white font-bold py-4 rounded-xl text-center cursor-not-allowed"
                   >
                     {event.status === 'sold-out'
-                      ? labels?.statusLabels?.soldOut || 'Sold Out'
+                      ? labels?.statusLabels?.soldOut || 'Tiket Habis'
                       : event.status === 'completed'
-                        ? labels?.statusLabels?.eventCompleted || 'Event Ended'
-                        : labels?.statusLabels?.registrationClosed || 'Registration Closed'}
+                        ? labels?.statusLabels?.eventCompleted || 'Acara Selesai'
+                        : labels?.statusLabels?.registrationClosed || 'Pendaftaran Ditutup'}
                   </button>
                 )}
               </GlassCard>
@@ -478,7 +477,7 @@ export default async function EventPage({ params }: Args) {
               {event.sponsors && event.sponsors.length > 0 && (
                 <GlassCard className="p-6">
                   <h3 className="text-lg text-[#0b3d2e] font-bold uppercase tracking-widest mb-6 pb-2 border-b border-[#0b3d2e]/10">
-                    {labels?.sectionLabels?.eventSponsors || 'Event Sponsors'}
+                    {labels?.sectionLabels?.eventSponsors || 'Sponsor Acara'}
                   </h3>
                   <div className="space-y-4">
                     {event.sponsors.map((sponsor) => {

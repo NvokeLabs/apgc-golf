@@ -12,7 +12,7 @@ export function UploadProofForm({ token }: { token: string }) {
   if (state.status === 'success') {
     return (
       <div className="rounded-lg border border-green-600/30 bg-green-600/10 p-4 text-green-800">
-        <p className="font-semibold">Proof received — pending review</p>
+        <p className="font-semibold">Bukti diterima — menunggu peninjauan</p>
         <p className="mt-1 text-sm">{state.message}</p>
       </div>
     )
@@ -24,7 +24,7 @@ export function UploadProofForm({ token }: { token: string }) {
 
       <div>
         <label htmlFor="proof-file" className="mb-1 block text-sm font-medium text-[#0b3d2e]">
-          Transfer proof (JPG, PNG or PDF, max 10MB)
+          Bukti transfer (JPG, PNG, atau PDF, maks 10MB)
         </label>
         <input
           id="proof-file"
@@ -43,7 +43,7 @@ export function UploadProofForm({ token }: { token: string }) {
       )}
 
       <Button type="submit" disabled={pending} className="w-full font-semibold">
-        {pending ? 'Uploading…' : 'Submit transfer proof'}
+        {pending ? 'Mengunggah…' : 'Kirim bukti transfer'}
       </Button>
     </form>
   )

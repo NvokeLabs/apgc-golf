@@ -2,7 +2,7 @@ import { Resend } from 'resend'
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
-export const REJECTION_EMAIL_SUBJECT = 'Action needed: your payment proof — APGC Golf'
+export const REJECTION_EMAIL_SUBJECT = 'Perlu tindakan: bukti pembayaran Anda — APGC Golf'
 
 export type RejectionEmailParams = {
   playerName: string
@@ -39,19 +39,19 @@ export function generateRejectionHtml(params: RejectionEmailParams): string {
       <table role="presentation" style="width: 100%; max-width: 600px; border-collapse: collapse; background-color: #ffffff; border-radius: 12px;">
         <tr><td style="padding: 40px 40px 20px; text-align: center; background-color: #0b3d2e; border-radius: 12px 12px 0 0;">
           <h1 style="margin: 0; color: #ffffff; font-size: 28px;">APGC Golf</h1>
-          <p style="margin: 10px 0 0; color: #d1fae5; font-size: 16px;">Payment proof needs attention</p>
+          <p style="margin: 10px 0 0; color: #d1fae5; font-size: 16px;">Bukti pembayaran perlu diperbaiki</p>
         </td></tr>
         <tr><td style="padding: 40px;">
-          <p style="margin: 0 0 20px; color: #374151; font-size: 16px;">Dear <strong>${playerName}</strong>,</p>
-          <p style="margin: 0 0 16px; color: #374151; font-size: 16px;">We couldn't confirm your payment from the proof you submitted:</p>
+          <p style="margin: 0 0 20px; color: #374151; font-size: 16px;">Halo <strong>${playerName}</strong>,</p>
+          <p style="margin: 0 0 16px; color: #374151; font-size: 16px;">Kami tidak dapat mengonfirmasi pembayaran Anda dari bukti yang Anda kirimkan:</p>
           <div style="background-color: #fef3c7; border-radius: 8px; padding: 16px; margin-bottom: 24px;">
             <p style="margin: 0; color: #92400e; font-size: 14px;">${reason}</p>
           </div>
-          <p style="margin: 0 0 24px; color: #374151; font-size: 16px;">Please upload a corrected transfer proof using the link below.</p>
+          <p style="margin: 0 0 24px; color: #374151; font-size: 16px;">Silakan unggah bukti transfer yang benar melalui tautan di bawah ini.</p>
           <div style="text-align: center; margin: 8px 0 24px;">
-            <a href="${uploadUrl}" style="display: inline-block; background-color: #0b3d2e; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 600;">Upload corrected proof</a>
+            <a href="${uploadUrl}" style="display: inline-block; background-color: #0b3d2e; color: #ffffff; text-decoration: none; padding: 14px 28px; border-radius: 8px; font-weight: 600;">Unggah bukti yang benar</a>
           </div>
-          <p style="margin: 0; color: #6b7280; font-size: 13px;">Or open this link: <a href="${uploadUrl}" style="color: #0b3d2e;">${uploadUrl}</a></p>
+          <p style="margin: 0; color: #6b7280; font-size: 13px;">Atau buka tautan ini: <a href="${uploadUrl}" style="color: #0b3d2e;">${uploadUrl}</a></p>
         </td></tr>
         <tr><td style="padding: 24px 40px; text-align: center; background-color: #f9fafb; border-radius: 0 0 12px 12px;">
           <p style="margin: 0; color: #9ca3af; font-size: 12px;">&copy; APGC Golf</p>

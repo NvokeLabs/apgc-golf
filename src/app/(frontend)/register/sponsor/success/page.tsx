@@ -7,7 +7,7 @@ import { CheckCircle, Handshake, ArrowRight } from 'lucide-react'
 import { getFormContent, getSiteLabels } from '@/utilities/getSiteContent'
 
 export const metadata: Metadata = {
-  title: 'Application Submitted | APGC Golf',
+  title: 'Pengajuan Terkirim | APGC Golf',
 }
 
 export default async function SponsorRegistrationSuccessPage() {
@@ -23,36 +23,36 @@ export default async function SponsorRegistrationSuccessPage() {
           </div>
 
           <h1 className="text-3xl font-serif italic text-[#0b3d2e] mb-4">
-            {successContent?.sponsorApplicationTitle || 'Application Submitted!'}
+            {successContent?.sponsorApplicationTitle || 'Pengajuan Terkirim!'}
           </h1>
 
           <p className="text-[#636364] mb-8 leading-relaxed">
             {successContent?.sponsorApplicationDescription ||
-              'Thank you for your interest in partnering with APGC Golf. Our sponsorship team will review your application and contact you within 2-3 business days.'}
+              'Terima kasih atas minat Anda bermitra dengan APGC Golf. Tim sponsorship kami akan meninjau pengajuan Anda dan menghubungi Anda dalam 2-3 hari kerja.'}
           </p>
 
           <div className="bg-[#0b3d2e]/5 rounded-xl p-6 mb-8 border border-[#0b3d2e]/10">
             <div className="flex items-center justify-center gap-2 text-[#0b3d2e] mb-2">
               <Handshake className="w-5 h-5" />
               <span className="font-medium">
-                {successContent?.sponsorWhatsNextTitle || "What's Next?"}
+                {successContent?.sponsorWhatsNextTitle || 'Langkah Selanjutnya?'}
               </span>
             </div>
             <p className="text-sm text-[#636364]">
               {successContent?.sponsorWhatsNextDescription ||
-                'Our team will reach out to discuss partnership details, benefits, and customize a sponsorship package that fits your needs.'}
+                'Tim kami akan menghubungi Anda untuk membahas detail kemitraan, manfaat, dan menyusun paket sponsorship yang sesuai dengan kebutuhan Anda.'}
             </p>
           </div>
 
           <div className="space-y-3">
             <Button asChild variant="brand" size="cta" className="w-full gap-2 font-bold">
               <Link href="/sponsors">
-                {labels?.buttonLabels?.viewAll || 'View Current Sponsors'}
+                {labels?.buttonLabels?.viewAll || 'Lihat Sponsor Saat Ini'}
                 <ArrowRight className="w-4 h-4" />
               </Link>
             </Button>
             <Button asChild variant="brandOutline" size="cta" className="w-full font-medium">
-              <Link href="/">{labels?.buttonLabels?.backToHome || 'Back to Home'}</Link>
+              <Link href="/">{labels?.buttonLabels?.backToHome || 'Kembali ke Beranda'}</Link>
             </Button>
           </div>
         </GlassCard>
