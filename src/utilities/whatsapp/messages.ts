@@ -76,15 +76,18 @@ export function buildTransferProofMessage(
     playerName?: string
     eventTitle?: string
     amountDue?: number | null
+    tshirtSize?: string
   },
   baseUrl: string,
 ): string {
-  return [
+  const lines = [
     '💸 Bukti Transfer Masuk',
     `Ref: reg-${input.id}`,
     `Nama: ${dash(input.playerName)}`,
     `Acara: ${dash(input.eventTitle)}`,
     `Nominal: ${idr(input.amountDue)}`,
-    `Verifikasi: ${baseUrl}/admin/manual-transfers`,
-  ].join('\n')
+  ]
+  if (input.tshirtSize) lines.push(`Ukuran kaos: ${input.tshirtSize}`)
+  lines.push(`Verifikasi: ${baseUrl}/admin/manual-transfers`)
+  return lines.join('\n')
 }
