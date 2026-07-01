@@ -26,4 +26,22 @@ describe('notifyProofUploaded', () => {
     expect(msg).toContain('4.000.000')
     expect(msg).toContain('Polinema Cup')
   })
+
+  it('includes the registration tshirt size in the message', async () => {
+    const payload = {
+      findByID: vi
+        .fn()
+        .mockResolvedValueOnce({
+          id: 20,
+          playerName: 'Sita',
+          amountDue: 4000000,
+          tshirtSize: 'XL',
+          event: 10,
+        })
+        .mockResolvedValueOnce({ title: 'Polinema Cup' }),
+    }
+    await notifyProofUploaded(payload as never, 20)
+    expect(sendMock).toHaveBeenCalledTimes(1)
+    expect(sendMock.mock.calls[0][0]).toContain('Ukuran kaos: XL')
+  })
 })

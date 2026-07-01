@@ -12,7 +12,13 @@ export async function notifyProofUploaded(
     collection: 'event-registrations',
     id: registrationId,
     depth: 0,
-  })) as { id: number; playerName?: string; amountDue?: number | null; event?: unknown } | null
+  })) as {
+    id: number
+    playerName?: string
+    amountDue?: number | null
+    event?: unknown
+    tshirtSize?: string
+  } | null
   if (!reg) return
 
   let eventTitle: string | undefined
@@ -28,7 +34,13 @@ export async function notifyProofUploaded(
 
   await sendWhatsAppNotification(
     buildTransferProofMessage(
-      { id: reg.id, playerName: reg.playerName, amountDue: reg.amountDue, eventTitle },
+      {
+        id: reg.id,
+        playerName: reg.playerName,
+        amountDue: reg.amountDue,
+        eventTitle,
+        tshirtSize: reg.tshirtSize,
+      },
       baseUrl,
     ),
   )
