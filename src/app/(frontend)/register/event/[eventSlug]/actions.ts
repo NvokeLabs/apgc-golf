@@ -15,6 +15,7 @@ export type RegistrationFormData = {
   email: string
   phone?: string
   category: 'general' | 'alumni'
+  tshirtSize: 'S' | 'M' | 'L' | 'XL' | 'XXL'
   notes?: string
   /**
    * Launch is manual-transfer only; defaults to 'bank-transfer'. The 'xendit'
@@ -57,6 +58,7 @@ export async function createRegistrationWithPayment(
           email: data.email,
           phone: data.phone,
           category: data.category,
+          tshirtSize: data.tshirtSize,
           notes: data.notes,
         },
       )
@@ -127,6 +129,7 @@ export async function createRegistrationWithPayment(
         email: data.email,
         phone: data.phone ? `+62${data.phone.replace(/^0+/, '')}` : undefined,
         category: data.category,
+        tshirtSize: data.tshirtSize,
         notes: data.notes || undefined,
         agreedToTerms: true,
         status: 'pending',

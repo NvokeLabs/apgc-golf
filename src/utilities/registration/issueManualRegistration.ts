@@ -14,7 +14,7 @@ export type ManualRegistrationInput = {
   phone?: string
   category: 'general' | 'alumni'
   notes?: string
-  tshirtSize?: 'S' | 'M' | 'L' | 'XL' | 'XXL'
+  tshirtSize: 'S' | 'M' | 'L' | 'XL' | 'XXL'
 }
 
 export type ManualRegistrationDeps = {
@@ -83,7 +83,7 @@ export async function issueManualRegistration(
       phone: input.phone ? `+62${input.phone.replace(/^0+/, '')}` : undefined,
       category: input.category,
       notes: input.notes || undefined,
-      tshirtSize: input.tshirtSize as 'S' | 'M' | 'L' | 'XL' | 'XXL',
+      tshirtSize: input.tshirtSize,
       agreedToTerms: true,
       status: 'pending',
       paymentMethod: 'bank-transfer',

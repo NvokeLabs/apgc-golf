@@ -39,6 +39,7 @@ export function EventRegistrationForm({
         email: formData.get('email') as string,
         phone: (formData.get('phone') as string) || undefined,
         category: formData.get('category') as RegistrationFormData['category'],
+        tshirtSize: formData.get('tshirtSize') as RegistrationFormData['tshirtSize'],
         notes: (formData.get('notes') as string) || undefined,
       })
 
@@ -157,6 +158,27 @@ export function EventRegistrationForm({
               ) : (
                 <option value="alumni">Alumni</option>
               )}
+            </select>
+          </div>
+          <div className="sm:col-span-2">
+            <label htmlFor="tshirtSize" className="mb-2 block text-sm text-gray-600">
+              Ukuran Kaos Golf *
+            </label>
+            <select
+              id="tshirtSize"
+              name="tshirtSize"
+              required
+              defaultValue=""
+              className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-[#0b3d2e] focus:outline-none focus:ring-1 focus:ring-[#0b3d2e]"
+            >
+              <option value="" disabled>
+                Pilih ukuran
+              </option>
+              <option value="S">S</option>
+              <option value="M">M</option>
+              <option value="L">L</option>
+              <option value="XL">XL</option>
+              <option value="XXL">XXL</option>
             </select>
           </div>
         </div>

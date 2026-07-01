@@ -47,6 +47,7 @@ const input = {
   email: 'jane@example.com',
   phone: '081234',
   category: 'general' as const,
+  tshirtSize: 'M' as const,
 }
 
 describe('issueManualRegistration', () => {
