@@ -64,13 +64,13 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
 
   if (!player) {
     return {
-      title: 'Player Not Found | APGC Golf',
+      title: 'Pemain Tidak Ditemukan | APGC Golf',
     }
   }
 
   return {
     title: `${player.name} | APGC Golf`,
-    description: player.memberDescription || `View ${player.name}'s profile on APGC Golf.`,
+    description: player.memberDescription || `Lihat profil ${player.name} di APGC Golf.`,
   }
 }
 
@@ -121,7 +121,7 @@ export default async function PlayerPage({ params }: Args) {
           className="inline-flex items-center mb-8 text-[#636364] hover:text-[#0b3d2e] pl-0 -ml-4 group transition-colors"
         >
           <ChevronLeft className="mr-2 w-5 h-5 group-hover:-translate-x-1 transition-transform" />
-          {labels?.navigationLabels?.backToPlayers || 'Back to Players'}
+          {labels?.navigationLabels?.backToPlayers || 'Kembali ke Pemain'}
         </Link>
 
         <div className="grid lg:grid-cols-12 gap-12">
@@ -158,14 +158,14 @@ export default async function PlayerPage({ params }: Args) {
               {player.rank && (
                 <GlassCard className="px-6 py-4">
                   <p className="text-[#636364] text-xs uppercase tracking-wider mb-1">
-                    {labels?.fieldLabels?.worldRank || 'World Rank'}
+                    {labels?.fieldLabels?.worldRank || 'Peringkat Dunia'}
                   </p>
                   <p className="text-3xl text-[#0b3d2e] font-light">#{player.rank}</p>
                 </GlassCard>
               )}
               <GlassCard className="px-6 py-4">
                 <p className="text-[#636364] text-xs uppercase tracking-wider mb-1">
-                  {labels?.fieldLabels?.tourWins || 'Tour Wins'}
+                  {labels?.fieldLabels?.tourWins || 'Kemenangan Tur'}
                 </p>
                 <div className="flex items-center gap-2">
                   <Trophy className="w-5 h-5 text-[#0b3d2e]" />
@@ -174,7 +174,7 @@ export default async function PlayerPage({ params }: Args) {
               </GlassCard>
               <GlassCard className="px-6 py-4">
                 <p className="text-[#636364] text-xs uppercase tracking-wider mb-1">
-                  {labels?.fieldLabels?.points || 'Points'}
+                  {labels?.fieldLabels?.points || 'Poin'}
                 </p>
                 <div className="flex items-center gap-2">
                   <TrendingUp className="w-5 h-5 text-[#0b3d2e]" />
@@ -187,26 +187,32 @@ export default async function PlayerPage({ params }: Args) {
               {/* Detailed Profile Section */}
               <GlassCard className="p-8">
                 <h3 className="text-lg text-[#0b3d2e] font-bold uppercase tracking-widest mb-6 pb-2 border-b border-[#0b3d2e]/10">
-                  {labels?.sectionLabels?.memberProfile || 'Member Profile'}
+                  {labels?.sectionLabels?.memberProfile || 'Profil Anggota'}
                 </h3>
 
                 <div className="flex flex-col gap-1">
                   {player.memberId && (
                     <DetailRow
-                      label={labels?.fieldLabels?.memberId || 'Member ID'}
+                      label={labels?.fieldLabels?.memberId || 'ID Anggota'}
                       value={player.memberId}
                       icon={<Hash className="w-4 h-4" />}
                     />
                   )}
                   <DetailRow
-                    label={labels?.fieldLabels?.fullName || 'Full Name'}
+                    label={labels?.fieldLabels?.fullName || 'Nama Lengkap'}
                     value={player.name}
                     icon={<User className="w-4 h-4" />}
                   />
                   {player.gender && (
                     <DetailRow
-                      label={labels?.fieldLabels?.gender || 'Gender'}
-                      value={player.gender}
+                      label={labels?.fieldLabels?.gender || 'Jenis Kelamin'}
+                      value={
+                        player.gender === 'male'
+                          ? 'Laki-laki'
+                          : player.gender === 'female'
+                            ? 'Perempuan'
+                            : player.gender
+                      }
                     />
                   )}
                   {player.handicap != null && (
@@ -217,7 +223,7 @@ export default async function PlayerPage({ params }: Args) {
                   )}
                   {player.latestGrossScore != null && (
                     <DetailRow
-                      label={labels?.fieldLabels?.latestGrossScore || 'Latest Gross Score'}
+                      label={labels?.fieldLabels?.latestGrossScore || 'Skor Gross Terbaru'}
                       value={player.latestGrossScore}
                     />
                   )}
@@ -239,12 +245,12 @@ export default async function PlayerPage({ params }: Args) {
                     value={
                       player.matchPlayAvailable ? (
                         <span className="flex items-center justify-end gap-2 text-[#0b3d2e]">
-                          {labels?.miscLabels?.available || 'Available'}{' '}
+                          {labels?.miscLabels?.available || 'Tersedia'}{' '}
                           <CheckCircle2 className="w-4 h-4" />
                         </span>
                       ) : (
                         <span className="flex items-center justify-end gap-2 text-[#636364]">
-                          {labels?.miscLabels?.unavailable || 'Unavailable'}{' '}
+                          {labels?.miscLabels?.unavailable || 'Tidak Tersedia'}{' '}
                           <XCircle className="w-4 h-4" />
                         </span>
                       )
@@ -259,8 +265,8 @@ export default async function PlayerPage({ params }: Args) {
                 {/* Bio */}
                 <div>
                   <h3 className="text-xl text-[#0b3d2e] font-light mb-4">
-                    {labels?.sectionLabels?.aboutThePlayer || 'About the'}{' '}
-                    <span className="font-serif italic font-medium">Player</span>
+                    {labels?.sectionLabels?.aboutThePlayer || 'Tentang'}{' '}
+                    <span className="font-serif italic font-medium">Pemain</span>
                   </h3>
                   <GlassCard className="p-6">
                     {player.bio ? (
@@ -270,13 +276,13 @@ export default async function PlayerPage({ params }: Args) {
                     ) : (
                       <p className="text-[#636364] leading-relaxed">
                         {labels?.miscLabels?.noBiographyAvailable ||
-                          'No biography available for this player.'}
+                          'Tidak ada biografi untuk pemain ini.'}
                       </p>
                     )}
                     {player.memberDescription && (
                       <div className="mt-4 pt-4 border-t border-[#0b3d2e]/10">
                         <p className="text-sm text-[#0b3d2e]/60 uppercase tracking-wider mb-2">
-                          {labels?.miscLabels?.memberData || 'Member Data'}
+                          {labels?.miscLabels?.memberData || 'Data Anggota'}
                         </p>
                         <p className="text-[#0b3d2e] text-sm">{player.memberDescription}</p>
                       </div>
@@ -287,15 +293,15 @@ export default async function PlayerPage({ params }: Args) {
                 {/* Career Stats */}
                 <div>
                   <h3 className="text-xl text-[#0b3d2e] font-light mb-4">
-                    {labels?.sectionLabels?.careerStats || 'Career'}{' '}
-                    <span className="font-serif italic font-medium">Stats</span>
+                    {labels?.sectionLabels?.careerStats || 'Statistik'}{' '}
+                    <span className="font-serif italic font-medium">Karier</span>
                   </h3>
                   <div className="grid grid-cols-2 gap-3">
                     {player.age && (
                       <GlassCard className="p-4 text-center">
                         <p className="text-2xl font-light text-[#0b3d2e]">{player.age}</p>
                         <p className="text-xs text-[#636364] uppercase tracking-wider">
-                          {labels?.fieldLabels?.age || 'Age'}
+                          {labels?.fieldLabels?.age || 'Usia'}
                         </p>
                       </GlassCard>
                     )}
@@ -303,7 +309,7 @@ export default async function PlayerPage({ params }: Args) {
                       <GlassCard className="p-4 text-center">
                         <p className="text-2xl font-light text-[#0b3d2e]">{player.turnedPro}</p>
                         <p className="text-xs text-[#636364] uppercase tracking-wider">
-                          {labels?.fieldLabels?.turnedPro || 'Turned Pro'}
+                          {labels?.fieldLabels?.turnedPro || 'Menjadi Pro'}
                         </p>
                       </GlassCard>
                     )}
@@ -316,7 +322,7 @@ export default async function PlayerPage({ params }: Args) {
                           </p>
                         </div>
                         <p className="text-xs text-[#636364] uppercase tracking-wider">
-                          {labels?.fieldLabels?.majorChampionships || 'Major Championships'}
+                          {labels?.fieldLabels?.majorChampionships || 'Kejuaraan Major'}
                         </p>
                       </GlassCard>
                     )}
@@ -327,8 +333,8 @@ export default async function PlayerPage({ params }: Args) {
                 {player.recentResults && player.recentResults.length > 0 && (
                   <div>
                     <h3 className="text-xl text-[#0b3d2e] font-light mb-4">
-                      {labels?.sectionLabels?.recentResults || 'Recent'}{' '}
-                      <span className="font-serif italic font-medium">Results</span>
+                      {labels?.sectionLabels?.recentResults || 'Hasil'}{' '}
+                      <span className="font-serif italic font-medium">Terkini</span>
                     </h3>
                     <div className="space-y-3">
                       {player.recentResults.map((result, index) => (

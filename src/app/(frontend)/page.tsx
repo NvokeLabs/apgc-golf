@@ -25,7 +25,7 @@ import { getHomePageContent, getSiteLabels } from '@/utilities/getSiteContent'
 export const metadata: Metadata = {
   title: 'APGC Golf | Alumni Polinema Golf Club',
   description:
-    'Welcome to APGC Golf - the premier golf community for Polinema alumni. Join tournaments, connect with fellow golfers, and elevate your game.',
+    'Selamat datang di APGC Golf - komunitas golf terkemuka untuk alumni Polinema. Ikuti turnamen, terhubung dengan sesama pegolf, dan tingkatkan permainan Anda.',
 }
 
 export const revalidate = 3600 // Revalidate every hour
@@ -99,7 +99,7 @@ export default async function HomePage() {
                 homeContent.hero.backgroundImage?.url) ||
               'https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=1920&q=80'
             }
-            alt="Golf Course"
+            alt="Lapangan Golf"
             fill
             className="object-cover opacity-100"
             priority
@@ -115,20 +115,20 @@ export default async function HomePage() {
               <div className="flex items-center gap-4 mb-8">
                 <div className="h-[1px] w-12 bg-white" />
                 <span className="text-white font-serif italic tracking-wider text-sm">
-                  {homeContent?.hero?.tagline || 'The 2025 Season Finale'}
+                  {homeContent?.hero?.tagline || 'Penutup Musim 2025'}
                 </span>
               </div>
 
               <h1 className="text-4xl lg:text-5xl text-white leading-[1.1] mb-8 font-light">
-                {homeContent?.hero?.titleLine1 || 'Legacy'} <br />
+                {homeContent?.hero?.titleLine1 || 'Warisan'} <br />
                 <span className="font-serif italic font-medium text-white/90">
-                  {homeContent?.hero?.titleLine2 || 'In The Making'}
+                  {homeContent?.hero?.titleLine2 || 'Sedang Dibangun'}
                 </span>
               </h1>
 
               <p className="text-white/80 text-lg font-light leading-relaxed mb-10 max-w-md">
                 {homeContent?.hero?.description ||
-                  'Witness history at the legendary Cypress Point. Where masters of the craft compete for the ultimate glory.'}
+                  'Saksikan sejarah di Cypress Point yang legendaris. Tempat para ahli berkompetisi untuk kejayaan tertinggi.'}
               </p>
             </div>
 
@@ -150,7 +150,7 @@ export default async function HomePage() {
                     ) : (
                       <Image
                         src="https://images.unsplash.com/photo-1698692412889-a0f176b60b87?w=600&q=80"
-                        alt="Tournament Banner"
+                        alt="Banner Turnamen"
                         fill
                         className="object-cover"
                       />
@@ -160,14 +160,14 @@ export default async function HomePage() {
                     <div className="absolute top-4 left-4 bg-[#D66232] text-white px-4 py-2 rounded-sm flex items-center gap-2">
                       <Star className="w-4 h-4 fill-current" />
                       <span className="text-xs uppercase tracking-wider">
-                        {homeContent?.featuredEventSection?.label || 'Featured Event'}
+                        {homeContent?.featuredEventSection?.label || 'Acara Unggulan'}
                       </span>
                     </div>
 
                     {featuredEvent.prizeFund && (
                       <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-sm">
                         <p className="text-[#0b3d2e]/60 text-[10px] uppercase tracking-wider mb-1">
-                          {labels?.fieldLabels?.prizeFund || 'Prize Fund'}
+                          {labels?.fieldLabels?.prizeFund || 'Total Hadiah'}
                         </p>
                         <p className="text-2xl font-serif text-[#0b3d2e]">
                           {featuredEvent.prizeFund}
@@ -190,9 +190,9 @@ export default async function HomePage() {
                           </div>
                           <div>
                             <p className="text-[#0b3d2e]/60 text-xs uppercase tracking-wider mb-1">
-                              {labels?.fieldLabels?.location || 'Location'}
+                              {labels?.fieldLabels?.location || 'Lokasi'}
                             </p>
-                            <p className="text-[#0b3d2e]">{featuredEvent.location || 'TBA'}</p>
+                            <p className="text-[#0b3d2e]">{featuredEvent.location || 'Menyusul'}</p>
                           </div>
                         </div>
 
@@ -202,16 +202,16 @@ export default async function HomePage() {
                           </div>
                           <div>
                             <p className="text-[#0b3d2e]/60 text-xs uppercase tracking-wider mb-1">
-                              {labels?.fieldLabels?.tournamentDates || 'Tournament Dates'}
+                              {labels?.fieldLabels?.tournamentDates || 'Tanggal Turnamen'}
                             </p>
                             <p className="text-[#0b3d2e]">
                               {featuredEvent.date
-                                ? new Date(featuredEvent.date).toLocaleDateString('en-US', {
+                                ? new Date(featuredEvent.date).toLocaleDateString('id-ID', {
                                     month: 'long',
                                     day: 'numeric',
                                     year: 'numeric',
                                   })
-                                : 'TBA'}
+                                : 'Menyusul'}
                             </p>
                           </div>
                         </div>
@@ -222,10 +222,10 @@ export default async function HomePage() {
                           </div>
                           <div>
                             <p className="text-[#0b3d2e]/60 text-xs uppercase tracking-wider mb-1">
-                              {labels?.fieldLabels?.registeredPlayers || 'Registered Players'}
+                              {labels?.fieldLabels?.registeredPlayers || 'Pemain Terdaftar'}
                             </p>
                             <p className="text-[#0b3d2e]">
-                              {labels?.statusLabels?.registrationOpen || 'Registration Open'}
+                              {labels?.statusLabels?.registrationOpen || 'Pendaftaran Dibuka'}
                             </p>
                           </div>
                         </div>
@@ -235,12 +235,12 @@ export default async function HomePage() {
                     <div>
                       <Button asChild variant="brand" size="cta" className="w-full gap-2">
                         <Link href={`/register/event/${featuredEvent.slug}`}>
-                          <span>{labels?.buttonLabels?.registerNow || 'Register Now'}</span>
+                          <span>{labels?.buttonLabels?.registerNow || 'Daftar Sekarang'}</span>
                           <ArrowRight className="w-4 h-4" />
                         </Link>
                       </Button>
                       <p className="text-center text-[#0b3d2e]/50 text-xs mt-4">
-                        {labels?.miscLabels?.limitedSpots || 'Limited spots available'}
+                        {labels?.miscLabels?.limitedSpots || 'Kuota terbatas'}
                       </p>
                     </div>
                   </div>
@@ -292,20 +292,20 @@ export default async function HomePage() {
               <div className="flex items-center gap-2 mb-4">
                 <span className="w-2 h-2 rounded-full bg-[#0b3d2e] animate-pulse" />
                 <span className="text-[#0b3d2e] text-xs font-bold tracking-[0.2em] uppercase">
-                  {homeContent?.upcomingEventsSection?.label || 'Upcoming Events'}
+                  {homeContent?.upcomingEventsSection?.label || 'Acara Mendatang'}
                 </span>
               </div>
               <h2 className="text-3xl md:text-4xl font-bold text-[#0b3d2e] mb-4">
-                {homeContent?.upcomingEventsSection?.title || 'Tournament Schedule'}
+                {homeContent?.upcomingEventsSection?.title || 'Jadwal Turnamen'}
               </h2>
               <p className="text-[#636364] text-lg">
                 {homeContent?.upcomingEventsSection?.description ||
-                  'Experience championship golf at the finest venues.'}
+                  'Rasakan golf kejuaraan di lapangan terbaik.'}
               </p>
             </div>
 
             <TextLink href="/events">
-              {labels?.buttonLabels?.viewAllEvents || 'View All Events'}
+              {labels?.buttonLabels?.viewAllEvents || 'Lihat Semua Acara'}
             </TextLink>
           </div>
 
@@ -339,13 +339,13 @@ export default async function HomePage() {
                       {idx === 0 ? (
                         <div className="bg-white text-[#0b3d2e] px-4 py-2 rounded-sm flex items-center gap-2 shadow-lg">
                           <Star className="w-4 h-4 fill-current text-[#D66232]" />
-                          <span className="text-xs uppercase tracking-wider">Next Event</span>
+                          <span className="text-xs uppercase tracking-wider">Acara Berikutnya</span>
                         </div>
                       ) : (
                         <span className="bg-white/90 text-[#0b3d2e] text-xs px-3 py-1.5 rounded uppercase tracking-wide shadow-lg">
                           {event.date
-                            ? new Date(event.date).toLocaleDateString('en-US', { month: 'long' })
-                            : 'Upcoming'}
+                            ? new Date(event.date).toLocaleDateString('id-ID', { month: 'long' })
+                            : 'Mendatang'}
                         </span>
                       )}
                     </div>
@@ -359,22 +359,22 @@ export default async function HomePage() {
                         <CalendarDays className="w-4 h-4 text-[#0b3d2e]" />
                         <span className="text-sm">
                           {event.date
-                            ? new Date(event.date).toLocaleDateString('en-US', {
+                            ? new Date(event.date).toLocaleDateString('id-ID', {
                                 month: 'short',
                                 day: 'numeric',
                                 year: 'numeric',
                               })
-                            : 'TBA'}
+                            : 'Menyusul'}
                         </span>
                       </div>
                       <div className="flex items-center gap-3 text-[#636364]">
                         <MapPin className="w-4 h-4 text-[#0b3d2e]" />
-                        <span className="text-sm">{event.location || 'TBA'}</span>
+                        <span className="text-sm">{event.location || 'Menyusul'}</span>
                       </div>
                       {event.prizeFund && (
                         <div className="flex items-center gap-3 text-[#636364]">
                           <Trophy className="w-4 h-4 text-[#0b3d2e]" />
-                          <span className="text-sm">Prize Pool: {event.prizeFund}</span>
+                          <span className="text-sm">Total Hadiah: {event.prizeFund}</span>
                         </div>
                       )}
                     </div>
@@ -382,14 +382,14 @@ export default async function HomePage() {
                     <div className="border-t border-[#0b3d2e]/10 pt-4 flex justify-between items-center">
                       <div>
                         <p className="text-[#636364] text-xs uppercase tracking-wider mb-1">
-                          Registration
+                          Pendaftaran
                         </p>
                         <p className="text-[#0b3d2e]">
-                          {event.status === 'open' ? 'Open Now' : 'Coming Soon'}
+                          {event.status === 'open' ? 'Dibuka Sekarang' : 'Segera Hadir'}
                         </p>
                       </div>
                       <Button asChild variant="brandSecondary" size="ctaSm">
-                        <Link href={`/events/${event.slug}`}>Details</Link>
+                        <Link href={`/events/${event.slug}`}>Detail</Link>
                       </Button>
                     </div>
                   </div>
@@ -457,7 +457,7 @@ export default async function HomePage() {
         <section id="sponsors" className="py-12 relative overflow-hidden">
           <div className="container mx-auto px-6 mb-8">
             <span className="text-[#0b3d2e] text-xs font-bold tracking-[0.2em] uppercase block text-center opacity-80">
-              {homeContent?.partnersSection?.label || 'Official Partners'}
+              {homeContent?.partnersSection?.label || 'Mitra Resmi'}
             </span>
           </div>
 
@@ -528,7 +528,7 @@ export default async function HomePage() {
                 </p>
               </div>
               <TextLink href="/players">
-                {labels?.buttonLabels?.viewAllPlayers || 'View All Players'}
+                {labels?.buttonLabels?.viewAllPlayers || 'Lihat Semua Pemain'}
               </TextLink>
             </div>
 
@@ -573,15 +573,15 @@ export default async function HomePage() {
             <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6">
               <div>
                 <h2 className="text-3xl md:text-4xl font-bold text-[#0b3d2e] mb-4">
-                  {homeContent?.newsSection?.title || 'Latest News'}
+                  {homeContent?.newsSection?.title || 'Berita Terbaru'}
                 </h2>
                 <p className="text-[#636364] text-lg">
                   {homeContent?.newsSection?.description ||
-                    'Updates from the green and behind the scenes.'}
+                    'Kabar dari lapangan dan di balik layar.'}
                 </p>
               </div>
               <TextLink href="/news">
-                {labels?.buttonLabels?.viewAllNews || 'View News Archive'}
+                {labels?.buttonLabels?.viewAllNews || 'Lihat Arsip Berita'}
               </TextLink>
             </div>
 
@@ -621,7 +621,7 @@ export default async function HomePage() {
                       <div className="mb-auto">
                         <p className="text-[#0b3d2e] text-xs font-medium mb-2">
                           {item.publishedDate
-                            ? new Date(item.publishedDate).toLocaleDateString('en-US', {
+                            ? new Date(item.publishedDate).toLocaleDateString('id-ID', {
                                 month: 'short',
                                 day: 'numeric',
                                 year: 'numeric',
@@ -633,7 +633,7 @@ export default async function HomePage() {
                         </h3>
                       </div>
                       <div className="flex items-center text-[#636364] text-sm group-hover:text-[#0b3d2e] transition-colors mt-4">
-                        {labels?.buttonLabels?.readArticle || 'Read Article'}{' '}
+                        {labels?.buttonLabels?.readArticle || 'Baca Artikel'}{' '}
                         <ArrowUpRight className="w-4 h-4 ml-1" />
                       </div>
                     </div>

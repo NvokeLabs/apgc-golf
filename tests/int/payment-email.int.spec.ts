@@ -16,15 +16,15 @@ const base: PaymentInstructionsParams = {
   bankName: 'BCA',
   accountNumber: '1234567890',
   accountHolder: 'APGC Golf',
-  instructions: 'Transfer the exact amount.',
+  instructions: 'Transfer sesuai nominal.',
   amount: 500_000,
   reference: 'reg-42',
   uploadUrl: 'https://apgc.test/register/event/spring-open/upload?token=abc.def',
 }
 
 describe('payment instructions email', () => {
-  it('has a "Complete your payment" subject', () => {
-    expect(PAYMENT_EMAIL_SUBJECT.toLowerCase()).toContain('complete your payment')
+  it('has a "Selesaikan pembayaran" subject', () => {
+    expect(PAYMENT_EMAIL_SUBJECT.toLowerCase()).toContain('selesaikan pembayaran')
   })
 
   it('includes bank details, amount, reference and the upload link', () => {
@@ -33,7 +33,7 @@ describe('payment instructions email', () => {
     expect(html).toContain('1234567890')
     expect(html).toContain('APGC Golf')
     expect(html).toContain('reg-42')
-    expect(html).toContain('Transfer the exact amount.')
+    expect(html).toContain('Transfer sesuai nominal.')
     // exact amount, formatted as IDR
     expect(html).toContain('500.000')
     // tokenized upload link present as an href

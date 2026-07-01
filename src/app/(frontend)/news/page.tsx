@@ -9,8 +9,8 @@ import Link from 'next/link'
 import { ArrowRight } from 'lucide-react'
 
 export const metadata: Metadata = {
-  title: 'News | APGC Golf',
-  description: 'Stay updated with the latest news, tournament recaps, and stories from APGC Golf.',
+  title: 'Berita | APGC Golf',
+  description: 'Ikuti berita terbaru, rangkuman turnamen, dan cerita dari APGC Golf.',
 }
 
 export const revalidate = 1800 // Revalidate every 30 minutes
@@ -45,10 +45,10 @@ export default async function NewsPage() {
         <div className="flex flex-col md:flex-row justify-between items-end mb-12 gap-6 border-b border-[#0b3d2e]/10 pb-8">
           <div>
             <span className="text-[#0b3d2e] text-xs font-bold tracking-[0.2em] uppercase mb-2 block">
-              Latest Updates
+              Kabar Terbaru
             </span>
             <h1 className="text-4xl md:text-5xl font-light text-[#0b3d2e]">
-              News & <span className="font-serif italic font-medium">Insights</span>
+              Berita & <span className="font-serif italic font-medium">Wawasan</span>
             </h1>
           </div>
         </div>
@@ -78,7 +78,7 @@ export default async function NewsPage() {
 
                   <div className="absolute bottom-0 left-0 p-8 md:p-12 max-w-3xl">
                     <span className="px-3 py-1 bg-[#0b3d2e] text-white rounded-full text-[10px] uppercase tracking-widest font-bold mb-4 inline-block">
-                      Featured Story
+                      Berita Utama
                     </span>
                     <h2 className="text-3xl md:text-5xl text-white font-serif italic mb-4 leading-tight group-hover:text-[#c2ecdb] transition-colors">
                       {featuredArticle.title}
@@ -91,7 +91,7 @@ export default async function NewsPage() {
                     <div className="flex items-center gap-6 text-sm text-white/60">
                       <span>
                         {featuredArticle.publishedDate
-                          ? new Date(featuredArticle.publishedDate).toLocaleDateString('en-US', {
+                          ? new Date(featuredArticle.publishedDate).toLocaleDateString('id-ID', {
                               month: 'short',
                               day: 'numeric',
                               year: 'numeric',
@@ -100,7 +100,7 @@ export default async function NewsPage() {
                       </span>
                       {featuredArticle.readTime && <span>{featuredArticle.readTime}</span>}
                       <span className="flex items-center text-white font-medium ml-auto md:ml-0">
-                        Read Article{' '}
+                        Baca Artikel{' '}
                         <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-2 transition-transform" />
                       </span>
                     </div>
@@ -157,7 +157,7 @@ export default async function NewsPage() {
                       <div className="pt-4 border-t border-[#0b3d2e]/10 flex justify-between items-center text-xs text-[#636364]">
                         <span>
                           {article.publishedDate
-                            ? new Date(article.publishedDate).toLocaleDateString('en-US', {
+                            ? new Date(article.publishedDate).toLocaleDateString('id-ID', {
                                 month: 'short',
                                 day: 'numeric',
                                 year: 'numeric',
@@ -174,7 +174,7 @@ export default async function NewsPage() {
           </div>
         ) : (
           <div className="text-center py-24 border border-[#0b3d2e]/10 rounded-2xl bg-white/40">
-            <p className="text-[#636364] text-lg">No articles found</p>
+            <p className="text-[#636364] text-lg">Tidak ada artikel ditemukan</p>
           </div>
         )}
       </div>

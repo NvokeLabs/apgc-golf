@@ -38,13 +38,13 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
 
   if (!event) {
     return {
-      title: 'Event Not Found | APGC Golf',
+      title: 'Acara Tidak Ditemukan | APGC Golf',
     }
   }
 
   return {
-    title: `Register for ${event.title} | APGC Golf`,
-    description: `Register for ${event.title} at ${event.location}.`,
+    title: `Daftar untuk ${event.title} | APGC Golf`,
+    description: `Daftar untuk ${event.title} di ${event.location}.`,
   }
 }
 
@@ -65,7 +65,7 @@ export default async function EventRegistrationPage({ params }: Args) {
   const content = formContent?.eventRegistration
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString('id-ID', {
       weekday: 'long',
       month: 'long',
       day: 'numeric',
@@ -88,7 +88,7 @@ export default async function EventRegistrationPage({ params }: Args) {
         className="mb-8 inline-flex items-center gap-2 text-sm text-[#636364] hover:text-[#0b3d2e]"
       >
         <ArrowLeft className="h-4 w-4" />
-        {labels?.navigationLabels?.backToEvent || 'Back to Event'}
+        {labels?.navigationLabels?.backToEvent || 'Kembali ke Acara'}
       </Link>
 
       <div className="grid gap-8 lg:grid-cols-3">
@@ -96,10 +96,10 @@ export default async function EventRegistrationPage({ params }: Args) {
         <div className="lg:col-span-2">
           <GlassCard className="p-6 md:p-8">
             <h1 className="mb-2 text-3xl font-bold text-[#0b3d2e] md:text-4xl">
-              {content?.pageTitle || 'Register for'} {event.title}
+              {content?.pageTitle || 'Daftar untuk'} {event.title}
             </h1>
             <p className="mb-8 text-[#636364] text-lg">
-              {content?.pageDescription || 'Fill out the form below to register for this event'}
+              {content?.pageDescription || 'Isi formulir di bawah ini untuk mendaftar acara ini'}
             </p>
 
             {canRegister ? (
@@ -113,10 +113,10 @@ export default async function EventRegistrationPage({ params }: Args) {
               <div className="rounded-lg border border-[#0b3d2e]/10 bg-[#0b3d2e]/5 p-8 text-center">
                 <p className="text-lg text-[#636364]">
                   {formContent?.errorMessages?.registrationClosed ||
-                    'Registration for this event is currently closed.'}
+                    'Pendaftaran untuk acara ini sedang ditutup.'}
                 </p>
                 <TextLink href="/events" className="mt-4 justify-center text-sm">
-                  {labels?.navigationLabels?.viewOtherEvents || 'View other events'}
+                  {labels?.navigationLabels?.viewOtherEvents || 'Lihat acara lainnya'}
                 </TextLink>
               </div>
             )}
@@ -127,14 +127,14 @@ export default async function EventRegistrationPage({ params }: Args) {
         <div>
           <GlassCard className="p-6">
             <h2 className="mb-4 text-lg font-bold text-[#0b3d2e]">
-              {content?.eventSummaryTitle || 'Event Summary'}
+              {content?.eventSummaryTitle || 'Ringkasan Acara'}
             </h2>
 
             <div className="space-y-4">
               <div className="flex items-start gap-3">
                 <CalendarDays className="mt-1 h-5 w-5 text-[#0b3d2e]" />
                 <div>
-                  <p className="text-sm text-[#636364]">{labels?.fieldLabels?.date || 'Date'}</p>
+                  <p className="text-sm text-[#636364]">{labels?.fieldLabels?.date || 'Tanggal'}</p>
                   <p className="text-[#0b3d2e]">{formatDate(event.date)}</p>
                 </div>
               </div>
@@ -143,7 +143,7 @@ export default async function EventRegistrationPage({ params }: Args) {
                 <MapPin className="mt-1 h-5 w-5 text-[#0b3d2e]" />
                 <div>
                   <p className="text-sm text-[#636364]">
-                    {labels?.fieldLabels?.location || 'Location'}
+                    {labels?.fieldLabels?.location || 'Lokasi'}
                   </p>
                   <p className="text-[#0b3d2e]">{event.location}</p>
                 </div>
@@ -152,7 +152,7 @@ export default async function EventRegistrationPage({ params }: Args) {
               {event.price && (
                 <div className="border-t border-[#0b3d2e]/10 pt-4">
                   <p className="text-sm text-[#636364]">
-                    {labels?.fieldLabels?.entryFee || 'Entry Fee'}
+                    {labels?.fieldLabels?.entryFee || 'Biaya Pendaftaran'}
                   </p>
                   <p className="text-2xl font-bold text-[#0b3d2e]">{formatPrice(event.price)}</p>
                   {event.alumniPrice && (

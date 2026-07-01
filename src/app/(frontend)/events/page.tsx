@@ -10,9 +10,9 @@ import { MapPin, Calendar, Trophy, ArrowRight } from 'lucide-react'
 import { getSiteLabels } from '@/utilities/getSiteContent'
 
 export const metadata: Metadata = {
-  title: 'Events | APGC Golf',
+  title: 'Acara | APGC Golf',
   description:
-    'View upcoming tournaments and events. Register for championships, qualifiers, and more.',
+    'Lihat turnamen dan acara mendatang. Daftar untuk championship, kualifikasi, dan lainnya.',
 }
 
 export const revalidate = 1800 // Revalidate every 30 minutes
@@ -46,13 +46,13 @@ export default async function EventsPage() {
         {/* Header Section */}
         <div className="mb-12 text-center max-w-2xl mx-auto">
           <span className="text-[#0b3d2e] text-xs font-bold tracking-[0.2em] uppercase mb-4 block">
-            Tournament Schedule
+            Jadwal Turnamen
           </span>
           <h1 className="text-4xl md:text-5xl font-light text-[#0b3d2e] mb-6">
-            Upcoming <span className="font-serif italic font-medium">Events</span>
+            Acara <span className="font-serif italic font-medium">Mendatang</span>
           </h1>
           <p className="text-[#636364] text-lg mb-8">
-            Join the world&apos;s most prestigious golf tournaments across iconic venues.
+            Ikuti turnamen golf paling bergengsi di lapangan-lapangan ikonik.
           </p>
         </div>
 
@@ -102,7 +102,7 @@ export default async function EventsPage() {
                         <Calendar className="w-4 h-4" />
                         <span className="text-xs font-bold uppercase tracking-wider">
                           {event.date
-                            ? new Date(event.date).toLocaleDateString('en-US', {
+                            ? new Date(event.date).toLocaleDateString('id-ID', {
                                 month: 'short',
                                 day: 'numeric',
                                 year: 'numeric',
@@ -133,7 +133,7 @@ export default async function EventsPage() {
                             className={`w-5 h-5 shrink-0 ${event.status === 'closed' ? 'text-gray-500' : 'text-[#0b3d2e]'}`}
                           />
                           <span className="font-light">
-                            {labels?.fieldLabels?.prizeFund || 'Prize Fund'}:{' '}
+                            {labels?.fieldLabels?.prizeFund || 'Total Hadiah'}:{' '}
                             <span
                               className={`font-medium ${event.status === 'closed' ? 'text-gray-600' : 'text-[#0b3d2e]'}`}
                             >
@@ -155,16 +155,16 @@ export default async function EventsPage() {
                         }`}
                       >
                         {event.status === 'open'
-                          ? labels?.statusLabels?.registrationOpen || 'Registration Open'
+                          ? labels?.statusLabels?.registrationOpen || 'Pendaftaran Dibuka'
                           : event.status === 'closed'
-                            ? labels?.statusLabels?.closed || 'Closed'
+                            ? labels?.statusLabels?.closed || 'Ditutup'
                             : event.status === 'sold-out'
-                              ? labels?.statusLabels?.soldOut || 'Sold Out'
-                              : labels?.statusLabels?.upcoming || 'Upcoming'}
+                              ? labels?.statusLabels?.soldOut || 'Tiket Habis'
+                              : labels?.statusLabels?.upcoming || 'Mendatang'}
                       </span>
 
                       <span className="text-[#0b3d2e] hover:text-[#0b3d2e] hover:bg-[#0b3d2e]/10 font-medium text-sm flex items-center gap-2 group/btn">
-                        {labels?.buttonLabels?.eventDetails || 'Event Details'}
+                        {labels?.buttonLabels?.eventDetails || 'Detail Acara'}
                         <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
                       </span>
                     </div>
@@ -175,7 +175,7 @@ export default async function EventsPage() {
           ) : (
             <div className="col-span-full text-center py-12">
               <p className="text-[#636364]">
-                {labels?.miscLabels?.noEventsFound || 'No events found.'}
+                {labels?.miscLabels?.noEventsFound || 'Tidak ada acara ditemukan.'}
               </p>
             </div>
           )}

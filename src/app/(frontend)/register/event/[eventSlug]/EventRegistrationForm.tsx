@@ -43,7 +43,7 @@ export function EventRegistrationForm({
       })
 
       if (!result.success) {
-        throw new Error(result.error || 'Failed to process registration')
+        throw new Error(result.error || 'Gagal memproses pendaftaran')
       }
 
       // Manual bank transfer (launch default): go to the tokenized upload page
@@ -56,12 +56,12 @@ export function EventRegistrationForm({
         // Legacy Xendit path
         window.location.href = result.checkoutUrl
       } else {
-        throw new Error('No upload link returned')
+        throw new Error('Tautan unggah tidak tersedia')
       }
     } catch (err) {
       console.error('Registration error:', err)
       setError(
-        err instanceof Error ? err.message : 'Failed to submit registration. Please try again.',
+        err instanceof Error ? err.message : 'Gagal mengirim pendaftaran. Silakan coba lagi.',
       )
       setIsSubmitting(false)
     }
@@ -78,12 +78,12 @@ export function EventRegistrationForm({
       {/* Personal Information */}
       <div>
         <h3 className="mb-4 font-semibold text-gray-900">
-          {formContent?.personalInfoHeading || 'Personal Information'}
+          {formContent?.personalInfoHeading || 'Informasi Pribadi'}
         </h3>
         <div className="grid gap-4 sm:grid-cols-2">
           <div>
             <label htmlFor="playerName" className="mb-2 block text-sm text-gray-600">
-              {formContent?.fullNameLabel || 'Full Name *'}
+              {formContent?.fullNameLabel || 'Nama Lengkap *'}
             </label>
             <input
               type="text"
@@ -91,12 +91,12 @@ export function EventRegistrationForm({
               name="playerName"
               required
               className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-[#0b3d2e] focus:outline-none focus:ring-1 focus:ring-[#0b3d2e]"
-              placeholder={formContent?.fullNamePlaceholder || 'Enter your full name'}
+              placeholder={formContent?.fullNamePlaceholder || 'Masukkan nama lengkap Anda'}
             />
           </div>
           <div>
             <label htmlFor="email" className="mb-2 block text-sm text-gray-600">
-              {formContent?.emailLabel || 'Email Address *'}
+              {formContent?.emailLabel || 'Alamat Email *'}
             </label>
             <input
               type="email"
@@ -109,7 +109,7 @@ export function EventRegistrationForm({
           </div>
           <div className="sm:col-span-2">
             <label htmlFor="phone" className="mb-2 block text-sm text-gray-600">
-              {formContent?.phoneLabel || 'Phone Number'}
+              {formContent?.phoneLabel || 'Nomor Telepon'}
             </label>
             <div className="flex">
               <span className="inline-flex items-center rounded-l-lg border border-r-0 border-gray-300 bg-gray-50 px-4 text-gray-500">
@@ -130,12 +130,12 @@ export function EventRegistrationForm({
       {/* Registration Details */}
       <div>
         <h3 className="mb-4 font-semibold text-gray-900">
-          {formContent?.registrationDetailsHeading || 'Registration Details'}
+          {formContent?.registrationDetailsHeading || 'Detail Pendaftaran'}
         </h3>
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="sm:col-span-2">
             <label htmlFor="category" className="mb-2 block text-sm text-gray-600">
-              {formContent?.categoryLabel || 'Category *'}
+              {formContent?.categoryLabel || 'Kategori *'}
             </label>
             <select
               id="category"
@@ -144,7 +144,7 @@ export function EventRegistrationForm({
               className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-[#0b3d2e] focus:outline-none focus:ring-1 focus:ring-[#0b3d2e]"
             >
               <option value="general">
-                {categoryOptions?.find((c) => c.value === 'general')?.label || 'General'}
+                {categoryOptions?.find((c) => c.value === 'general')?.label || 'Umum'}
               </option>
               {categoryOptions && categoryOptions.length > 0 ? (
                 categoryOptions
@@ -165,14 +165,16 @@ export function EventRegistrationForm({
       {/* Additional Notes */}
       <div>
         <label htmlFor="notes" className="mb-2 block text-sm text-gray-600">
-          {formContent?.notesLabel || 'Additional Notes'}
+          {formContent?.notesLabel || 'Catatan Tambahan'}
         </label>
         <textarea
           id="notes"
           name="notes"
           rows={3}
           className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-[#0b3d2e] focus:outline-none focus:ring-1 focus:ring-[#0b3d2e]"
-          placeholder={formContent?.notesPlaceholder || 'Any special requirements or notes...'}
+          placeholder={
+            formContent?.notesPlaceholder || 'Permintaan khusus atau catatan tambahan...'
+          }
         />
       </div>
 
@@ -185,13 +187,13 @@ export function EventRegistrationForm({
         className="w-full font-semibold disabled:cursor-not-allowed disabled:opacity-50"
       >
         {isSubmitting
-          ? formContent?.processingText || 'Processing...'
-          : formContent?.submitButtonText || 'Continue to Payment'}
+          ? formContent?.processingText || 'Memproses...'
+          : formContent?.submitButtonText || 'Lanjut ke Pembayaran'}
       </Button>
 
       <p className="text-center text-xs text-gray-500">
         {formContent?.termsText ||
-          'By registering, you agree to our terms and conditions. Next you will see the bank-transfer instructions and upload your transfer proof.'}
+          'Dengan mendaftar, Anda menyetujui syarat dan ketentuan kami. Selanjutnya Anda akan melihat instruksi transfer bank dan mengunggah bukti transfer Anda.'}
       </p>
     </form>
   )

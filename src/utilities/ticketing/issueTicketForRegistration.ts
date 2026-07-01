@@ -108,7 +108,7 @@ export async function issueTicketForRegistration(
   // 6. Build event date string (same logic as the webhook)
   const eventDate =
     typeof event === 'object' && event.date
-      ? new Date(event.date).toLocaleDateString('en-US', {
+      ? new Date(event.date).toLocaleDateString('id-ID', {
           weekday: 'long',
           year: 'numeric',
           month: 'long',

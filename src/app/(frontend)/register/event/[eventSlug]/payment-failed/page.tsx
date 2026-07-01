@@ -6,8 +6,8 @@ import { Button } from '@/components/ui/button'
 import { getFormContent, getSiteLabels } from '@/utilities/getSiteContent'
 
 export const metadata: Metadata = {
-  title: 'Payment Failed | APGC Golf',
-  description: 'Your payment could not be processed.',
+  title: 'Pembayaran Gagal | APGC Golf',
+  description: 'Pembayaran Anda tidak dapat diproses.',
 }
 
 type Props = {
@@ -27,18 +27,18 @@ export default async function PaymentFailedPage({ params }: Props) {
         </div>
 
         <h1 className="mb-4 text-3xl font-bold text-[#0b3d2e] md:text-4xl">
-          {errorContent?.paymentFailedTitle || 'Payment Failed'}
+          {errorContent?.paymentFailedTitle || 'Pembayaran Gagal'}
         </h1>
 
         <p className="mb-6 text-[#636364] text-lg">
           {errorContent?.paymentFailedDescription ||
-            'Unfortunately, your payment could not be processed. This may be due to insufficient funds, an expired card, or a temporary issue with the payment provider.'}
+            'Maaf, pembayaran Anda tidak dapat diproses. Ini bisa disebabkan oleh saldo tidak mencukupi, kartu kedaluwarsa, atau masalah sementara pada penyedia pembayaran.'}
         </p>
 
         <div className="mb-8 rounded-lg bg-amber-50 p-4">
           <p className="text-sm text-amber-700">
             {errorContent?.paymentFailedSecondary ||
-              'Your registration has been saved. You can try again with a different payment method or contact us if you continue to experience issues.'}
+              'Pendaftaran Anda telah tersimpan. Anda dapat mencoba lagi dengan metode pembayaran lain atau menghubungi kami jika masalah berlanjut.'}
           </p>
         </div>
 
@@ -46,24 +46,24 @@ export default async function PaymentFailedPage({ params }: Props) {
           <Button asChild variant="brand" size="cta" className="w-full gap-2 font-semibold">
             <Link href={`/register/event/${eventSlug}`}>
               <RefreshCw className="h-4 w-4" />
-              {labels?.buttonLabels?.tryAgain || 'Try Again'}
+              {labels?.buttonLabels?.tryAgain || 'Coba Lagi'}
             </Link>
           </Button>
 
           <Button asChild variant="brandOutline" size="cta" className="w-full gap-2 font-medium">
             <Link href="/events">
               <ArrowLeft className="h-4 w-4" />
-              {labels?.navigationLabels?.backToEvents || 'Back to Events'}
+              {labels?.navigationLabels?.backToEvents || 'Kembali ke Acara'}
             </Link>
           </Button>
 
           <p className="text-sm text-[#636364]">
-            {errorContent?.needHelpText || 'Need help?'}{' '}
+            {errorContent?.needHelpText || 'Butuh bantuan?'}{' '}
             <a
               href={`mailto:${errorContent?.contactEmail || 'info@apgc-golf.com'}`}
               className="text-[#0b3d2e] hover:underline"
             >
-              {errorContent?.contactUsText || 'Contact us'}
+              {errorContent?.contactUsText || 'Hubungi kami'}
             </a>
           </p>
         </div>

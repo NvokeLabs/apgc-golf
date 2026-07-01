@@ -33,7 +33,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
 
     // Format date
     const eventDate = event.date
-      ? new Date(event.date).toLocaleDateString('en-US', {
+      ? new Date(event.date).toLocaleDateString('id-ID', {
           weekday: 'long',
           year: 'numeric',
           month: 'long',

@@ -47,7 +47,7 @@ export function EventCard({ event, featured = false, className }: EventCardProps
     typeof event.image === 'object' && event.image?.url ? event.image.url : '/placeholder-event.jpg'
 
   const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
+    return new Date(dateString).toLocaleDateString('id-ID', {
       month: 'short',
       day: 'numeric',
       year: 'numeric',

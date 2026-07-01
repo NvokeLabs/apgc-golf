@@ -8,10 +8,10 @@ export default function NotFound() {
     <div className="container pt-28 pb-16">
       <div className="prose max-w-none">
         <h1 style={{ marginBottom: 0 }}>404</h1>
-        <p className="mb-4">This page could not be found.</p>
+        <p className="mb-4">Halaman ini tidak dapat ditemukan.</p>
       </div>
       <Button asChild variant="default">
-        <Link href="/">Go home</Link>
+        <Link href="/">Kembali ke Beranda</Link>
       </Button>
     </div>
   )

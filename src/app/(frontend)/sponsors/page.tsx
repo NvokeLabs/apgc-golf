@@ -21,9 +21,8 @@ import {
 } from '@/utilities/getSiteContent'
 
 export const metadata: Metadata = {
-  title: 'Sponsors | APGC Golf',
-  description:
-    'Meet our sponsors and partners. Learn about sponsorship opportunities with APGC Golf.',
+  title: 'Sponsor | APGC Golf',
+  description: 'Temui sponsor dan mitra kami. Pelajari peluang sponsorship bersama APGC Golf.',
 }
 
 export const revalidate = 3600 // Revalidate every hour
@@ -149,17 +148,17 @@ export default async function SponsorsPage() {
         {/* Header */}
         <div className="mb-12 text-center max-w-3xl mx-auto">
           <span className="text-[#0b3d2e] text-xs font-bold tracking-[0.2em] uppercase mb-4 block">
-            {pageContent?.header?.label || 'Our Partners'}
+            {pageContent?.header?.label || 'Mitra Kami'}
           </span>
           <h1 className="text-4xl md:text-5xl font-light text-[#0b3d2e] mb-6">
-            {pageContent?.header?.title || 'The Driving'}{' '}
+            {pageContent?.header?.title || 'Penggerak'}{' '}
             <span className="font-serif italic font-medium">
-              {pageContent?.header?.titleHighlight || 'Force'}
+              {pageContent?.header?.titleHighlight || 'Utama'}
             </span>
           </h1>
           <p className="text-[#636364] text-lg">
             {pageContent?.header?.description ||
-              'We are proud to partner with world-leading brands who share our passion for excellence, tradition, and the future of golf.'}
+              'Kami bangga bermitra dengan merek-merek terkemuka dunia yang berbagi semangat kami akan keunggulan, tradisi, dan masa depan golf.'}
           </p>
         </div>
 
@@ -245,14 +244,14 @@ export default async function SponsorsPage() {
         <div className="py-24 border-t border-[#0b3d2e]/10">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#0b3d2e] mb-4">
-              {pageContent?.becomeASponsor?.title || 'Become a'}{' '}
+              {pageContent?.becomeASponsor?.title || 'Jadilah'}{' '}
               <span className="font-serif italic font-medium">
                 {pageContent?.becomeASponsor?.titleHighlight || 'Sponsor'}
               </span>
             </h2>
             <p className="text-[#636364] max-w-2xl mx-auto">
               {pageContent?.becomeASponsor?.description ||
-                'Join an elite group of global brands and connect with a passionate audience of affluent golf enthusiasts.'}
+                'Bergabunglah dengan kelompok elite merek global dan terhubung dengan audiens penggemar golf berkelas yang penuh semangat.'}
             </p>
           </div>
 
@@ -264,7 +263,7 @@ export default async function SponsorsPage() {
               >
                 {tier.isHighlighted && (
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#D66232] text-white border-2 border-[#D66232] text-xs font-bold px-4 py-1 rounded-full uppercase tracking-widest shadow-lg">
-                    {labels?.miscLabels?.mostPopular || 'Most Popular'}
+                    {labels?.miscLabels?.mostPopular || 'Paling Populer'}
                   </div>
                 )}
 
@@ -287,7 +286,7 @@ export default async function SponsorsPage() {
 
                 <Button asChild variant="brandOutline" className="w-full py-4 text-lg group gap-2">
                   <Link href="/register/sponsor">
-                    {labels?.buttonLabels?.inquireNow || 'Inquire Now'}
+                    {labels?.buttonLabels?.inquireNow || 'Tanya Sekarang'}
                     <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
                   </Link>
                 </Button>
@@ -300,14 +299,14 @@ export default async function SponsorsPage() {
         <div className="py-24 border-t border-[#0b3d2e]/10">
           <div className="text-center mb-12">
             <h2 className="text-3xl md:text-4xl font-bold text-[#0b3d2e] mb-6">
-              {pageContent?.whyPartner?.title || 'Why'}{' '}
+              {pageContent?.whyPartner?.title || 'Mengapa'}{' '}
               <span className="font-serif italic font-medium">
-                {pageContent?.whyPartner?.titleHighlight || 'Partner With Us?'}
+                {pageContent?.whyPartner?.titleHighlight || 'Bermitra Dengan Kami?'}
               </span>
             </h2>
             <p className="text-[#636364] max-w-3xl mx-auto text-lg">
               {pageContent?.whyPartner?.description ||
-                'Align your brand with excellence. Our tournament offers a unique platform to engage with a sophisticated audience and drive tangible business results.'}
+                'Selaraskan merek Anda dengan keunggulan. Turnamen kami menawarkan platform unik untuk menjangkau audiens berkelas dan menghasilkan dampak bisnis nyata.'}
             </p>
           </div>
 
@@ -343,10 +342,10 @@ export default async function SponsorsPage() {
                   <div className="w-16 h-16 rounded-full bg-[#0b3d2e]/5 flex items-center justify-center mb-6 text-[#0b3d2e]">
                     <Globe className="w-8 h-8" />
                   </div>
-                  <h3 className="text-xl font-bold text-[#0b3d2e] mb-4">Global Reach</h3>
+                  <h3 className="text-xl font-bold text-[#0b3d2e] mb-4">Jangkauan Global</h3>
                   <p className="text-[#636364] leading-relaxed">
-                    Broadcasted to over 200 countries and territories, reaching 500 million
-                    households worldwide, ensuring your brand is seen on a global stage.
+                    Disiarkan ke lebih dari 200 negara dan wilayah, menjangkau 500 juta rumah tangga
+                    di seluruh dunia, memastikan merek Anda terlihat di panggung global.
                   </p>
                 </GlassCard>
 
@@ -354,10 +353,10 @@ export default async function SponsorsPage() {
                   <div className="w-16 h-16 rounded-full bg-[#0b3d2e]/5 flex items-center justify-center mb-6 text-[#0b3d2e]">
                     <Users className="w-8 h-8" />
                   </div>
-                  <h3 className="text-xl font-bold text-[#0b3d2e] mb-4">Elite Audience</h3>
+                  <h3 className="text-xl font-bold text-[#0b3d2e] mb-4">Audiens Elite</h3>
                   <p className="text-[#636364] leading-relaxed">
-                    Connect directly with high-net-worth individuals, corporate leaders, and key
-                    decision-makers in a relaxed, premium environment.
+                    Terhubung langsung dengan individu berpengaruh, pemimpin perusahaan, dan
+                    pengambil keputusan utama dalam lingkungan premium yang santai.
                   </p>
                 </GlassCard>
 
@@ -365,10 +364,10 @@ export default async function SponsorsPage() {
                   <div className="w-16 h-16 rounded-full bg-[#0b3d2e]/5 flex items-center justify-center mb-6 text-[#0b3d2e]">
                     <Handshake className="w-8 h-8" />
                   </div>
-                  <h3 className="text-xl font-bold text-[#0b3d2e] mb-4">Business Networking</h3>
+                  <h3 className="text-xl font-bold text-[#0b3d2e] mb-4">Jejaring Bisnis</h3>
                   <p className="text-[#636364] leading-relaxed">
-                    Exclusive pro-am spots, VIP hospitality, and private events provide unparalleled
-                    opportunities for relationship building and B2B networking.
+                    Slot pro-am eksklusif, layanan VIP, dan acara privat memberikan peluang tak
+                    tertandingi untuk membangun relasi dan jejaring B2B.
                   </p>
                 </GlassCard>
               </>
@@ -378,17 +377,17 @@ export default async function SponsorsPage() {
           <div className="bg-[#0b3d2e] border border-[#0b3d2e]/20 rounded-2xl p-12 text-center relative overflow-hidden">
             <div className="absolute top-0 left-0 w-full h-1 bg-gradient-to-r from-white/0 via-white/20 to-white/0" />
             <h3 className="text-2xl font-light text-white mb-4">
-              {pageContent?.ctaSection?.title || 'Have specific questions?'}
+              {pageContent?.ctaSection?.title || 'Punya pertanyaan khusus?'}
             </h3>
             <p className="text-white/60 mb-8 max-w-2xl mx-auto">
               {pageContent?.ctaSection?.description ||
-                'Our dedicated sponsorship team is here to answer your questions and help customize a package that meets your specific business objectives.'}
+                'Tim sponsorship kami siap menjawab pertanyaan Anda dan membantu menyusun paket yang sesuai dengan tujuan bisnis Anda.'}
             </p>
             <Link
               href={pageContent?.ctaSection?.buttonLink || '/register/sponsor'}
               className="inline-block bg-white text-[#0b3d2e] hover:bg-[#f8f5e9] font-bold px-8 py-4 text-lg rounded-xl transition-transform hover:scale-105"
             >
-              {pageContent?.ctaSection?.buttonText || 'Contact Customer Service'}
+              {pageContent?.ctaSection?.buttonText || 'Hubungi Layanan Pelanggan'}
             </Link>
           </div>
         </div>

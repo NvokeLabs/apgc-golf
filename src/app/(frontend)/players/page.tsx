@@ -10,8 +10,8 @@ import { Trophy, TrendingUp } from 'lucide-react'
 import { getSiteLabels } from '@/utilities/getSiteContent'
 
 export const metadata: Metadata = {
-  title: 'Players | APGC Golf',
-  description: 'Browse our player directory and discover talented golfers in the APGC community.',
+  title: 'Pemain | APGC Golf',
+  description: 'Jelajahi direktori pemain kami dan temukan para pegolf berbakat di komunitas APGC.',
 }
 
 export const revalidate = 1800 // Revalidate every 30 minutes
@@ -81,7 +81,7 @@ export default async function PlayersPage() {
                     )}
                     <div className="absolute inset-0 flex items-center justify-center bg-[#0b3d2e]/10 opacity-0 group-hover:opacity-100 transition-opacity">
                       <p className="text-white font-medium text-sm drop-shadow-md">
-                        {labels?.buttonLabels?.viewProfile || 'View Profile'}
+                        {labels?.buttonLabels?.viewProfile || 'Lihat Profil'}
                       </p>
                     </div>
                   </div>
@@ -100,7 +100,7 @@ export default async function PlayersPage() {
         {/* All Players List */}
         <div className="space-y-3 mb-8">
           <h2 className="text-3xl md:text-4xl font-bold text-[#0b3d2e] mb-6">
-            {labels?.sectionLabels?.allPlayers || 'All Players'}
+            {labels?.sectionLabels?.allPlayers || 'Semua Pemain'}
           </h2>
 
           {players.length > 0 ? (
@@ -131,7 +131,8 @@ export default async function PlayersPage() {
                         {player.name}
                       </h3>
                       <p className="text-[#636364] text-sm">
-                        {player.wins ?? 0} {labels?.fieldLabels?.wins || 'Wins'} • {player.country}
+                        {player.wins ?? 0} {labels?.fieldLabels?.wins || 'Kemenangan'} •{' '}
+                        {player.country}
                       </p>
                     </div>
                   </div>
@@ -143,11 +144,11 @@ export default async function PlayersPage() {
                     <div className="hidden md:flex items-center gap-2 text-[#636364]">
                       <TrendingUp className="w-4 h-4 text-[#0b3d2e]" />
                       <span className="text-sm">
-                        {player.points ?? 0} {labels?.miscLabels?.pts || 'pts'}
+                        {player.points ?? 0} {labels?.miscLabels?.pts || 'poin'}
                       </span>
                     </div>
                     <div className="text-[#636364]">
-                      {labels?.fieldLabels?.rank || 'Rank'}:{' '}
+                      {labels?.fieldLabels?.rank || 'Peringkat'}:{' '}
                       <span className="text-[#0b3d2e] font-medium">#{player.rank || 'N/A'}</span>
                     </div>
                   </div>
@@ -157,7 +158,7 @@ export default async function PlayersPage() {
           ) : (
             <div className="text-center py-12">
               <p className="text-[#636364]">
-                {labels?.miscLabels?.noPlayersFound || 'No players found'}
+                {labels?.miscLabels?.noPlayersFound || 'Tidak ada pemain ditemukan'}
               </p>
             </div>
           )}
