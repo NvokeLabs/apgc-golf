@@ -146,6 +146,14 @@ describe('issueManualRegistration', () => {
     expect(result.error).toMatch(/price/i)
   })
 
+  it('persists the tshirt size on the created registration', async () => {
+    const { deps, create } = makeDeps()
+    await issueManualRegistration(deps, { ...input, tshirtSize: 'M' })
+
+    const created = create.mock.calls[0][0].data
+    expect(created).toMatchObject({ tshirtSize: 'M' })
+  })
+
   it('does not create a registration when validation fails', async () => {
     const { deps, create } = makeDeps({
       payload: { findByID: vi.fn(async () => null), create: vi.fn() },
