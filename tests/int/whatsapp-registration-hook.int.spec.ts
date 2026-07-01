@@ -21,8 +21,11 @@ describe('notifyEventRegistration', () => {
       paymentMethod: 'bank-transfer',
       event: 10,
     }
-    // @ts-expect-error partial hook args for unit test
-    await notifyEventRegistration({ doc, operation: 'create', req })
+    await notifyEventRegistration({
+      doc,
+      operation: 'create',
+      req,
+    } as unknown as Parameters<typeof notifyEventRegistration>[0])
     expect(sendMock).toHaveBeenCalledTimes(1)
     const msg = sendMock.mock.calls[0][0]
     expect(msg).toContain('reg-20')
@@ -31,19 +34,21 @@ describe('notifyEventRegistration', () => {
   })
 
   it('does nothing on update', async () => {
-    // @ts-expect-error partial hook args for unit test
-    await notifyEventRegistration({ doc: { id: 1 }, operation: 'update', req: {} })
+    await notifyEventRegistration({
+      doc: { id: 1 },
+      operation: 'update',
+      req: {},
+    } as unknown as Parameters<typeof notifyEventRegistration>[0])
     expect(sendMock).not.toHaveBeenCalled()
   })
 
   it('still sends (title omitted) if event lookup fails', async () => {
     const req = { payload: { findByID: vi.fn().mockRejectedValue(new Error('no')) } }
-    // @ts-expect-error partial hook args for unit test
     await notifyEventRegistration({
       doc: { id: 5, playerName: 'X', event: 99 },
       operation: 'create',
       req,
-    })
+    } as unknown as Parameters<typeof notifyEventRegistration>[0])
     expect(sendMock).toHaveBeenCalledTimes(1)
     expect(sendMock.mock.calls[0][0]).toContain('reg-5')
   })

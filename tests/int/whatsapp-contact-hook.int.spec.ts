@@ -20,8 +20,11 @@ describe('notifyContactSubmission', () => {
         { field: 'message', value: 'Tanya tiket' },
       ],
     }
-    // @ts-expect-error partial hook args for unit test
-    await notifyContactSubmission({ doc, operation: 'create', req: {} })
+    await notifyContactSubmission({
+      doc,
+      operation: 'create',
+      req: {},
+    } as unknown as Parameters<typeof notifyContactSubmission>[0])
     expect(sendMock).toHaveBeenCalledTimes(1)
     const msg = sendMock.mock.calls[0][0]
     expect(msg).toContain('Pesan Kontak Baru')
@@ -30,8 +33,11 @@ describe('notifyContactSubmission', () => {
   })
 
   it('does nothing on update', async () => {
-    // @ts-expect-error partial hook args for unit test
-    await notifyContactSubmission({ doc: { id: 3 }, operation: 'update', req: {} })
+    await notifyContactSubmission({
+      doc: { id: 3 },
+      operation: 'update',
+      req: {},
+    } as unknown as Parameters<typeof notifyContactSubmission>[0])
     expect(sendMock).not.toHaveBeenCalled()
   })
 })

@@ -20,24 +20,33 @@ describe('notifySponsorInquiry', () => {
       email: 'b@acme.id',
       selectedTier: 'EAGLE',
     }
-    // @ts-expect-error partial hook args for unit test
-    await notifySponsorInquiry({ doc, operation: 'create', req: {} })
+    await notifySponsorInquiry({
+      doc,
+      operation: 'create',
+      req: {},
+    } as unknown as Parameters<typeof notifySponsorInquiry>[0])
     expect(sendMock).toHaveBeenCalledTimes(1)
     expect(sendMock.mock.calls[0][0]).toContain('Acme')
     expect(sendMock.mock.calls[0][0]).toContain('Pengajuan Sponsor Baru')
   })
 
   it('does nothing on update', async () => {
-    // @ts-expect-error partial hook args for unit test
-    await notifySponsorInquiry({ doc: { id: 7 }, operation: 'update', req: {} })
+    await notifySponsorInquiry({
+      doc: { id: 7 },
+      operation: 'update',
+      req: {},
+    } as unknown as Parameters<typeof notifySponsorInquiry>[0])
     expect(sendMock).not.toHaveBeenCalled()
   })
 
   it('never throws even if the sender rejects', async () => {
     sendMock.mockRejectedValueOnce(new Error('boom'))
-    // @ts-expect-error partial hook args for unit test
     await expect(
-      notifySponsorInquiry({ doc: { id: 1 }, operation: 'create', req: {} }),
+      notifySponsorInquiry({
+        doc: { id: 1 },
+        operation: 'create',
+        req: {},
+      } as unknown as Parameters<typeof notifySponsorInquiry>[0]),
     ).resolves.toBeUndefined()
   })
 })
