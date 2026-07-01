@@ -65,14 +65,9 @@ export function buildContactMessage(
   const lines = (input.submissionData ?? []).map(
     ({ field, value }) => `${field}: ${truncate(String(value ?? ''), 500)}`,
   )
-  return truncate(
-    [
-      '📩 Pesan Kontak Baru',
-      ...lines,
-      `Lihat: ${baseUrl}/admin/collections/form-submissions/${input.id}`,
-    ].join('\n'),
-    1000,
-  )
+  const link = `Lihat: ${baseUrl}/admin/collections/form-submissions/${input.id}`
+  const body = truncate(['📩 Pesan Kontak Baru', ...lines].join('\n'), 900)
+  return `${body}\n${link}`
 }
 
 export function buildTransferProofMessage(

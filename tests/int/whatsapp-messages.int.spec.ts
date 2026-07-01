@@ -91,4 +91,20 @@ describe('whatsapp message builders', () => {
     expect(m).not.toContain('undefined')
     expect(m).toContain('reg-9')
   })
+
+  it('keeps the admin link even with several long fields', () => {
+    const long = 'y'.repeat(600)
+    const m = buildContactMessage(
+      {
+        id: 5,
+        submissionData: [
+          { field: 'name', value: long },
+          { field: 'email', value: long },
+          { field: 'message', value: long },
+        ],
+      },
+      BASE,
+    )
+    expect(m).toContain(`${BASE}/admin/collections/form-submissions/5`)
+  })
 })
