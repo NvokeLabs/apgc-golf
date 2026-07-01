@@ -244,4 +244,27 @@ describe('processProofUpload', () => {
     expect(expired.success).toBe(false)
     expect(notify).not.toHaveBeenCalled()
   })
+
+  it('still returns success when notifyProofUploaded rejects', async () => {
+    const verifyToken = () => ({ valid: true as const, registrationId: 42 })
+    const payload = {
+      findByID: vi
+        .fn()
+        .mockResolvedValue({ id: 42, paymentStatus: 'awaiting-payment', status: 'pending' }),
+      create: vi.fn().mockResolvedValue({ id: 100 }),
+      update: vi.fn().mockResolvedValue({ id: 42 }),
+    }
+    const res = await processProofUpload(
+      {
+        payload: payload as never,
+        verifyToken,
+        notifyProofUploaded: vi.fn().mockRejectedValue(new Error('wa down')),
+      },
+      {
+        token: 't',
+        file: { filename: 'p.png', mimeType: 'image/png', size: 1024, data: Buffer.from('x') },
+      },
+    )
+    expect(res.success).toBe(true)
+  })
 })

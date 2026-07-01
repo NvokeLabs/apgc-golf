@@ -52,4 +52,15 @@ describe('notifyEventRegistration', () => {
     expect(sendMock).toHaveBeenCalledTimes(1)
     expect(sendMock.mock.calls[0][0]).toContain('reg-5')
   })
+
+  it('omits the title (no literal "undefined") when a populated event has no title', async () => {
+    const req = { payload: { findByID: vi.fn() } }
+    const doc = { id: 8, playerName: 'Y', event: { title: null } }
+    await notifyEventRegistration({ doc, operation: 'create', req } as unknown as Parameters<
+      typeof notifyEventRegistration
+    >[0])
+    expect(sendMock).toHaveBeenCalledTimes(1)
+    expect(sendMock.mock.calls[0][0]).not.toContain('undefined')
+    expect(req.payload.findByID).not.toHaveBeenCalled()
+  })
 })

@@ -52,4 +52,15 @@ describe('sendWhatsAppNotification', () => {
     const r = await sendWhatsAppNotification('x')
     expect(r.success).toBe(false)
   })
+
+  it('is non-fatal when the request times out (abort)', async () => {
+    vi.stubEnv('FONNTE_TOKEN', 'tok')
+    vi.stubEnv('FONNTE_TARGET', 'g')
+    vi.stubGlobal(
+      'fetch',
+      vi.fn().mockRejectedValue(new DOMException('The operation timed out', 'TimeoutError')),
+    )
+    const r = await sendWhatsAppNotification('x')
+    expect(r.success).toBe(false)
+  })
 })

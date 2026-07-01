@@ -18,6 +18,7 @@ export async function sendWhatsAppNotification(
       method: 'POST',
       headers: { Authorization: token },
       body: new URLSearchParams({ target, message }),
+      signal: AbortSignal.timeout(5000),
     })
     if (!res.ok) {
       const text = await res.text().catch(() => '')

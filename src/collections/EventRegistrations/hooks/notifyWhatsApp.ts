@@ -15,8 +15,10 @@ async function resolveEventTitle(
   },
   event: unknown,
 ): Promise<string | undefined> {
-  if (event && typeof event === 'object' && 'title' in event)
-    return String((event as { title: unknown }).title)
+  if (event && typeof event === 'object' && 'title' in event) {
+    const t = (event as { title?: unknown }).title
+    return t ? String(t) : undefined
+  }
   const id = typeof event === 'number' || typeof event === 'string' ? event : undefined
   if (id == null || !req.payload) return undefined
   try {
