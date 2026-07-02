@@ -47,6 +47,13 @@ export async function createRegistrationWithPayment(
   try {
     const payload = await getPayload({ config })
 
+    // T-shirt size is required for registrants; the form enforces it client-side,
+    // but re-check on the server so a JS-bypassed or non-form caller can't create
+    // a registration without a size.
+    if (!data.tshirtSize) {
+      return { success: false, error: 'Ukuran kaos wajib dipilih' }
+    }
+
     const method = data.paymentMethod ?? 'bank-transfer'
 
     if (method === 'bank-transfer') {
