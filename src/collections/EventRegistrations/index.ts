@@ -135,7 +135,10 @@ export const EventRegistrations: CollectionConfig = {
             {
               name: 'tshirtSize',
               type: 'select',
-              required: true,
+              // Required on the public registration form (client-side), but the
+              // collection field is intentionally optional so a required DB
+              // NOT NULL is not forced onto pre-existing registrations (which
+              // predate this field) and dev auto-push never fails on them.
               label: 'Ukuran Kaos Golf',
               options: [
                 { label: 'S', value: 'S' },

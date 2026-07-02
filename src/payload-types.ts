@@ -1415,7 +1415,7 @@ export interface EventRegistration {
   /**
    * Ukuran kaos golf peserta
    */
-  tshirtSize: 'S' | 'M' | 'L' | 'XL' | 'XXL';
+  tshirtSize?: ('S' | 'M' | 'L' | 'XL' | 'XXL') | null;
   /**
    * Additional notes or special requests
    */
