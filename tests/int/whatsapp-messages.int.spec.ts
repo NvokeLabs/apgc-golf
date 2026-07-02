@@ -107,4 +107,24 @@ describe('whatsapp message builders', () => {
     )
     expect(m).toContain(`${BASE}/admin/collections/form-submissions/5`)
   })
+
+  it('transfer proof message includes tshirt size when present', () => {
+    const m = buildTransferProofMessage(
+      {
+        id: 20,
+        playerName: 'Sita',
+        eventTitle: 'Polinema Cup',
+        amountDue: 4000000,
+        tshirtSize: 'L',
+      },
+      BASE,
+    )
+    expect(m).toContain('Ukuran kaos: L')
+  })
+
+  it('transfer proof message omits the tshirt line (no "undefined") when size is absent', () => {
+    const m = buildTransferProofMessage({ id: 20, playerName: 'Sita' }, BASE)
+    expect(m).not.toContain('Ukuran kaos')
+    expect(m).not.toContain('undefined')
+  })
 })

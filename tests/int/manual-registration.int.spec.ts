@@ -47,6 +47,7 @@ const input = {
   email: 'jane@example.com',
   phone: '081234',
   category: 'general' as const,
+  tshirtSize: 'M' as const,
 }
 
 describe('issueManualRegistration', () => {
@@ -144,6 +145,14 @@ describe('issueManualRegistration', () => {
     expect(result.success).toBe(false)
     if (result.success) throw new Error('expected failure')
     expect(result.error).toMatch(/price/i)
+  })
+
+  it('persists the tshirt size on the created registration', async () => {
+    const { deps, create } = makeDeps()
+    await issueManualRegistration(deps, { ...input, tshirtSize: 'M' })
+
+    const created = create.mock.calls[0][0].data
+    expect(created).toMatchObject({ tshirtSize: 'M' })
   })
 
   it('does not create a registration when validation fails', async () => {
