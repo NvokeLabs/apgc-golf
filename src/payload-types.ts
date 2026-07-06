@@ -1417,6 +1417,14 @@ export interface EventRegistration {
    */
   tshirtSize?: ('S' | 'M' | 'L' | 'XL' | 'XXL') | null;
   /**
+   * Tahun angkatan alumni
+   */
+  alumniClassYear?: number | null;
+  /**
+   * Jurusan alumni
+   */
+  alumniMajor?: string | null;
+  /**
    * Additional notes or special requests
    */
   notes?: string | null;
@@ -2351,6 +2359,8 @@ export interface EventRegistrationsSelect<T extends boolean = true> {
   email?: T;
   phone?: T;
   tshirtSize?: T;
+  alumniClassYear?: T;
+  alumniMajor?: T;
   notes?: T;
   agreedToTerms?: T;
   paymentMethod?: T;

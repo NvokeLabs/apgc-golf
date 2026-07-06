@@ -156,3 +156,39 @@ describe('Story 1: EventRegistrations manual-transfer fields', () => {
     ).resolves.toBeDefined()
   })
 })
+
+describe('Alumni fields (angkatan + jurusan)', () => {
+  it('has alumniClassYear (number) and alumniMajor (text), conditional on alumni', () => {
+    expect(regField('alumniClassYear')?.type).toBe('number')
+    expect(regField('alumniMajor')?.type).toBe('text')
+
+    const yearCond = (
+      regField('alumniClassYear') as { admin?: { condition?: (d: unknown) => unknown } }
+    ).admin?.condition
+    expect(yearCond?.({ category: 'alumni' })).toBeTruthy()
+    expect(yearCond?.({ category: 'general' })).toBeFalsy()
+
+    const majorCond = (
+      regField('alumniMajor') as { admin?: { condition?: (d: unknown) => unknown } }
+    ).admin?.condition
+    expect(majorCond?.({ category: 'alumni' })).toBeTruthy()
+    expect(majorCond?.({ category: 'general' })).toBeFalsy()
+  })
+
+  it('persisted the new alumni columns (DB push verified)', async () => {
+    await expect(
+      payload.find({
+        collection: 'event-registrations',
+        where: { alumniClassYear: { equals: 2015 } },
+        limit: 1,
+      }),
+    ).resolves.toBeDefined()
+    await expect(
+      payload.find({
+        collection: 'event-registrations',
+        where: { alumniMajor: { exists: true } },
+        limit: 1,
+      }),
+    ).resolves.toBeDefined()
+  })
+})

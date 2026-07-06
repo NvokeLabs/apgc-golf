@@ -150,6 +150,27 @@ export const EventRegistrations: CollectionConfig = {
               admin: { description: 'Ukuran kaos golf peserta' },
             },
             {
+              name: 'alumniClassYear',
+              type: 'number',
+              // Optional in the DB (nullable). Required for alumni is enforced on the
+              // public form + server guard, not via DB NOT NULL — so existing/general
+              // registrations stay valid and dev auto-push never trips on null rows.
+              label: 'Angkatan',
+              admin: {
+                description: 'Tahun angkatan alumni',
+                condition: (data) => data?.category === 'alumni',
+              },
+            },
+            {
+              name: 'alumniMajor',
+              type: 'text',
+              label: 'Jurusan',
+              admin: {
+                description: 'Jurusan alumni',
+                condition: (data) => data?.category === 'alumni',
+              },
+            },
+            {
               name: 'notes',
               type: 'textarea',
               admin: {
