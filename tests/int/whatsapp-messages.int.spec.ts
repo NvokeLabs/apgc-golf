@@ -127,4 +127,27 @@ describe('whatsapp message builders', () => {
     expect(m).not.toContain('Ukuran kaos')
     expect(m).not.toContain('undefined')
   })
+
+  it('transfer proof message includes angkatan + jurusan when present', () => {
+    const m = buildTransferProofMessage(
+      {
+        id: 20,
+        playerName: 'Sita',
+        eventTitle: 'Polinema Cup',
+        amountDue: 4000000,
+        alumniClassYear: 2015,
+        alumniMajor: 'Teknik Sipil',
+      },
+      BASE,
+    )
+    expect(m).toContain('Angkatan: 2015')
+    expect(m).toContain('Jurusan: Teknik Sipil')
+  })
+
+  it('omits angkatan + jurusan lines (no "undefined") when absent', () => {
+    const m = buildTransferProofMessage({ id: 20, playerName: 'Sita' }, BASE)
+    expect(m).not.toContain('Angkatan')
+    expect(m).not.toContain('Jurusan')
+    expect(m).not.toContain('undefined')
+  })
 })
