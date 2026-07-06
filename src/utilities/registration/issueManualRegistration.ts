@@ -15,6 +15,8 @@ export type ManualRegistrationInput = {
   category: 'general' | 'alumni'
   notes?: string
   tshirtSize: 'S' | 'M' | 'L' | 'XL' | 'XXL'
+  alumniClassYear?: number
+  alumniMajor?: string
 }
 
 export type ManualRegistrationDeps = {
@@ -84,6 +86,8 @@ export async function issueManualRegistration(
       category: input.category,
       notes: input.notes || undefined,
       tshirtSize: input.tshirtSize,
+      alumniClassYear: input.alumniClassYear,
+      alumniMajor: input.alumniMajor || undefined,
       agreedToTerms: true,
       status: 'pending',
       paymentMethod: 'bank-transfer',

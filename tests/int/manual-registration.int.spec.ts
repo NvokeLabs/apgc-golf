@@ -162,4 +162,17 @@ describe('issueManualRegistration', () => {
     await issueManualRegistration(deps, input)
     expect(create).not.toHaveBeenCalled()
   })
+
+  it('persists alumni angkatan + jurusan on the created registration', async () => {
+    const { deps, create } = makeDeps()
+    await issueManualRegistration(deps, {
+      ...input,
+      category: 'alumni',
+      alumniClassYear: 2015,
+      alumniMajor: 'Teknik Sipil',
+    })
+
+    const created = create.mock.calls[0][0].data
+    expect(created).toMatchObject({ alumniClassYear: 2015, alumniMajor: 'Teknik Sipil' })
+  })
 })
