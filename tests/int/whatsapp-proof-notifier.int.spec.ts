@@ -44,4 +44,25 @@ describe('notifyProofUploaded', () => {
     expect(sendMock).toHaveBeenCalledTimes(1)
     expect(sendMock.mock.calls[0][0]).toContain('Ukuran kaos: XL')
   })
+
+  it('includes the registration angkatan + jurusan in the message', async () => {
+    const payload = {
+      findByID: vi
+        .fn()
+        .mockResolvedValueOnce({
+          id: 20,
+          playerName: 'Sita',
+          amountDue: 4000000,
+          alumniClassYear: 2015,
+          alumniMajor: 'Teknik Sipil',
+          event: 10,
+        })
+        .mockResolvedValueOnce({ title: 'Polinema Cup' }),
+    }
+    await notifyProofUploaded(payload as never, 20)
+    expect(sendMock).toHaveBeenCalledTimes(1)
+    const msg = sendMock.mock.calls[0][0]
+    expect(msg).toContain('Angkatan: 2015')
+    expect(msg).toContain('Jurusan: Teknik Sipil')
+  })
 })
