@@ -30,20 +30,9 @@ import {
   QrCode,
   Banknote,
 } from 'lucide-react'
+import { useAuth } from '@payloadcms/ui'
+import { visibleMenuGroups, type MenuGroup } from './visibleMenuGroups'
 import './styles.scss'
-
-interface MenuItem {
-  name: string
-  href: string
-  icon: React.ElementType
-}
-
-interface MenuGroup {
-  label: string
-  id: string
-  items: MenuItem[]
-  defaultOpen?: boolean
-}
 
 const menuGroups: MenuGroup[] = [
   {
@@ -111,9 +100,11 @@ const menuGroups: MenuGroup[] = [
 
 export function Nav() {
   const pathname = usePathname()
+  const { user } = useAuth()
+  const groups = visibleMenuGroups(menuGroups, (user as { role?: string | null } | null)?.role)
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {}
-    menuGroups.forEach((group) => {
+    groups.forEach((group) => {
       initial[group.id] = group.defaultOpen ?? true
     })
     return initial
@@ -161,7 +152,7 @@ export function Nav() {
         </Link>
 
         {/* Menu Groups */}
-        {menuGroups.map((group) => (
+        {groups.map((group) => (
           <div key={group.id} className="apgc-nav__group">
             <button
               className="apgc-nav__group-toggle"
