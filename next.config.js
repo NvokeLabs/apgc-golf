@@ -60,6 +60,9 @@ const nextConfig = {
     serverActions: {
       bodySizeLimit: '11mb',
     },
+    outputFileTracingIncludes: {
+      '/api/tickets/[id]/pdf': ['./src/components/TicketPDF/assets/ticket-bg.jpg'],
+    },
   },
 }
 
