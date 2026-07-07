@@ -1,10 +1,16 @@
 import { NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import config from '@payload-config'
+import { isRegistrationStaff } from '@/access/roles'
 
-export async function GET() {
+export async function GET(request: Request) {
   try {
     const payload = await getPayload({ config })
+
+    const { user } = await payload.auth({ headers: request.headers })
+    if (isRegistrationStaff(user)) {
+      return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
+    }
 
     // Get counts in parallel
     const [
