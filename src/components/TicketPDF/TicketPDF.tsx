@@ -18,6 +18,11 @@ const py = (fy: number) => fy * PAGE_HEIGHT
 
 const styles = StyleSheet.create({
   page: { position: 'relative' },
+  // Single, explicitly-sized flow child. Anchoring the absolute overlays to this
+  // relative canvas (instead of directly to the Page) keeps the full-height
+  // background + overlays on ONE page — otherwise react-pdf paginates the
+  // absolutely-positioned siblings onto a blank page 2.
+  canvas: { position: 'relative', width: PAGE_WIDTH, height: PAGE_HEIGHT },
   bg: { position: 'absolute', top: 0, left: 0, width: PAGE_WIDTH, height: PAGE_HEIGHT },
   overlayText: {
     position: 'absolute',
@@ -48,57 +53,59 @@ export function TicketPDF({
 
   return (
     <Document>
-      <Page size={[PAGE_WIDTH, PAGE_HEIGHT]} style={styles.page}>
-        {/* Full-bleed artwork */}
-        {/* eslint-disable-next-line jsx-a11y/alt-text -- @react-pdf/renderer Image has no alt */}
-        <Image src={BG_DATA_URL} style={styles.bg} />
+      <Page size={[PAGE_WIDTH, PAGE_HEIGHT]} wrap={false} style={styles.page}>
+        <View style={styles.canvas}>
+          {/* Full-bleed artwork */}
+          {/* eslint-disable-next-line jsx-a11y/alt-text -- @react-pdf/renderer Image has no alt */}
+          <Image src={BG_DATA_URL} style={styles.bg} />
 
-        {/* PLAYER slot */}
-        <Text
-          style={[
-            styles.overlayText,
-            {
-              left: px(SLOTS.player.x),
-              top: py(SLOTS.player.y),
-              width: px(SLOTS.player.w),
-              height: py(SLOTS.player.h),
-              fontSize: py(SLOTS.player.h) * 0.6,
-            },
-          ]}
-        >
-          {playerName}
-        </Text>
+          {/* PLAYER slot */}
+          <Text
+            style={[
+              styles.overlayText,
+              {
+                left: px(SLOTS.player.x),
+                top: py(SLOTS.player.y),
+                width: px(SLOTS.player.w),
+                height: py(SLOTS.player.h),
+                fontSize: py(SLOTS.player.h) * 0.6,
+              },
+            ]}
+          >
+            {playerName}
+          </Text>
 
-        {/* FROM slot */}
-        <Text
-          style={[
-            styles.overlayText,
-            {
-              left: px(SLOTS.from.x),
-              top: py(SLOTS.from.y),
-              width: px(SLOTS.from.w),
-              height: py(SLOTS.from.h),
-              fontSize: py(SLOTS.from.h) * 0.6,
-            },
-          ]}
-        >
-          {fromText}
-        </Text>
+          {/* FROM slot */}
+          <Text
+            style={[
+              styles.overlayText,
+              {
+                left: px(SLOTS.from.x),
+                top: py(SLOTS.from.y),
+                width: px(SLOTS.from.w),
+                height: py(SLOTS.from.h),
+                fontSize: py(SLOTS.from.h) * 0.6,
+              },
+            ]}
+          >
+            {fromText}
+          </Text>
 
-        {/* QR slot */}
-        {/* eslint-disable-next-line jsx-a11y/alt-text -- @react-pdf/renderer Image has no alt */}
-        <Image
-          src={qrCodeDataUrl}
-          style={[
-            styles.qr,
-            {
-              left: px(SLOTS.qr.x),
-              top: py(SLOTS.qr.y),
-              width: px(SLOTS.qr.w),
-              height: py(SLOTS.qr.h),
-            },
-          ]}
-        />
+          {/* QR slot */}
+          {/* eslint-disable-next-line jsx-a11y/alt-text -- @react-pdf/renderer Image has no alt */}
+          <Image
+            src={qrCodeDataUrl}
+            style={[
+              styles.qr,
+              {
+                left: px(SLOTS.qr.x),
+                top: py(SLOTS.qr.y),
+                width: px(SLOTS.qr.w),
+                height: py(SLOTS.qr.h),
+              },
+            ]}
+          />
+        </View>
       </Page>
     </Document>
   )
