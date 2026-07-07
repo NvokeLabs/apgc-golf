@@ -8,6 +8,9 @@ export async function GET(request: Request) {
     const payload = await getPayload({ config })
 
     const { user } = await payload.auth({ headers: request.headers })
+    if (!user) {
+      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 })
+    }
     if (isRegistrationStaff(user)) {
       return NextResponse.json({ error: 'Forbidden' }, { status: 403 })
     }

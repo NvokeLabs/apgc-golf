@@ -32,6 +32,7 @@ import {
 } from 'lucide-react'
 import { useAuth } from '@payloadcms/ui'
 import { visibleMenuGroups, type MenuGroup } from './visibleMenuGroups'
+import { isRegistrationStaff } from '@/access/roles'
 import './styles.scss'
 
 const menuGroups: MenuGroup[] = [
@@ -102,6 +103,9 @@ export function Nav() {
   const pathname = usePathname()
   const { user } = useAuth()
   const groups = visibleMenuGroups(menuGroups, (user as { role?: string | null } | null)?.role)
+  // Registration-staff get only the whitelisted tools — no stats Dashboard
+  // (its API 403s for them anyway; hide the link so the UI matches).
+  const staffOnly = isRegistrationStaff(user)
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {}
     groups.forEach((group) => {
@@ -141,15 +145,17 @@ export function Nav() {
 
       {/* Navigation Content */}
       <div className="apgc-nav__content">
-        {/* Dashboard Link */}
-        <Link
-          href="/admin"
-          className={`apgc-nav__link apgc-nav__link--standalone ${isDashboardActive ? 'apgc-nav__link--active' : ''}`}
-        >
-          {isDashboardActive && <span className="apgc-nav__active-indicator" />}
-          <LayoutDashboard className="apgc-nav__icon" />
-          <span>Dashboard</span>
-        </Link>
+        {/* Dashboard Link (hidden for registration-staff) */}
+        {!staffOnly && (
+          <Link
+            href="/admin"
+            className={`apgc-nav__link apgc-nav__link--standalone ${isDashboardActive ? 'apgc-nav__link--active' : ''}`}
+          >
+            {isDashboardActive && <span className="apgc-nav__active-indicator" />}
+            <LayoutDashboard className="apgc-nav__icon" />
+            <span>Dashboard</span>
+          </Link>
+        )}
 
         {/* Menu Groups */}
         {groups.map((group) => (
