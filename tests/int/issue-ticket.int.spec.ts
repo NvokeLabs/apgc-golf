@@ -46,6 +46,7 @@ function makeFakeDeps(overrides: Partial<IssueTicketDeps> = {}): IssueTicketDeps
   return {
     generateTicketCode: vi.fn().mockReturnValue('APGC-42-abcd'),
     generateQRCode: vi.fn().mockResolvedValue('data:image/png;base64,QR=='),
+    renderTicketPdf: vi.fn().mockResolvedValue(Buffer.from('%PDF-FAKE')),
     sendTicketEmail: vi.fn().mockResolvedValue({ success: true }),
     ...overrides,
   }
@@ -325,6 +326,55 @@ describe('issueTicketForRegistration', () => {
       expect(result.ticket).toMatchObject({ id: fakeTicket.id })
       expect(result.alreadyIssued).toBe(false)
       expect(result.emailSent).toBe(true)
+    })
+  })
+
+  // S2.5 — PDF attachment: buffer generated from the registration and passed to email
+  describe('S2.5 PDF attachment', () => {
+    it('renders a PDF from the registration FROM data (alumni)', async () => {
+      const payload = makeFakePayload({
+        category: 'alumni',
+        alumniMajor: 'Teknik Sipil',
+        alumniClassYear: 2015,
+      })
+      const deps = makeFakeDeps()
+
+      await issueTicketForRegistration(payload as any, 42, deps)
+
+      expect(deps.renderTicketPdf).toHaveBeenCalledOnce()
+      const pdfArgs = (deps.renderTicketPdf as ReturnType<typeof vi.fn>).mock.calls[0][0]
+      expect(pdfArgs).toMatchObject({
+        playerName: 'Budi Santoso',
+        category: 'alumni',
+        alumniMajor: 'Teknik Sipil',
+        alumniClassYear: 2015,
+        qrCodeDataUrl: 'data:image/png;base64,QR==',
+      })
+    })
+
+    it('passes the generated pdfBuffer to sendTicketEmail', async () => {
+      const payload = makeFakePayload()
+      const deps = makeFakeDeps()
+
+      await issueTicketForRegistration(payload as any, 42, deps)
+
+      const emailArgs = (deps.sendTicketEmail as ReturnType<typeof vi.fn>).mock.calls[0][0]
+      expect(Buffer.isBuffer(emailArgs.pdfBuffer)).toBe(true)
+      expect(emailArgs.pdfBuffer.toString('latin1')).toBe('%PDF-FAKE')
+    })
+
+    it('is email-safe: a PDF render failure still creates the ticket and does not throw', async () => {
+      const payload = makeFakePayload()
+      const deps = makeFakeDeps({
+        renderTicketPdf: vi.fn().mockRejectedValue(new Error('render boom')),
+      })
+
+      const result = await issueTicketForRegistration(payload as any, 42, deps)
+
+      expect(payload.create).toHaveBeenCalledOnce()
+      expect(result.alreadyIssued).toBe(false)
+      // Ticket exists; email may have been skipped/failed but nothing propagates.
+      expect(result.ticket).toMatchObject({ id: fakeTicket.id })
     })
   })
 })

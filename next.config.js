@@ -53,6 +53,17 @@ const nextConfig = {
   },
   reactStrictMode: true,
   redirects,
+  // The ticket artwork is read at runtime via process.cwd(), which @vercel/nft
+  // cannot statically trace — so every serverless bundle that renders a ticket
+  // PDF must be told to ship the jpg. TicketPDF is imported by the on-demand
+  // download route AND transitively by both ticket-issuance paths
+  // (manual-transfers/approve and payments/webhook via issueTicketForRegistration).
+  // Top-level (Next 15 promoted this out of `experimental`).
+  outputFileTracingIncludes: {
+    '/api/tickets/[id]/pdf': ['./src/components/TicketPDF/assets/ticket-bg.jpg'],
+    '/api/manual-transfers/approve': ['./src/components/TicketPDF/assets/ticket-bg.jpg'],
+    '/api/payments/webhook': ['./src/components/TicketPDF/assets/ticket-bg.jpg'],
+  },
   experimental: {
     // Proof uploads (Story 6) post through a Server Action; Next's default body
     // limit is 1MB, which would reject the advertised 10MB receipts before our

@@ -1,8 +1,7 @@
 import { NextRequest, NextResponse } from 'next/server'
 import { getPayload } from 'payload'
 import config from '@payload-config'
-import { renderToBuffer } from '@react-pdf/renderer'
-import { TicketPDF } from '@/components/TicketPDF/TicketPDF'
+import { renderTicketPdf } from '@/utilities/ticketing/renderTicketPdf'
 import type { Event, Ticket, EventRegistration } from '@/payload-types'
 
 export async function GET(request: NextRequest, { params }: { params: Promise<{ id: string }> }) {
@@ -31,29 +30,14 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       return NextResponse.json({ error: 'Invalid ticket data' }, { status: 400 })
     }
 
-    // Format date
-    const eventDate = event.date
-      ? new Date(event.date).toLocaleDateString('id-ID', {
-          weekday: 'long',
-          year: 'numeric',
-          month: 'long',
-          day: 'numeric',
-        })
-      : 'TBD'
-
     // Generate PDF
-    const pdfBuffer = await renderToBuffer(
-      TicketPDF({
-        playerName: registration.playerName,
-        playerEmail: registration.email,
-        category: registration.category || 'General',
-        eventName: event.title,
-        eventDate,
-        eventLocation: event.location || 'TBD',
-        ticketCode: ticket.ticketCode,
-        qrCodeDataUrl: ticket.qrCodeData || '',
-      }),
-    )
+    const pdfBuffer = await renderTicketPdf({
+      playerName: registration.playerName,
+      category: registration.category,
+      alumniMajor: registration.alumniMajor,
+      alumniClassYear: registration.alumniClassYear,
+      qrCodeDataUrl: ticket.qrCodeData || '',
+    })
 
     // Return PDF response
     return new NextResponse(pdfBuffer, {

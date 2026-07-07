@@ -3,10 +3,13 @@ import type { Ticket, Event, EventRegistration } from '@/payload-types'
 import { generateTicketCode as defaultGenerateTicketCode } from './generateTicketCode'
 import { generateQRCode as defaultGenerateQRCode } from './generateQRCode'
 import { sendTicketEmail as defaultSendTicketEmail } from '@/utilities/email/sendTicketEmail'
+import { renderTicketPdf as defaultRenderTicketPdf } from './renderTicketPdf'
+import type { RenderTicketPdfParams } from './renderTicketPdf'
 
 export type IssueTicketDeps = {
   generateTicketCode: (registrationId: number | string) => string
   generateQRCode: (data: string) => Promise<string>
+  renderTicketPdf: (params: RenderTicketPdfParams) => Promise<Buffer>
   sendTicketEmail: (params: {
     to: string
     playerName: string
@@ -15,6 +18,7 @@ export type IssueTicketDeps = {
     eventLocation: string
     ticketCode: string
     qrCodeDataUrl: string
+    pdfBuffer?: Buffer
   }) => Promise<{ success: boolean; error?: string }>
 }
 
@@ -51,6 +55,7 @@ export async function issueTicketForRegistration(
 ): Promise<IssueTicketResult> {
   const generateTicketCode = deps?.generateTicketCode ?? defaultGenerateTicketCode
   const generateQRCode = deps?.generateQRCode ?? defaultGenerateQRCode
+  const renderTicketPdf = deps?.renderTicketPdf ?? defaultRenderTicketPdf
   const sendTicketEmail = deps?.sendTicketEmail ?? defaultSendTicketEmail
 
   // 1. Fetch registration (depth:1 resolves event + ticket)
@@ -116,9 +121,24 @@ export async function issueTicketForRegistration(
         })
       : 'TBD'
 
-  // 7. Send ticket email — email-safe: never throw
+  // 7. Render the ticket PDF (email-safe) and send the ticket email — never throw
   let emailSent = false
   try {
+    let pdfBuffer: Buffer | undefined
+    try {
+      pdfBuffer = await renderTicketPdf({
+        playerName: registration.playerName,
+        category: registration.category,
+        alumniMajor: registration.alumniMajor,
+        alumniClassYear: registration.alumniClassYear,
+        qrCodeDataUrl: qrCodeData,
+      })
+    } catch (pdfErr) {
+      const msg = pdfErr instanceof Error ? pdfErr.message : String(pdfErr)
+      console.error(`[issueTicketForRegistration] PDF render failed: ${msg}`)
+      pdfBuffer = undefined
+    }
+
     const emailResult = await sendTicketEmail({
       to: registration.email,
       playerName: registration.playerName,
@@ -127,6 +147,7 @@ export async function issueTicketForRegistration(
       eventLocation: typeof event === 'object' ? event.location || 'TBD' : 'TBD',
       ticketCode,
       qrCodeDataUrl: qrCodeData,
+      pdfBuffer,
     })
     emailSent = emailResult.success
     if (!emailSent) {
