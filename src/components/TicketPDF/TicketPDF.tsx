@@ -4,10 +4,21 @@ import { Document, Page, Text, View, Image, StyleSheet } from '@react-pdf/render
 import { TICKET_BG, SLOTS } from './layout'
 import { formatTicketFrom } from '@/utilities/ticketing/formatTicketFrom'
 
-// Read the committed artwork once at module load and embed it as a data URL so it
-// is available in the serverless bundle (see next.config.mjs outputFileTracingIncludes).
-const BG_PATH = path.join(process.cwd(), 'src/components/TicketPDF/assets/ticket-bg.jpg')
-const BG_DATA_URL = `data:image/jpeg;base64,${readFileSync(BG_PATH).toString('base64')}`
+// Read the committed artwork lazily (on first render) and memoize it as a data
+// URL. It is loaded INSIDE render — not at module eval — so if the jpg is ever
+// missing from a serverless bundle the failure surfaces during renderTicketPdf()
+// and is caught by the caller's email-safe try/catch, instead of crashing the
+// whole function at import time (before any handler runs). The asset is shipped
+// to every ticket-rendering route via `outputFileTracingIncludes` in
+// next.config.js (process.cwd()-based paths can't be statically traced).
+let bgDataUrlCache: string | undefined
+function getBackgroundDataUrl(): string {
+  if (bgDataUrlCache === undefined) {
+    const bgPath = path.join(process.cwd(), 'src/components/TicketPDF/assets/ticket-bg.jpg')
+    bgDataUrlCache = `data:image/jpeg;base64,${readFileSync(bgPath).toString('base64')}`
+  }
+  return bgDataUrlCache
+}
 
 // Fixed portrait page width; height follows the artwork's aspect ratio.
 const PAGE_WIDTH = 595
@@ -50,6 +61,7 @@ export function TicketPDF({
   qrCodeDataUrl,
 }: TicketPDFProps) {
   const fromText = formatTicketFrom(category, alumniMajor, alumniClassYear)
+  const backgroundDataUrl = getBackgroundDataUrl()
 
   return (
     <Document>
@@ -57,7 +69,7 @@ export function TicketPDF({
         <View style={styles.canvas}>
           {/* Full-bleed artwork */}
           {/* eslint-disable-next-line jsx-a11y/alt-text -- @react-pdf/renderer Image has no alt */}
-          <Image src={BG_DATA_URL} style={styles.bg} />
+          <Image src={backgroundDataUrl} style={styles.bg} />
 
           {/* PLAYER slot */}
           <Text
