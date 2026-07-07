@@ -23,6 +23,9 @@ export function EventRegistrationForm({
 }: EventRegistrationFormProps) {
   const [isSubmitting, setIsSubmitting] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [category, setCategory] = useState('general')
+  const currentYear = new Date().getFullYear()
+  const angkatanYears = Array.from({ length: currentYear - 1970 + 1 }, (_, i) => currentYear - i)
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault()
@@ -40,6 +43,10 @@ export function EventRegistrationForm({
         phone: (formData.get('phone') as string) || undefined,
         category: formData.get('category') as RegistrationFormData['category'],
         tshirtSize: formData.get('tshirtSize') as RegistrationFormData['tshirtSize'],
+        alumniClassYear: formData.get('alumniClassYear')
+          ? Number(formData.get('alumniClassYear'))
+          : undefined,
+        alumniMajor: (formData.get('alumniMajor') as string) || undefined,
         notes: (formData.get('notes') as string) || undefined,
       })
 
@@ -142,6 +149,8 @@ export function EventRegistrationForm({
               id="category"
               name="category"
               required
+              defaultValue="general"
+              onChange={(e) => setCategory(e.target.value)}
               className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-[#0b3d2e] focus:outline-none focus:ring-1 focus:ring-[#0b3d2e]"
             >
               <option value="general">
@@ -181,6 +190,44 @@ export function EventRegistrationForm({
               <option value="XXL">XXL</option>
             </select>
           </div>
+          {category === 'alumni' && (
+            <>
+              <div className="sm:col-span-2">
+                <label htmlFor="alumniClassYear" className="mb-2 block text-sm text-gray-600">
+                  Angkatan *
+                </label>
+                <select
+                  id="alumniClassYear"
+                  name="alumniClassYear"
+                  required
+                  defaultValue=""
+                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 focus:border-[#0b3d2e] focus:outline-none focus:ring-1 focus:ring-[#0b3d2e]"
+                >
+                  <option value="" disabled>
+                    Pilih angkatan
+                  </option>
+                  {angkatanYears.map((year) => (
+                    <option key={year} value={year}>
+                      {year}
+                    </option>
+                  ))}
+                </select>
+              </div>
+              <div className="sm:col-span-2">
+                <label htmlFor="alumniMajor" className="mb-2 block text-sm text-gray-600">
+                  Jurusan *
+                </label>
+                <input
+                  type="text"
+                  id="alumniMajor"
+                  name="alumniMajor"
+                  required
+                  className="w-full rounded-lg border border-gray-300 bg-white px-4 py-3 text-gray-900 placeholder:text-gray-400 focus:border-[#0b3d2e] focus:outline-none focus:ring-1 focus:ring-[#0b3d2e]"
+                  placeholder="Contoh: Teknik Sipil"
+                />
+              </div>
+            </>
+          )}
         </div>
       </div>
 

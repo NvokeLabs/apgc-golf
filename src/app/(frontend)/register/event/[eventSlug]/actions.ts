@@ -4,6 +4,7 @@ import { getPayload } from 'payload'
 import config from '@payload-config'
 import { createXenditInvoice } from '@/utilities/xendit/createSession'
 import { issueManualRegistration } from '@/utilities/registration/issueManualRegistration'
+import { alumniFieldError } from '@/utilities/registration/alumniFieldError'
 import { mintUploadToken } from '@/utilities/uploadToken'
 import { getPaymentSettings } from '@/utilities/payments/getPaymentSettings'
 import { sendPaymentInstructionsEmail } from '@/utilities/email/sendPaymentInstructionsEmail'
@@ -16,6 +17,8 @@ export type RegistrationFormData = {
   phone?: string
   category: 'general' | 'alumni'
   tshirtSize: 'S' | 'M' | 'L' | 'XL' | 'XXL'
+  alumniClassYear?: number
+  alumniMajor?: string
   notes?: string
   /**
    * Launch is manual-transfer only; defaults to 'bank-transfer'. The 'xendit'
@@ -54,6 +57,17 @@ export async function createRegistrationWithPayment(
       return { success: false, error: 'Ukuran kaos wajib dipilih' }
     }
 
+    // Alumni must supply angkatan + jurusan. The form enforces this client-side
+    // when Alumni is chosen; re-check on the server for JS-bypassed callers.
+    const alumniErr = alumniFieldError({
+      category: data.category,
+      alumniClassYear: data.alumniClassYear,
+      alumniMajor: data.alumniMajor,
+    })
+    if (alumniErr) {
+      return { success: false, error: alumniErr }
+    }
+
     const method = data.paymentMethod ?? 'bank-transfer'
 
     if (method === 'bank-transfer') {
@@ -66,6 +80,8 @@ export async function createRegistrationWithPayment(
           phone: data.phone,
           category: data.category,
           tshirtSize: data.tshirtSize,
+          alumniClassYear: data.alumniClassYear,
+          alumniMajor: data.alumniMajor,
           notes: data.notes,
         },
       )
@@ -137,6 +153,8 @@ export async function createRegistrationWithPayment(
         phone: data.phone ? `+62${data.phone.replace(/^0+/, '')}` : undefined,
         category: data.category,
         tshirtSize: data.tshirtSize,
+        alumniClassYear: data.alumniClassYear,
+        alumniMajor: data.alumniMajor || undefined,
         notes: data.notes || undefined,
         agreedToTerms: true,
         status: 'pending',

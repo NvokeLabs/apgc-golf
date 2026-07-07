@@ -77,6 +77,8 @@ export function buildTransferProofMessage(
     eventTitle?: string
     amountDue?: number | null
     tshirtSize?: string
+    alumniClassYear?: number
+    alumniMajor?: string
   },
   baseUrl: string,
 ): string {
@@ -88,6 +90,8 @@ export function buildTransferProofMessage(
     `Nominal: ${idr(input.amountDue)}`,
   ]
   if (input.tshirtSize) lines.push(`Ukuran kaos: ${input.tshirtSize}`)
+  if (input.alumniClassYear) lines.push(`Angkatan: ${input.alumniClassYear}`)
+  if (input.alumniMajor && input.alumniMajor.trim()) lines.push(`Jurusan: ${input.alumniMajor}`)
   lines.push(`Verifikasi: ${baseUrl}/admin/manual-transfers`)
   return lines.join('\n')
 }

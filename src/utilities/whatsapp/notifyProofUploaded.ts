@@ -18,6 +18,8 @@ export async function notifyProofUploaded(
     amountDue?: number | null
     event?: unknown
     tshirtSize?: string
+    alumniClassYear?: number
+    alumniMajor?: string
   } | null
   if (!reg) return
 
@@ -40,6 +42,8 @@ export async function notifyProofUploaded(
         amountDue: reg.amountDue,
         eventTitle,
         tshirtSize: reg.tshirtSize,
+        alumniClassYear: reg.alumniClassYear,
+        alumniMajor: reg.alumniMajor,
       },
       baseUrl,
     ),
