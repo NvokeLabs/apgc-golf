@@ -4,6 +4,7 @@ import { slugField } from 'payload'
 
 import { anyone } from '@/access/anyone'
 import { authenticated } from '@/access/authenticated'
+import { isRegistrationStaff } from '@/access/roles'
 import {
   revalidateSponsorAfterChange,
   revalidateSponsorAfterDelete,
@@ -30,6 +31,7 @@ export const Sponsors: CollectionConfig = {
     defaultColumns: ['name', 'tier', 'isActive', 'order'],
     useAsTitle: 'name',
     group: 'Golf Content',
+    hidden: ({ user }) => isRegistrationStaff(user),
     components: {
       views: {
         list: {

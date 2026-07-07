@@ -10,6 +10,7 @@ import { fileURLToPath } from 'url'
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
+import { isRegistrationStaff } from '@/access/roles'
 
 const filename = fileURLToPath(import.meta.url)
 const dirname = path.dirname(filename)
@@ -18,6 +19,7 @@ export const Media: CollectionConfig = {
   slug: 'media',
   folders: true,
   admin: {
+    hidden: ({ user }) => isRegistrationStaff(user),
     components: {
       views: {
         list: {

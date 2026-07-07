@@ -5,6 +5,7 @@ import { slugField } from 'payload'
 import { anyone } from '@/access/anyone'
 import { authenticated } from '@/access/authenticated'
 import { authenticatedOrPublished } from '@/access/authenticatedOrPublished'
+import { isRegistrationStaff } from '@/access/roles'
 import { revalidateNewsAfterChange, revalidateNewsAfterDelete } from './hooks/revalidateNews'
 
 export const News: CollectionConfig = {
@@ -29,6 +30,7 @@ export const News: CollectionConfig = {
     defaultColumns: ['title', 'category', 'publishedDate', '_status'],
     useAsTitle: 'title',
     group: 'Golf Content',
+    hidden: ({ user }) => isRegistrationStaff(user),
     components: {
       views: {
         list: {

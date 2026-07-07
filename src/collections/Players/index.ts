@@ -4,6 +4,7 @@ import { slugField } from 'payload'
 
 import { anyone } from '@/access/anyone'
 import { authenticated } from '@/access/authenticated'
+import { isRegistrationStaff } from '@/access/roles'
 import { revalidatePlayerAfterChange, revalidatePlayerAfterDelete } from './hooks/revalidatePlayer'
 
 export const Players: CollectionConfig = {
@@ -28,6 +29,7 @@ export const Players: CollectionConfig = {
     defaultColumns: ['name', 'rank', 'country', 'status', 'isFeatured'],
     useAsTitle: 'name',
     group: 'Golf Content',
+    hidden: ({ user }) => isRegistrationStaff(user),
     components: {
       views: {
         list: {

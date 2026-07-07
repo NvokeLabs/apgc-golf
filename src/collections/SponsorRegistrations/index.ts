@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { anyone } from '@/access/anyone'
 import { authenticated } from '@/access/authenticated'
+import { isRegistrationStaff } from '@/access/roles'
 import { notifySponsorInquiry } from './hooks/notifyWhatsApp'
 
 export const SponsorRegistrations: CollectionConfig = {
@@ -19,6 +20,7 @@ export const SponsorRegistrations: CollectionConfig = {
     defaultColumns: ['companyName', 'contactName', 'selectedTier', 'status', 'createdAt'],
     useAsTitle: 'companyName',
     group: 'Registrations',
+    hidden: ({ user }) => isRegistrationStaff(user),
     components: {
       views: {
         list: {

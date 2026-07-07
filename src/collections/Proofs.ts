@@ -1,6 +1,7 @@
 import type { CollectionConfig } from 'payload'
 
 import { authenticated } from '../access/authenticated'
+import { isRegistrationStaff } from '@/access/roles'
 
 /**
  * Private payment-transfer proofs (Story 0).
@@ -27,6 +28,7 @@ export const Proofs: CollectionConfig = {
     group: 'Registrations',
     description: 'Private payment-transfer proofs. Not publicly accessible.',
     defaultColumns: ['filename', 'registration', 'createdAt'],
+    hidden: ({ user }) => isRegistrationStaff(user),
   },
   fields: [
     {

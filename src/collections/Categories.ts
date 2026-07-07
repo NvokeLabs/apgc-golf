@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { anyone } from '../access/anyone'
 import { authenticated } from '../access/authenticated'
+import { isRegistrationStaff } from '@/access/roles'
 import { slugField } from 'payload'
 
 export const Categories: CollectionConfig = {
@@ -14,6 +15,7 @@ export const Categories: CollectionConfig = {
   },
   admin: {
     useAsTitle: 'title',
+    hidden: ({ user }) => isRegistrationStaff(user),
     components: {
       views: {
         list: {
