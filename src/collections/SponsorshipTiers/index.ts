@@ -2,6 +2,7 @@ import type { CollectionConfig } from 'payload'
 
 import { anyone } from '@/access/anyone'
 import { authenticated } from '@/access/authenticated'
+import { isRegistrationStaff } from '@/access/roles'
 import { revalidateTierAfterChange, revalidateTierAfterDelete } from './hooks/revalidateTiers'
 
 export const SponsorshipTiers: CollectionConfig = {
@@ -16,6 +17,7 @@ export const SponsorshipTiers: CollectionConfig = {
     defaultColumns: ['name', 'price', 'logoSize', 'order', 'isActive'],
     useAsTitle: 'name',
     group: 'Golf Content',
+    hidden: ({ user }) => isRegistrationStaff(user),
     components: {
       views: {
         list: {

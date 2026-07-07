@@ -17,6 +17,11 @@ export async function POST(request: NextRequest) {
 
     const payload = await getPayload({ config })
 
+    const { user } = await payload.auth({ headers: request.headers })
+    if (!user) {
+      return NextResponse.json({ valid: false, reason: 'Unauthorized' }, { status: 401 })
+    }
+
     // Find ticket by code
     const ticketResult = await payload.find({
       collection: 'tickets',
@@ -70,17 +75,16 @@ export async function POST(request: NextRequest) {
       })
     }
 
-    // Get current user from request (if authenticated)
-    // For now, we'll set checkedInBy based on request context
     const now = new Date().toISOString()
 
-    // Update ticket status
+    // Update ticket status, recording which admin user scanned it.
     await payload.update({
       collection: 'tickets',
       id: ticket.id,
       data: {
         status: 'checked_in',
         checkedInAt: now,
+        checkedInBy: user.id,
       },
     })
 

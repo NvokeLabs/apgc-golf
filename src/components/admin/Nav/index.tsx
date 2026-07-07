@@ -30,20 +30,10 @@ import {
   QrCode,
   Banknote,
 } from 'lucide-react'
+import { useAuth } from '@payloadcms/ui'
+import { visibleMenuGroups, type MenuGroup } from './visibleMenuGroups'
+import { isRegistrationStaff } from '@/access/roles'
 import './styles.scss'
-
-interface MenuItem {
-  name: string
-  href: string
-  icon: React.ElementType
-}
-
-interface MenuGroup {
-  label: string
-  id: string
-  items: MenuItem[]
-  defaultOpen?: boolean
-}
 
 const menuGroups: MenuGroup[] = [
   {
@@ -111,9 +101,14 @@ const menuGroups: MenuGroup[] = [
 
 export function Nav() {
   const pathname = usePathname()
+  const { user } = useAuth()
+  const groups = visibleMenuGroups(menuGroups, (user as { role?: string | null } | null)?.role)
+  // Registration-staff get only the whitelisted tools — no stats Dashboard
+  // (its API 403s for them anyway; hide the link so the UI matches).
+  const staffOnly = isRegistrationStaff(user)
   const [openGroups, setOpenGroups] = useState<Record<string, boolean>>(() => {
     const initial: Record<string, boolean> = {}
-    menuGroups.forEach((group) => {
+    groups.forEach((group) => {
       initial[group.id] = group.defaultOpen ?? true
     })
     return initial
@@ -150,18 +145,20 @@ export function Nav() {
 
       {/* Navigation Content */}
       <div className="apgc-nav__content">
-        {/* Dashboard Link */}
-        <Link
-          href="/admin"
-          className={`apgc-nav__link apgc-nav__link--standalone ${isDashboardActive ? 'apgc-nav__link--active' : ''}`}
-        >
-          {isDashboardActive && <span className="apgc-nav__active-indicator" />}
-          <LayoutDashboard className="apgc-nav__icon" />
-          <span>Dashboard</span>
-        </Link>
+        {/* Dashboard Link (hidden for registration-staff) */}
+        {!staffOnly && (
+          <Link
+            href="/admin"
+            className={`apgc-nav__link apgc-nav__link--standalone ${isDashboardActive ? 'apgc-nav__link--active' : ''}`}
+          >
+            {isDashboardActive && <span className="apgc-nav__active-indicator" />}
+            <LayoutDashboard className="apgc-nav__icon" />
+            <span>Dashboard</span>
+          </Link>
+        )}
 
         {/* Menu Groups */}
-        {menuGroups.map((group) => (
+        {groups.map((group) => (
           <div key={group.id} className="apgc-nav__group">
             <button
               className="apgc-nav__group-toggle"

@@ -4,6 +4,7 @@ import { slugField } from 'payload'
 
 import { anyone } from '@/access/anyone'
 import { authenticated } from '@/access/authenticated'
+import { isRegistrationStaff } from '@/access/roles'
 import { revalidateEventAfterChange, revalidateEventAfterDelete } from './hooks/revalidateEvent'
 
 export const Events: CollectionConfig = {
@@ -27,6 +28,7 @@ export const Events: CollectionConfig = {
     defaultColumns: ['title', 'date', 'tier', 'status'],
     useAsTitle: 'title',
     group: 'Golf Content',
+    hidden: ({ user }) => isRegistrationStaff(user),
     components: {
       views: {
         list: {
