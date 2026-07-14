@@ -88,6 +88,10 @@ export default buildConfig({
           Component: '@/components/admin/views/ManualTransfersView#ManualTransfersView',
           path: '/manual-transfers',
         },
+        sponsorTickets: {
+          Component: '@/components/admin/views/SponsorTicketsView#SponsorTicketsView',
+          path: '/sponsor-tickets',
+        },
       },
     },
     importMap: {
