@@ -22,8 +22,12 @@ export async function POST(request: NextRequest) {
   const body = await request.json().catch(() => ({}))
 
   const category = body.category === 'alumni' ? 'alumni' : 'general'
-  const alumniClassYear =
+  const parsedAlumniClassYear =
     category === 'alumni' && body.alumniClassYear ? Number(body.alumniClassYear) : undefined
+  const alumniClassYear = Number.isNaN(parsedAlumniClassYear) ? undefined : parsedAlumniClassYear
+
+  const TSHIRT_SIZES = ['S', 'M', 'L', 'XL', 'XXL']
+  const tshirtSize = TSHIRT_SIZES.includes(body.tshirtSize) ? body.tshirtSize : undefined
 
   const result = await issueSponsorRegistration(
     { payload, issueTicket: (p, id) => issueTicketForRegistration(p, id) },
@@ -34,7 +38,7 @@ export async function POST(request: NextRequest) {
       email: String(body.email ?? ''),
       phone: body.phone ? String(body.phone) : undefined,
       category,
-      tshirtSize: body.tshirtSize,
+      tshirtSize,
       alumniClassYear,
       alumniMajor: category === 'alumni' && body.alumniMajor ? String(body.alumniMajor) : undefined,
       notes: body.notes ? String(body.notes) : undefined,
