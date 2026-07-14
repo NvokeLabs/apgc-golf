@@ -62,25 +62,29 @@ Collapses `issueManualRegistration` (create the registration) and `approveTransf
 
 ```ts
 type SponsorTicketDeps = {
-  payload: Payload
-  issueTicket: (payload: Payload, registrationId: string) => Promise<unknown>
+  payload: Pick<Payload, 'create'>
+  issueTicket: (payload: Payload, registrationId: number) => Promise<IssueTicketResult>
+  now?: () => number
 }
 
 type SponsorTicketInput = {
-  eventId: string
-  sponsorId: string
+  eventId: number
+  sponsorId: number
   playerName: string
   email: string
   phone?: string
-  tshirtSize: string
+  tshirtSize: 'S' | 'M' | 'L' | 'XL' | 'XXL'
   category: 'general' | 'alumni'
   alumniClassYear?: number
   alumniMajor?: string
-  issuedById: string
+  notes?: string
+  issuedById: number
 }
 
 issueSponsorRegistration(deps: SponsorTicketDeps, input: SponsorTicketInput)
 ```
+
+(Payload IDs in this codebase are `number`, matching `approveTransfer` / `issueManualRegistration`.)
 
 Behaviour:
 
