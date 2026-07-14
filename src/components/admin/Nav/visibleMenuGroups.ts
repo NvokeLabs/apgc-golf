@@ -15,10 +15,12 @@ export interface MenuGroup {
 
 /**
  * Hrefs a registration-staff user is allowed to see in the Nav: Tickets,
- * Manual Transfers, Check-In. Every other role sees the full menu.
+ * Sponsor Tickets, Manual Transfers, Check-In. Every other role sees the full
+ * menu.
  */
 export const REGISTRATION_STAFF_ALLOWED_HREFS: readonly string[] = [
   '/admin/collections/tickets',
+  '/admin/sponsor-tickets',
   '/admin/manual-transfers',
   '/admin/check-in',
 ]
