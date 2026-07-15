@@ -58,6 +58,22 @@ describe('EventRegistrations sponsor fields', () => {
     expect(condition?.({ paymentMethod: 'bank-transfer' })).toBeFalsy()
   })
 
+  it('locks sponsor + paymentMethod against anonymous writes (field-level access)', () => {
+    // Collection is `create: anyone`, so both fields that mark a comp ticket
+    // must deny writes from an unauthenticated REST caller — otherwise a public
+    // registrant could self-attribute a free sponsor ticket.
+    type AccessFn = (args: unknown) => unknown
+    for (const name of ['sponsor', 'paymentMethod']) {
+      const field = regField(name) as { access?: { create?: AccessFn; update?: AccessFn } }
+      expect(field.access?.create, `${name}.access.create`).toBeTypeOf('function')
+      expect(field.access?.update, `${name}.access.update`).toBeTypeOf('function')
+      expect(field.access!.create!({ req: { user: undefined } } as never)).toBeFalsy()
+      expect(field.access!.update!({ req: { user: undefined } } as never)).toBeFalsy()
+      expect(field.access!.create!({ req: { user: { id: 1 } } } as never)).toBeTruthy()
+      expect(field.access!.update!({ req: { user: { id: 1 } } } as never)).toBeTruthy()
+    }
+  })
+
   it('persisted the sponsor column (DB push verified)', async () => {
     // Touches the new join column; without the push this throws at the DB layer.
     await expect(

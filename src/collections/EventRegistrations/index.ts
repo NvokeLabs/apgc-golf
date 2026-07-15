@@ -200,6 +200,14 @@ export const EventRegistrations: CollectionConfig = {
                 { label: 'Cash', value: 'cash' },
                 { label: 'Sponsor (Complimentary)', value: 'sponsor' },
               ],
+              // Collection is `create: anyone` (public form). 'sponsor' marks a
+              // complimentary comp — a public caller must not be able to set it,
+              // so gate writes to authenticated like the other trust-critical
+              // payment fields (paymentStatus, amountDue, verifiedBy).
+              access: {
+                create: authenticatedFieldAccess,
+                update: authenticatedFieldAccess,
+              },
               admin: {
                 description: 'How the registrant intends to pay',
               },
