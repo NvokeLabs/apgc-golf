@@ -1436,7 +1436,11 @@ export interface EventRegistration {
   /**
    * How the registrant intends to pay
    */
-  paymentMethod?: ('bank-transfer' | 'credit-card' | 'cash') | null;
+  paymentMethod?: ('bank-transfer' | 'credit-card' | 'cash' | 'sponsor') | null;
+  /**
+   * Sponsor this complimentary ticket is issued under
+   */
+  sponsor?: (number | null) | Sponsor;
   /**
    * Expected amount in IDR (snapshot at registration time)
    */
@@ -2365,6 +2369,7 @@ export interface EventRegistrationsSelect<T extends boolean = true> {
   notes?: T;
   agreedToTerms?: T;
   paymentMethod?: T;
+  sponsor?: T;
   amountDue?: T;
   amountPaid?: T;
   paidAt?: T;

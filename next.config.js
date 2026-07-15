@@ -63,6 +63,7 @@ const nextConfig = {
     '/api/tickets/[id]/pdf': ['./src/components/TicketPDF/assets/ticket-bg.jpg'],
     '/api/manual-transfers/approve': ['./src/components/TicketPDF/assets/ticket-bg.jpg'],
     '/api/payments/webhook': ['./src/components/TicketPDF/assets/ticket-bg.jpg'],
+    '/api/sponsor-tickets': ['./src/components/TicketPDF/assets/ticket-bg.jpg'],
   },
   experimental: {
     // Proof uploads (Story 6) post through a Server Action; Next's default body

@@ -29,6 +29,7 @@ import {
   Type,
   QrCode,
   Banknote,
+  Gift,
 } from 'lucide-react'
 import { useAuth } from '@payloadcms/ui'
 import { visibleMenuGroups, type MenuGroup } from './visibleMenuGroups'
@@ -68,6 +69,7 @@ const menuGroups: MenuGroup[] = [
         icon: Megaphone,
       },
       { name: 'Tickets', href: '/admin/collections/tickets', icon: Ticket },
+      { name: 'Sponsor Tickets', href: '/admin/sponsor-tickets', icon: Gift },
       { name: 'Manual Transfers', href: '/admin/manual-transfers', icon: Banknote },
       { name: 'Check-In Scanner', href: '/admin/check-in', icon: QrCode },
     ],

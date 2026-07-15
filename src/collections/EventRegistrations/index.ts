@@ -198,9 +198,34 @@ export const EventRegistrations: CollectionConfig = {
                 { label: 'Bank Transfer', value: 'bank-transfer' },
                 { label: 'Credit Card', value: 'credit-card' },
                 { label: 'Cash', value: 'cash' },
+                { label: 'Sponsor (Complimentary)', value: 'sponsor' },
               ],
+              // Collection is `create: anyone` (public form). 'sponsor' marks a
+              // complimentary comp — a public caller must not be able to set it,
+              // so gate writes to authenticated like the other trust-critical
+              // payment fields (paymentStatus, amountDue, verifiedBy).
+              access: {
+                create: authenticatedFieldAccess,
+                update: authenticatedFieldAccess,
+              },
               admin: {
                 description: 'How the registrant intends to pay',
+              },
+            },
+            {
+              name: 'sponsor',
+              type: 'relationship',
+              relationTo: 'sponsors',
+              // Complimentary ticket handed out under a sponsor's allocation.
+              // No quota is enforced — the tier allowance is a business
+              // agreement, not a system rule.
+              access: {
+                create: authenticatedFieldAccess,
+                update: authenticatedFieldAccess,
+              },
+              admin: {
+                description: 'Sponsor this complimentary ticket is issued under',
+                condition: (data) => data?.paymentMethod === 'sponsor',
               },
             },
             {
