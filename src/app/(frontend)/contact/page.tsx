@@ -38,7 +38,7 @@ const contactInfo = [
   {
     icon: Phone,
     label: 'Telepon / WhatsApp',
-    value: '+62 851-5678-9012',
+    value: '+62 811-941-571',
   },
   {
     icon: Mail,
