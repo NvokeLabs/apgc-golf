@@ -23,6 +23,16 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       return NextResponse.json({ error: 'Ticket not found' }, { status: 404 })
     }
 
+    // Gate: matching ticket code (capability URL, e.g. from a buyer link) OR an
+    // authenticated admin session. Never serve by bare sequential id.
+    const code = request.nextUrl.searchParams.get('code')
+    if (!code || code !== ticket.ticketCode) {
+      const { user } = await payload.auth({ headers: request.headers })
+      if (!user) {
+        return NextResponse.json({ error: 'Ticket not found' }, { status: 404 })
+      }
+    }
+
     const registration = ticket.registration as EventRegistration
     const event = ticket.event as Event
 

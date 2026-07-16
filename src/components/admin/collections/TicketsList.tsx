@@ -12,6 +12,7 @@ import {
   Clock,
   ExternalLink,
   RefreshCw,
+  Download,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -300,6 +301,15 @@ export function TicketsList() {
                           <ExternalLink className="h-3.5 w-3.5" />
                         </Button>
                       </Link>
+                      <a
+                        href={`/api/tickets/${ticket.id}/pdf?code=${encodeURIComponent(ticket.ticketCode)}`}
+                        download
+                        title="Download ticket PDF"
+                      >
+                        <Button variant="ghost" size="sm" className="h-7 w-7 p-0">
+                          <Download className="h-3.5 w-3.5" />
+                        </Button>
+                      </a>
                     </div>
                   </TableCell>
                 </TableRow>
