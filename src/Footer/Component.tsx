@@ -7,6 +7,7 @@ import type { Footer } from '@/payload-types'
 
 import { ThemeSelector } from '@/providers/Theme/ThemeSelector'
 import { CMSLink } from '@/components/Link'
+import { CONTACT_DETAILS, CONTACT_PHONE_HREF } from '@/utilities/contactDetails'
 
 export async function Footer() {
   const footerData: Footer = await getCachedGlobal('footer', 1)()
@@ -30,6 +31,32 @@ export async function Footer() {
             <p className="text-white/50 text-sm text-center md:text-left max-w-xs">
               Excellence in every swing. Tradition meets championship golf.
             </p>
+
+            {/* Contact */}
+            <div className="flex flex-col gap-2 text-sm text-white/60 text-center md:text-left">
+              <h3 className="text-white font-semibold text-sm uppercase tracking-wider mt-2">
+                Hubungi Kami
+              </h3>
+              <p className="max-w-xs">
+                <span className="font-semibold text-white/80">Alamat:</span>{' '}
+                {CONTACT_DETAILS.address}
+              </p>
+              <p>
+                <span className="font-semibold text-white/80">Telepon / WhatsApp:</span>{' '}
+                <a href={CONTACT_PHONE_HREF} className="hover:text-white transition-colors">
+                  {CONTACT_DETAILS.phone}
+                </a>
+              </p>
+              <p>
+                <span className="font-semibold text-white/80">Email:</span>{' '}
+                <a
+                  href={`mailto:${CONTACT_DETAILS.email}`}
+                  className="hover:text-white transition-colors"
+                >
+                  {CONTACT_DETAILS.email}
+                </a>
+              </p>
+            </div>
           </div>
 
           {/* Quick Links & Social Media Combined */}

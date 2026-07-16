@@ -6,6 +6,7 @@ import configPromise from '@payload-config'
 import { Mail, Phone, MapPin, Clock, MessageSquare } from 'lucide-react'
 import Link from 'next/link'
 import { ContactForm } from './ContactForm'
+import { CONTACT_DETAILS } from '@/utilities/contactDetails'
 
 export const metadata: Metadata = {
   title: 'Hubungi Kami | APGC Golf',
@@ -33,22 +34,22 @@ const contactInfo = [
   {
     icon: MapPin,
     label: 'Alamat',
-    value: 'Politeknik Negeri Malang, Jl. Soekarno Hatta No.9, Malang, Jawa Timur',
+    value: CONTACT_DETAILS.address,
   },
   {
     icon: Phone,
     label: 'Telepon / WhatsApp',
-    value: '+62 811-941-571',
+    value: CONTACT_DETAILS.phone,
   },
   {
     icon: Mail,
     label: 'Email',
-    value: 'info@polinemagolf.com',
+    value: CONTACT_DETAILS.email,
   },
   {
     icon: Clock,
     label: 'Jam Operasional',
-    value: 'Senin – Jumat, 08.00 – 17.00 WIB',
+    value: CONTACT_DETAILS.hours,
   },
 ]
 
