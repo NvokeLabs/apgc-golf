@@ -14,6 +14,7 @@ type Registration = {
   id: number
   playerName: string
   email: string
+  phone?: string | null
   category: 'general' | 'alumni'
   createdAt: string
   amountDue?: number | null
@@ -34,6 +35,8 @@ function eventOf(reg: Registration): EventRel | null {
 function proofOf(reg: Registration): ProofRel | null {
   return reg.transferProof && typeof reg.transferProof === 'object' ? reg.transferProof : null
 }
+// wa.me wants digits only, international format (0812… → 62812…)
+const waNumber = (phone: string) => phone.replace(/\D/g, '').replace(/^0/, '62')
 
 export function ManualTransfersClient() {
   const [rows, setRows] = useState<Registration[]>([])
@@ -217,6 +220,14 @@ function TransferRow({
       <div style={{ display: 'flex', justifyContent: 'space-between', gap: 16, flexWrap: 'wrap' }}>
         <div>
           <strong>{reg.playerName}</strong> · {reg.email}
+          {reg.phone && (
+            <>
+              {' · '}
+              <a href={`https://wa.me/${waNumber(reg.phone)}`} target="_blank" rel="noreferrer">
+                {reg.phone}
+              </a>
+            </>
+          )}
           <div style={{ color: '#666', fontSize: 13 }}>
             {event?.title || 'Unknown event'} · {reg.category} · submitted{' '}
             {new Date(reg.createdAt).toLocaleString()}
