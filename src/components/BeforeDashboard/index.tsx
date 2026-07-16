@@ -47,11 +47,18 @@ const BeforeDashboard: React.FC = () => {
   const [data, setData] = useState<DashboardData | null>(null)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState<string | null>(null)
+  const [restricted, setRestricted] = useState(false)
 
   useEffect(() => {
     const fetchDashboardData = async () => {
       try {
         const response = await fetch('/api/admin/dashboard')
+        // Non-admin roles (e.g. registration staff) get 401/403 — that's not an
+        // error, they just don't have a metrics dashboard.
+        if (response.status === 401 || response.status === 403) {
+          setRestricted(true)
+          return
+        }
         if (!response.ok) {
           throw new Error('Failed to fetch dashboard data')
         }
@@ -100,6 +107,19 @@ const BeforeDashboard: React.FC = () => {
               <div className="metric-card__skeleton" />
             </div>
           ))}
+        </div>
+      </div>
+    )
+  }
+
+  if (restricted) {
+    return (
+      <div className="before-dashboard">
+        <div className="dashboard-header">
+          <h1 className="dashboard-header__title">Welcome</h1>
+          <p className="dashboard-header__subtitle">
+            Selamat datang! Use the menu on the left to manage registrations, tickets and check-in.
+          </p>
         </div>
       </div>
     )
