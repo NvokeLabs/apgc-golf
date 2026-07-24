@@ -116,7 +116,7 @@ export default async function EventsPage() {
 
                   {/* Details Body */}
                   <div
-                    className={`p-6 flex-1 flex flex-col justify-between gap-6 backdrop-blur-sm ${
+                    className={`p-6 flex-1 flex flex-col justify-between gap-6 ${
                       event.status === 'closed' ? 'bg-gray-100/40' : 'bg-white/40'
                     }`}
                   >

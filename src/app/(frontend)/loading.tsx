@@ -21,7 +21,7 @@ export default function HomeLoading() {
 
             {/* Right Content - Card Skeleton */}
             <div className="hidden lg:block">
-              <div className="bg-white backdrop-blur-xl rounded-lg overflow-hidden max-w-3xl mx-auto shadow-2xl flex h-96 border border-[#0b3d2e]/10">
+              <div className="bg-white rounded-lg overflow-hidden max-w-3xl mx-auto shadow-2xl flex h-96 border border-[#0b3d2e]/10">
                 <div className="w-2/5 animate-pulse bg-[#0b3d2e]/5" />
                 <div className="flex-1 p-8">
                   <div className="h-8 w-3/4 animate-pulse rounded bg-[#0b3d2e]/10 mb-6" />

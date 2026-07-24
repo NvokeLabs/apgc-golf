@@ -44,8 +44,8 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
       {...(theme ? { 'data-theme': theme } : {})}
     >
       <div className="w-[95%] max-w-7xl mx-auto mt-6">
-        <div className="rounded-2xl bg-white/90 backdrop-blur-xl border border-white/40 shadow-lg">
-          <div className="md:px-6 lg:px-8 py-[6px] px-[32px] bg-white/40 backdrop-blur-lg border border-white/60 shadow-lg rounded-2xl">
+        <div className="rounded-2xl bg-white/90 border border-white/40 shadow-lg">
+          <div className="md:px-6 lg:px-8 py-[6px] px-[32px] bg-white/40 backdrop-blur-md border border-white/60 shadow-lg rounded-2xl">
             <div className="flex items-center justify-between">
               {/* Logo */}
               <Link href="/" className="flex items-center gap-2">
@@ -88,7 +88,7 @@ export const HeaderClient: React.FC<HeaderClientProps> = ({ data }) => {
 
         {/* Mobile Menu */}
         {isMobileMenuOpen && (
-          <div className="absolute top-full left-0 right-0 mt-4 mx-6 bg-white/95 backdrop-blur-2xl border border-white/20 rounded-2xl p-6 flex flex-col gap-4 md:hidden shadow-xl">
+          <div className="absolute top-full left-0 right-0 mt-4 mx-6 bg-white/95 border border-white/20 rounded-2xl p-6 flex flex-col gap-4 md:hidden shadow-xl">
             <Link
               href="/"
               className="text-lg font-medium text-[#0b3d2e] py-2 border-b border-[#0b3d2e]/5"

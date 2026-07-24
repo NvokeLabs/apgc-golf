@@ -27,7 +27,7 @@ export function EventDetailsTabs({
     <div className="w-full">
       {/* Glassy Tab Bar */}
       <div className="relative mb-8">
-        <div className="relative flex gap-2 p-1.5 rounded-2xl bg-gradient-to-br from-white/80 via-white/60 to-white/40 backdrop-blur-xl border border-[#0b3d2e]/10 shadow-lg shadow-[#0b3d2e]/5">
+        <div className="relative flex gap-2 p-1.5 rounded-2xl bg-gradient-to-br from-white/80 via-white/60 to-white/70 border border-[#0b3d2e]/10 shadow-lg shadow-[#0b3d2e]/5">
           {/* Animated background indicator */}
           <motion.div
             className="absolute top-1.5 bottom-1.5 rounded-xl bg-gradient-to-br from-[#0b3d2e] to-[#145c44] shadow-lg shadow-[#0b3d2e]/30"

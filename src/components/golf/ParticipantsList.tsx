@@ -62,7 +62,7 @@ export function ParticipantsList({ participants, itemsPerPage = 20 }: Participan
             value={searchQuery}
             onChange={(e) => handleSearchChange(e.target.value)}
             placeholder="Cari peserta..."
-            className="w-full pl-14 pr-12 py-3 rounded-xl bg-white/60 backdrop-blur-sm border border-[#0b3d2e]/10 text-[#0b3d2e] placeholder:text-[#0b3d2e]/40 focus:outline-none focus:border-[#0b3d2e]/30 focus:ring-2 focus:ring-[#0b3d2e]/10 transition-all duration-200"
+            className="w-full pl-14 pr-12 py-3 rounded-xl bg-white/80 border border-[#0b3d2e]/10 text-[#0b3d2e] placeholder:text-[#0b3d2e]/40 focus:outline-none focus:border-[#0b3d2e]/30 focus:ring-2 focus:ring-[#0b3d2e]/10 transition-[border-color,box-shadow] duration-200"
           />
           <AnimatePresence>
             {searchQuery && (
@@ -105,7 +105,7 @@ export function ParticipantsList({ participants, itemsPerPage = 20 }: Participan
           {currentParticipants.map((participant, index) => (
             <div
               key={participant.id}
-              className="group relative flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-white/80 to-white/40 backdrop-blur-sm border border-[#0b3d2e]/5 hover:border-[#0b3d2e]/20 hover:shadow-md hover:shadow-[#0b3d2e]/5 transition-all duration-200"
+              className="group relative flex items-center gap-4 p-4 rounded-xl bg-gradient-to-r from-white/90 to-white/60 border border-[#0b3d2e]/5 hover:border-[#0b3d2e]/20 hover:shadow-md hover:shadow-[#0b3d2e]/5 transition-[border-color,box-shadow] duration-200"
             >
               {/* Avatar */}
               <div className="relative flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-[#0b3d2e]/10 to-[#0b3d2e]/5 border border-[#0b3d2e]/10">

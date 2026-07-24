@@ -137,7 +137,7 @@ export default async function HomePage() {
               <div className="relative hidden lg:block">
                 <div className="absolute -top-12 -right-12 w-64 h-64 bg-white/10 rounded-full blur-3xl pointer-events-none" />
 
-                <div className="relative bg-white backdrop-blur-xl border-2 border-[#0b3d2e]/10 overflow-hidden max-w-3xl mx-auto shadow-2xl rounded-lg flex">
+                <div className="relative bg-white border-2 border-[#0b3d2e]/10 overflow-hidden max-w-3xl mx-auto shadow-2xl rounded-lg flex">
                   {/* Tournament Banner */}
                   <div className="relative w-2/5 overflow-hidden flex-shrink-0">
                     {typeof featuredEvent.image === 'object' && featuredEvent.image?.url ? (
@@ -165,7 +165,7 @@ export default async function HomePage() {
                     </div>
 
                     {featuredEvent.prizeFund && (
-                      <div className="absolute bottom-4 left-4 bg-white/95 backdrop-blur-sm px-4 py-2 rounded-sm">
+                      <div className="absolute bottom-4 left-4 bg-white/95 px-4 py-2 rounded-sm">
                         <p className="text-[#0b3d2e]/60 text-[10px] uppercase tracking-wider mb-1">
                           {labels?.fieldLabels?.prizeFund || 'Total Hadiah'}
                         </p>

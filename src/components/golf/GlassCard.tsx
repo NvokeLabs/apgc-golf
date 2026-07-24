@@ -9,18 +9,13 @@ interface GlassCardProps extends React.HTMLAttributes<HTMLDivElement> {
   hoverEffect?: boolean
 }
 
-export function GlassCard({
-  children,
-  className,
-  hoverEffect = false,
-  ...props
-}: GlassCardProps) {
+export function GlassCard({ children, className, hoverEffect = false, ...props }: GlassCardProps) {
   return (
     <div
       className={cn(
-        'relative overflow-hidden rounded-2xl border border-[#0b3d2e]/10 bg-white/60 backdrop-blur-xl shadow-sm',
+        'relative overflow-hidden rounded-2xl border border-[#0b3d2e]/10 bg-white/85 shadow-sm',
         hoverEffect &&
-          'transition-all duration-300 hover:bg-white/80 hover:scale-[1.02] hover:shadow-md cursor-pointer',
+          'transition-[transform,box-shadow,background-color] duration-300 hover:bg-white/95 hover:scale-[1.02] hover:shadow-md cursor-pointer',
         className,
       )}
       {...props}

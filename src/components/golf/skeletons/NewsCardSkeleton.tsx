@@ -8,7 +8,7 @@ export function NewsCardSkeleton({ className }: NewsCardSkeletonProps) {
   return (
     <div
       className={cn(
-        'relative overflow-hidden rounded-2xl border border-[#0b3d2e]/10 bg-white/50 backdrop-blur-sm',
+        'relative overflow-hidden rounded-2xl border border-[#0b3d2e]/10 bg-white/70',
         className,
       )}
     >
