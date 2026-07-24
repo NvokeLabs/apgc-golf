@@ -97,10 +97,12 @@ export default async function HomePage() {
             src={
               (typeof homeContent?.hero?.backgroundImage === 'object' &&
                 homeContent.hero.backgroundImage?.url) ||
-              'https://images.unsplash.com/photo-1587174486073-ae5e5cff23aa?w=1920&q=80'
+              '/hero/hero-bg.jpg'
             }
             alt="Lapangan Golf"
             fill
+            sizes="100vw"
+            quality={60}
             className="object-cover opacity-100"
             priority
           />
