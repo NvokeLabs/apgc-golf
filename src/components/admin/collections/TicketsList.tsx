@@ -13,6 +13,7 @@ import {
   ExternalLink,
   RefreshCw,
   Download,
+  FileSpreadsheet,
 } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { Input } from '@/components/ui/input'
@@ -30,6 +31,7 @@ import {
 type Ticket = {
   id: string
   ticketCode: string
+  ticketNumber: number | null
   status: 'pending' | 'checked_in' | 'cancelled'
   checkedInAt: string | null
   event: {
@@ -40,6 +42,9 @@ type Ticket = {
     id: string
     playerName: string
     email: string
+    category?: string
+    paymentMethod?: string
+    sponsor?: { name?: string } | number | null
   }
   createdAt: string
 }
@@ -151,6 +156,44 @@ export function TicketsList() {
     }
   }
 
+  const [exporting, setExporting] = useState(false)
+
+  const handleExportXlsx = async () => {
+    setExporting(true)
+    try {
+      // Re-fetch everything matching the current filters (the table itself is paginated).
+      const params = new URLSearchParams({ limit: '1000', depth: '2', sort: 'ticketNumber' })
+      if (searchQuery) params.append('where[ticketCode][contains]', searchQuery)
+      if (statusFilter) params.append('where[status][equals]', statusFilter)
+      const response = await fetch(`/api/tickets?${params.toString()}`)
+      if (!response.ok) throw new Error('Failed to fetch tickets')
+      const result: TicketsData = await response.json()
+
+      const XLSX = await import('xlsx')
+      const rows = result.docs.map((t) => ({
+        'No.': t.ticketNumber ?? '',
+        'Ticket Code': t.ticketCode,
+        Attendee: t.registration?.playerName || '',
+        Email: t.registration?.email || '',
+        Event: t.event?.title || '',
+        Category: t.registration?.category === 'alumni' ? 'Alumni' : 'Umum',
+        'Payment Method': t.registration?.paymentMethod || '',
+        Sponsor:
+          typeof t.registration?.sponsor === 'object' ? t.registration?.sponsor?.name || '' : '',
+        Status: t.status,
+        'Checked In At': t.checkedInAt ? formatDate(t.checkedInAt) : '',
+      }))
+      const ws = XLSX.utils.json_to_sheet(rows)
+      const wb = XLSX.utils.book_new()
+      XLSX.utils.book_append_sheet(wb, ws, 'Tickets')
+      XLSX.writeFile(wb, `tickets-${new Date().toISOString().slice(0, 10)}.xlsx`)
+    } catch (error) {
+      console.error('Error exporting tickets:', error)
+    } finally {
+      setExporting(false)
+    }
+  }
+
   const toggleSelect = (id: string) => {
     const newSelected = new Set(selectedTickets)
     if (newSelected.has(id)) {
@@ -161,7 +204,7 @@ export function TicketsList() {
     setSelectedTickets(newSelected)
   }
 
-  const headers = ['Ticket Code', 'Attendee', 'Event', 'Status', 'Checked In At', 'Actions']
+  const headers = ['No.', 'Ticket Code', 'Attendee', 'Event', 'Status', 'Checked In At', 'Actions']
 
   return (
     <div className="flex flex-col min-h-full space-y-6">
@@ -181,6 +224,16 @@ export function TicketsList() {
               <QrCode className="h-4 w-4" />
               Open Scanner
             </Link>
+          </Button>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={handleExportXlsx}
+            disabled={exporting}
+            className="gap-2"
+          >
+            <FileSpreadsheet className="h-4 w-4" />
+            {exporting ? 'Exporting...' : 'Export XLSX'}
           </Button>
           <Button variant="outline" size="sm" onClick={() => fetchTickets()} className="gap-2">
             <RefreshCw className={`h-4 w-4 ${loading ? 'animate-spin' : ''}`} />
@@ -244,7 +297,7 @@ export function TicketsList() {
           <TableBody>
             {loading ? (
               <TableRow>
-                <TableCell colSpan={7} className="h-24 text-center">
+                <TableCell colSpan={8} className="h-24 text-center">
                   <div className="flex items-center justify-center gap-2">
                     <RefreshCw className="h-4 w-4 animate-spin" />
                     Loading tickets...
@@ -253,7 +306,7 @@ export function TicketsList() {
               </TableRow>
             ) : !data?.docs.length ? (
               <TableRow>
-                <TableCell colSpan={7} className="h-24 text-center text-muted-foreground">
+                <TableCell colSpan={8} className="h-24 text-center text-muted-foreground">
                   No tickets found.
                 </TableCell>
               </TableRow>
@@ -265,6 +318,9 @@ export function TicketsList() {
                       checked={selectedTickets.has(ticket.id)}
                       onCheckedChange={() => toggleSelect(ticket.id)}
                     />
+                  </TableCell>
+                  <TableCell className="font-mono text-sm tabular-nums">
+                    {ticket.ticketNumber ?? '-'}
                   </TableCell>
                   <TableCell>
                     <Link

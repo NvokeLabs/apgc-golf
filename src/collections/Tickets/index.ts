@@ -18,7 +18,14 @@ export const Tickets: CollectionConfig = {
     checkedInAt: true,
   },
   admin: {
-    defaultColumns: ['ticketCode', 'registration', 'event', 'status', 'checkedInAt'],
+    defaultColumns: [
+      'ticketNumber',
+      'ticketCode',
+      'registration',
+      'event',
+      'status',
+      'checkedInAt',
+    ],
     useAsTitle: 'ticketCode',
     group: 'Registrations',
     description: 'Manage event tickets and check-in status',
