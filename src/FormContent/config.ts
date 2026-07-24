@@ -424,7 +424,7 @@ export const FormContent: GlobalConfig = {
                     },
                   ],
                   defaultValue: [
-                    { value: 'general', label: 'General' },
+                    { value: 'general', label: 'Umum' },
                     { value: 'alumni', label: 'Alumni' },
                   ],
                 },

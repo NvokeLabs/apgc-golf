@@ -48,6 +48,14 @@ export const Tickets: CollectionConfig = {
       },
     },
     {
+      name: 'ticketNumber',
+      type: 'number',
+      admin: {
+        readOnly: true,
+        description: 'Sequential participant number within the event (printed on the ticket stub)',
+      },
+    },
+    {
       name: 'registration',
       type: 'relationship',
       relationTo: 'event-registrations',

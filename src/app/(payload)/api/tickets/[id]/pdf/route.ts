@@ -46,6 +46,7 @@ export async function GET(request: NextRequest, { params }: { params: Promise<{ 
       category: registration.category,
       alumniMajor: registration.alumniMajor,
       alumniClassYear: registration.alumniClassYear,
+      ticketNumber: ticket.ticketNumber,
       qrCodeDataUrl: ticket.qrCodeData || '',
     })
 

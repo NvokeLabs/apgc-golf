@@ -49,7 +49,7 @@ export const EventRegistrations: CollectionConfig = {
       type: 'select',
       required: true,
       options: [
-        { label: 'General', value: 'general' },
+        { label: 'Umum', value: 'general' },
         { label: 'Alumni', value: 'alumni' },
       ],
       admin: {

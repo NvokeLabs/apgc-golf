@@ -89,11 +89,23 @@ export async function issueTicketForRegistration(
   const event = registration.event as Event
   const eventId = typeof event === 'object' ? event.id : event
 
-  // 4. Create ticket record
+  // 4. Next sequential participant number for this event (printed on the ticket stub).
+  // ponytail: read-then-write, not atomic — two simultaneous issuances could duplicate
+  // a number; volumes here are one-at-a-time admin/webhook actions, so acceptable.
+  const lastNumbered = await payload.find({
+    collection: 'tickets',
+    where: { event: { equals: eventId } },
+    sort: '-ticketNumber',
+    limit: 1,
+  })
+  const ticketNumber = (lastNumbered.docs[0]?.ticketNumber ?? 0) + 1
+
+  // 5. Create ticket record
   const ticket = (await payload.create({
     collection: 'tickets',
     data: {
       ticketCode,
+      ticketNumber,
       registration: Number(registrationId),
       event: eventId,
       qrCodeData,
@@ -101,7 +113,7 @@ export async function issueTicketForRegistration(
     },
   })) as Ticket
 
-  // 5. Link ticket to registration
+  // 6. Link ticket to registration
   await payload.update({
     collection: 'event-registrations',
     id: registrationId,
@@ -110,7 +122,7 @@ export async function issueTicketForRegistration(
     },
   })
 
-  // 6. Build event date string (same logic as the webhook)
+  // 7. Build event date string (same logic as the webhook)
   const eventDate =
     typeof event === 'object' && event.date
       ? new Date(event.date).toLocaleDateString('id-ID', {
@@ -121,7 +133,7 @@ export async function issueTicketForRegistration(
         })
       : 'TBD'
 
-  // 7. Render the ticket PDF (email-safe) and send the ticket email — never throw
+  // 8. Render the ticket PDF (email-safe) and send the ticket email — never throw
   let emailSent = false
   try {
     let pdfBuffer: Buffer | undefined
@@ -131,6 +143,7 @@ export async function issueTicketForRegistration(
         category: registration.category,
         alumniMajor: registration.alumniMajor,
         alumniClassYear: registration.alumniClassYear,
+        ticketNumber,
         qrCodeDataUrl: qrCodeData,
       })
     } catch (pdfErr) {
@@ -159,7 +172,7 @@ export async function issueTicketForRegistration(
     emailSent = false
   }
 
-  // 8. Persist email-sent status to the registration.
+  // 9. Persist email-sent status to the registration.
   // Wrapped in its own try/catch: the ticket has already been created and linked, so a
   // failure here must never surface to the caller.
   try {

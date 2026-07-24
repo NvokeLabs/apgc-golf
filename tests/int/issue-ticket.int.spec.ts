@@ -56,6 +56,7 @@ function makeFakePayload(registrationOverride: Record<string, unknown> = {}) {
   const registration = { ...fakeRegistrationBase, ticket: null, ...registrationOverride }
   return {
     findByID: vi.fn().mockResolvedValue(registration),
+    find: vi.fn().mockResolvedValue({ docs: [] }),
     create: vi.fn().mockResolvedValue(fakeTicket),
     update: vi.fn().mockResolvedValue({}),
   }
@@ -313,6 +314,7 @@ describe('issueTicketForRegistration', () => {
     it('does NOT throw even if the final update rejects', async () => {
       const payload = {
         findByID: vi.fn().mockResolvedValue({ ...fakeRegistrationBase, ticket: null }),
+        find: vi.fn().mockResolvedValue({ docs: [] }),
         create: vi.fn().mockResolvedValue(fakeTicket),
         update: vi
           .fn()
@@ -375,6 +377,47 @@ describe('issueTicketForRegistration', () => {
       expect(result.alreadyIssued).toBe(false)
       // Ticket exists; email may have been skipped/failed but nothing propagates.
       expect(result.ticket).toMatchObject({ id: fakeTicket.id })
+    })
+  })
+
+  describe('S2.6 sequential ticket numbering', () => {
+    it('assigns ticketNumber = highest existing number for the event + 1', async () => {
+      const payload = makeFakePayload()
+      payload.find = vi.fn().mockResolvedValue({ docs: [{ ticketNumber: 7 }] })
+      const deps = makeFakeDeps()
+
+      await issueTicketForRegistration(payload as any, 42, deps)
+
+      const findArgs = payload.find.mock.calls[0][0]
+      expect(findArgs).toMatchObject({
+        collection: 'tickets',
+        where: { event: { equals: fakeEvent.id } },
+        sort: '-ticketNumber',
+        limit: 1,
+      })
+      const createArgs = payload.create.mock.calls[0][0]
+      expect(createArgs.data.ticketNumber).toBe(8)
+    })
+
+    it('assigns 1 when the event has no numbered tickets yet', async () => {
+      const payload = makeFakePayload()
+      const deps = makeFakeDeps()
+
+      await issueTicketForRegistration(payload as any, 42, deps)
+
+      const createArgs = payload.create.mock.calls[0][0]
+      expect(createArgs.data.ticketNumber).toBe(1)
+    })
+
+    it('treats existing tickets without a number as 0', async () => {
+      const payload = makeFakePayload()
+      payload.find = vi.fn().mockResolvedValue({ docs: [{ ticketNumber: null }] })
+      const deps = makeFakeDeps()
+
+      await issueTicketForRegistration(payload as any, 42, deps)
+
+      const createArgs = payload.create.mock.calls[0][0]
+      expect(createArgs.data.ticketNumber).toBe(1)
     })
   })
 })

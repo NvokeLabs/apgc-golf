@@ -50,6 +50,7 @@ export type TicketPDFProps = {
   category?: string | null
   alumniMajor?: string | null
   alumniClassYear?: number | null
+  ticketNumber?: number | null
   qrCodeDataUrl: string
 }
 
@@ -58,6 +59,7 @@ export function TicketPDF({
   category,
   alumniMajor,
   alumniClassYear,
+  ticketNumber,
   qrCodeDataUrl,
 }: TicketPDFProps) {
   const fromText = formatTicketFrom(category, alumniMajor, alumniClassYear)
@@ -102,6 +104,26 @@ export function TicketPDF({
           >
             {fromText}
           </Text>
+
+          {/* NUMBER slot — over the "NO. ___" underscores on the stub */}
+          {ticketNumber != null && (
+            <Text
+              style={[
+                styles.overlayText,
+                {
+                  left: px(SLOTS.number.x),
+                  top: py(SLOTS.number.y),
+                  width: px(SLOTS.number.w),
+                  height: py(SLOTS.number.h),
+                  fontSize: 5,
+                  fontFamily: 'Helvetica-Bold',
+                  color: '#C9AC5E',
+                },
+              ]}
+            >
+              {ticketNumber}
+            </Text>
+          )}
 
           {/* QR slot */}
           {/* eslint-disable-next-line jsx-a11y/alt-text -- @react-pdf/renderer Image has no alt */}

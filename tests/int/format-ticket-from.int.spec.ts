@@ -6,14 +6,14 @@ describe('formatTicketFrom', () => {
     expect(formatTicketFrom('alumni', 'Teknik Sipil', 2015)).toBe('Teknik Sipil · 2015')
   })
 
-  it('alumni missing major → "Non Alumni"', () => {
-    expect(formatTicketFrom('alumni', null, 2015)).toBe('Non Alumni')
-    expect(formatTicketFrom('alumni', '', 2015)).toBe('Non Alumni')
+  it('alumni missing major → "Alumni"', () => {
+    expect(formatTicketFrom('alumni', null, 2015)).toBe('Alumni')
+    expect(formatTicketFrom('alumni', '', 2015)).toBe('Alumni')
   })
 
-  it('alumni missing class year → "Non Alumni"', () => {
-    expect(formatTicketFrom('alumni', 'Teknik Sipil', null)).toBe('Non Alumni')
-    expect(formatTicketFrom('alumni', 'Teknik Sipil', undefined)).toBe('Non Alumni')
+  it('alumni missing class year → "Alumni"', () => {
+    expect(formatTicketFrom('alumni', 'Teknik Sipil', null)).toBe('Alumni')
+    expect(formatTicketFrom('alumni', 'Teknik Sipil', undefined)).toBe('Alumni')
   })
 
   it('non-alumni (general) → "Non Alumni" even with fields present', () => {

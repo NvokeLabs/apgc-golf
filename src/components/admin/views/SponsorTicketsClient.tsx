@@ -257,7 +257,7 @@ export function SponsorTicketsClient() {
                   onChange={(e) => setCategory(e.target.value as 'general' | 'alumni')}
                   className={selectClass}
                 >
-                  <option value="general">General</option>
+                  <option value="general">Umum</option>
                   <option value="alumni">Alumni</option>
                 </select>
               </div>
@@ -350,7 +350,7 @@ export function SponsorTicketsClient() {
                     {phone || 'Phone'}
                   </p>
                   <p className="text-muted-foreground">
-                    {category === 'alumni' ? 'Alumni' : 'General'}
+                    {category === 'alumni' ? 'Alumni' : 'Umum'}
                     {tshirtSize ? ` · Kaos ${tshirtSize}` : ''}
                   </p>
                 </div>

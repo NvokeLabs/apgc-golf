@@ -17,10 +17,12 @@ export const TICKET_BG = { width: 1200, height: 1819 } as const
 
 export type SlotRect = { x: number; y: number; w: number; h: number }
 
-export const SLOTS: { player: SlotRect; from: SlotRect; qr: SlotRect } = {
+export const SLOTS: { player: SlotRect; from: SlotRect; qr: SlotRect; number: SlotRect } = {
   // value text sits just above each underline
   player: { x: 0.1, y: 0.168, w: 0.2567, h: 0.015 },
   from: { x: 0.385, y: 0.168, w: 0.2567, h: 0.015 },
   // square QR inset inside the rounded cream box
   qr: { x: 0.7642, y: 0.0825, w: 0.0817, h: 0.0539 },
+  // over the "NO. ___" underscores at the top of the green stub
+  number: { x: 0.885, y: 0.0405, w: 0.03, h: 0.008 },
 }

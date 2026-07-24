@@ -1524,6 +1524,10 @@ export interface Ticket {
    * Unique ticket code in format APGC-{id}-{hash}
    */
   ticketCode: string;
+  /**
+   * Sequential participant number within the event (printed on the ticket stub)
+   */
+  ticketNumber?: number | null;
   registration: number | EventRegistration;
   event: number | Event;
   /**
@@ -2407,6 +2411,7 @@ export interface SponsorRegistrationsSelect<T extends boolean = true> {
  */
 export interface TicketsSelect<T extends boolean = true> {
   ticketCode?: T;
+  ticketNumber?: T;
   registration?: T;
   event?: T;
   qrCodeData?: T;
