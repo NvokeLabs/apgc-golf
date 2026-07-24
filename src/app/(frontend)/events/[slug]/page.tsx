@@ -1,4 +1,5 @@
 import type { Metadata } from 'next'
+import { mergeOpenGraph } from '@/utilities/mergeOpenGraph'
 
 import { GlassCard, EventDetailsTabs, ParticipantsList } from '@/components/golf'
 import { Button } from '@/components/ui/button'
@@ -70,9 +71,15 @@ export async function generateMetadata({ params }: Args): Promise<Metadata> {
     }
   }
 
+  const description = `Ikuti ${event.title} di ${event.location}. ${event.prizeFund ? `Total Hadiah: ${event.prizeFund}` : ''}`
+
   return {
     title: `${event.title} | APGC Golf`,
-    description: `Ikuti ${event.title} di ${event.location}. ${event.prizeFund ? `Total Hadiah: ${event.prizeFund}` : ''}`,
+    description,
+    openGraph: mergeOpenGraph({
+      title: `${event.title} | APGC Golf`,
+      description,
+    }),
   }
 }
 

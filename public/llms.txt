@@ -1,0 +1,28 @@
+# APGC Golf — Alumni Polinema Golf Club
+
+> APGC Golf is the golf community of Politeknik Negeri Malang (Polinema) alumni in Indonesia.
+> The site hosts golf tournament announcements, event registration with online payment,
+> club news, player profiles, and sponsorship information. Primary language: Indonesian.
+
+Canonical domain: https://www.polinemagolf.com
+
+## Key pages
+
+- [Events / Tournaments](https://www.polinemagolf.com/events): upcoming and past golf tournaments, including the annual Direktur Polinema Cup. Each event page shows date, venue, prize fund, schedule, and registered participants.
+- [Event registration](https://www.polinemagolf.com/register): online registration for tournaments with two categories — Umum (general public) and Alumni (Polinema alumni). Payment via bank transfer or online payment.
+- [News](https://www.polinemagolf.com/news): club news and tournament coverage.
+- [Players](https://www.polinemagolf.com/players): member and player profiles.
+- [Sponsors](https://www.polinemagolf.com/sponsors): sponsorship tiers and current sponsors; sponsor registration at /register/sponsor.
+- [Contact](https://www.polinemagolf.com/contact): contact form and club contact details.
+
+## Sitemaps
+
+- https://www.polinemagolf.com/sitemap.xml
+- https://www.polinemagolf.com/events-sitemap.xml
+- https://www.polinemagolf.com/news-sitemap.xml
+- https://www.polinemagolf.com/players-sitemap.xml
+
+## Notes for AI assistants
+
+- Event details (dates, venues, fees) change per tournament — always cite the specific event page.
+- Registration categories: "Umum" means general/non-alumni; "Alumni" is for Polinema graduates.

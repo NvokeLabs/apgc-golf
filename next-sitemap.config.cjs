@@ -9,6 +9,9 @@ module.exports = {
   generateRobotsTxt: true,
   exclude: [
     '/posts-sitemap.xml',
+    '/events-sitemap.xml',
+    '/news-sitemap.xml',
+    '/players-sitemap.xml',
     '/pages-sitemap.xml',
     '/*',
     '/posts/*',
@@ -24,7 +27,13 @@ module.exports = {
         disallow: ['/admin/*', '/api/*', '/next/*'],
       },
     ],
-    additionalSitemaps: [`${SITE_URL}/pages-sitemap.xml`, `${SITE_URL}/posts-sitemap.xml`],
+    additionalSitemaps: [
+      `${SITE_URL}/pages-sitemap.xml`,
+      `${SITE_URL}/posts-sitemap.xml`,
+      `${SITE_URL}/events-sitemap.xml`,
+      `${SITE_URL}/news-sitemap.xml`,
+      `${SITE_URL}/players-sitemap.xml`,
+    ],
   },
   additionalPaths: async () => {
     return [
