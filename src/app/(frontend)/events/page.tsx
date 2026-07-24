@@ -73,6 +73,7 @@ export default async function EventsPage() {
                         src={event.image.url}
                         alt={event.title}
                         fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         className={`object-cover transition-transform duration-700 group-hover:scale-110 ${
                           event.status === 'closed' ? 'grayscale opacity-70' : ''
                         }`}
@@ -82,6 +83,7 @@ export default async function EventsPage() {
                         src="https://images.unsplash.com/photo-1653515906212-ba8bd8ab6000?w=800&q=80"
                         alt={event.title}
                         fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         className={`object-cover transition-transform duration-700 group-hover:scale-110 ${
                           event.status === 'closed' ? 'grayscale opacity-70' : ''
                         }`}

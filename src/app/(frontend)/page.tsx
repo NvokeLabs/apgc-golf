@@ -145,6 +145,7 @@ export default async function HomePage() {
                         src={featuredEvent.image.url}
                         alt={featuredEvent.title}
                         fill
+                        sizes="350px"
                         className="object-cover"
                       />
                     ) : (
@@ -152,6 +153,7 @@ export default async function HomePage() {
                         src="https://images.unsplash.com/photo-1698692412889-a0f176b60b87?w=600&q=80"
                         alt="Banner Turnamen"
                         fill
+                        sizes="350px"
                         className="object-cover"
                       />
                     )}
@@ -324,6 +326,7 @@ export default async function HomePage() {
                         src={event.image.url}
                         alt={event.title}
                         fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         className="object-cover transition-transform duration-1000 group-hover:scale-105"
                       />
                     ) : (
@@ -331,6 +334,7 @@ export default async function HomePage() {
                         src={`https://images.unsplash.com/photo-${idx === 0 ? '1744140370301-2613786e3230' : '1685296982506-91e3e7942a26'}?w=800&q=80`}
                         alt={event.title}
                         fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         className="object-cover transition-transform duration-1000 group-hover:scale-105"
                       />
                     )}
@@ -542,6 +546,7 @@ export default async function HomePage() {
                           src={player.image.url}
                           alt={player.name}
                           fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
                           className="object-cover transition-transform duration-700 group-hover:scale-110"
                         />
                       ) : (
@@ -549,6 +554,7 @@ export default async function HomePage() {
                           src="https://images.unsplash.com/photo-1633597470203-77c0986ecc4d?w=600&q=80"
                           alt={player.name}
                           fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 25vw"
                           className="object-cover transition-transform duration-700 group-hover:scale-110"
                         />
                       )}
@@ -599,6 +605,7 @@ export default async function HomePage() {
                           src={item.image.url}
                           alt={item.title}
                           fill
+                          sizes="(max-width: 768px) 100vw, 33vw"
                           className="object-cover transition-transform duration-700 group-hover:scale-105"
                         />
                       ) : (
@@ -606,6 +613,7 @@ export default async function HomePage() {
                           src="https://images.unsplash.com/photo-1573684955725-34046d1ea9f3?w=600&q=80"
                           alt={item.title}
                           fill
+                          sizes="(max-width: 768px) 100vw, 33vw"
                           className="object-cover transition-transform duration-700 group-hover:scale-105"
                         />
                       )}

@@ -69,6 +69,7 @@ export default async function PlayersPage() {
                         src={player.image.url}
                         alt={player.name}
                         fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                       />
                     ) : (
@@ -76,6 +77,7 @@ export default async function PlayersPage() {
                         src="https://images.unsplash.com/photo-1633597470203-77c0986ecc4d?w=600&q=80"
                         alt={player.name}
                         fill
+                        sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                         className="object-cover grayscale group-hover:grayscale-0 transition-all duration-500"
                       />
                     )}

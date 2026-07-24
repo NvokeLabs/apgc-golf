@@ -64,6 +64,7 @@ export default async function NewsPage() {
                       src={featuredArticle.image.url}
                       alt={featuredArticle.title}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="object-cover transition-transform duration-1000 group-hover:scale-105"
                     />
                   ) : (
@@ -71,6 +72,7 @@ export default async function NewsPage() {
                       src="https://images.unsplash.com/photo-1573684955725-34046d1ea9f3?w=1200&q=80"
                       alt={featuredArticle.title}
                       fill
+                      sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                       className="object-cover transition-transform duration-1000 group-hover:scale-105"
                     />
                   )}
@@ -124,6 +126,7 @@ export default async function NewsPage() {
                           src={article.image.url}
                           alt={article.title}
                           fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           className="object-cover transition-transform duration-700 group-hover:scale-110"
                         />
                       ) : (
@@ -131,6 +134,7 @@ export default async function NewsPage() {
                           src="https://images.unsplash.com/photo-1573684955725-34046d1ea9f3?w=600&q=80"
                           alt={article.title}
                           fill
+                          sizes="(max-width: 768px) 100vw, (max-width: 1024px) 50vw, 33vw"
                           className="object-cover transition-transform duration-700 group-hover:scale-110"
                         />
                       )}
